@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Extra copy for the Messages screen (feature/messages). Names are prefixed msg_x_.
+  Text follows the copy standard (ASD-STE100).
+-->
+<resources>
+    <string name="msg_x_chip_reports">Delivery reports</string>
+    <plurals name="msg_x_reports_count">
+        <item quantity="one">%1$d delivery report</item>
+        <item quantity="other">%1$d delivery reports</item>
+    </plurals>
+
+    <string name="msgs_no_sender">No sender address</string>
+    <!-- Messages -->
+    <string name="msgs_chip_count">%1$s %2$d</string>
+    <string name="msgs_remove_filter">Delete this filter</string>
+    <string name="msgs_open">Open the message</string>
+    <string name="msgs_select">Select or deselect the message</string>
+    <!-- Status title and text when the user turned off the Blocking switch on the Protection screen. -->
+    <string name="msg_st_block_off">Blocking off</string>
+    <string name="msg_st_block_off_sub">NightJar records messages but does not block or hold them.</string>
+    <!-- "Waiting for you" section above the list. %1$d = messages on hold (the same number as the tab badge). -->
+    <string name="msgs_waiting_heading">Waiting for you · %1$d</string>
+    <string name="msgs_held_release">Release</string>
+    <string name="msgs_held_block">Block</string>
+    <string name="msgs_held_blocked">Message blocked</string>
+    <!-- Status line of a row: what happened to the message. -->
+    <string name="msgs_fate_delivered">Delivered</string>
+    <string name="msgs_fate_not_delivered">Not delivered</string>
+    <string name="msgs_fate_sent">Sent</string>
+    <string name="msgs_fate_not_sent">Not sent</string>
+    <string name="msgs_fate_released">Released</string>
+    <string name="msgs_fate_waiting">Waiting</string>
+    <string name="msgs_status_test">Test</string>
+    <!-- TalkBack: the review state of a row, before its status words. -->
+    <string name="msgs_row_not_reviewed">Not reviewed</string>
+    <string name="msgs_row_reviewed">Reviewed</string>
+    <!-- Right of the count line: removes all filters. -->
+    <string name="msgs_filters_clear">Clear</string>
+    <!-- %d = the number of messages in the current list, for example 10. -->
+    <plurals name="select_select_all_count">
+        <item quantity="one">Select all %1$d</item>
+        <item quantity="other">Select all %1$d</item>
+    </plurals>
+    <!-- Text button after "Select all N": selects the other messages and deselects the selected messages. -->
+    <string name="select_invert">Invert</string>
+    <!-- TalkBack state of a list row in selection mode. -->
+    <string name="select_selected">Selected</string>
+    <string name="select_not_selected">Not selected</string>
+    <!-- Body of the delete question when no selected message is on hold. dlg_09_body adds the hold warning. -->
+    <string name="select_delete_body">You cannot undo this.</string>
+</resources>

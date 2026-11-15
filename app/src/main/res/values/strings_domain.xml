@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Classification copy added by the domain review. Each string has a TextKey with the
+  same English template. Text follows the copy standard (ASD-STE100).
+-->
+<resources>
+    <!-- Class name in lists that have no message to fill from (Home "by type", Health coverage, filter chips). -->
+    <string name="title_cl_data_port_generic">Data message to a port</string>
+    <string name="title_st_silent_type0_port_generic">Silent SMS (Type 0) to a port</string>
+
+    <!-- What happened: a block with no rule behind it (a malformed push, a self-test message). -->
+    <string name="fate_txt_blocked_no_rule">NightJar blocked it</string>
+    <!-- What happened: the user blocked this app from sending SMS, and NightJar stopped the send. {app} = app
+         label, or the package name when the app has no label, e.g. "Example App". -->
+    <string name="fate_txt_blocked_app">NightJar blocked it. You blocked {app} from sending messages.</string>
+    <!-- What happened: a multipart message that is not complete. {n} = number of missing parts, e.g. "2". The text has
+         no plural form, so it is correct for every n. -->
+    <string name="fate_txt_incomplete">Parts still missing: {n}</string>
+    <!-- What happened: phone maker software redirected the message and did not name the app (HOOKS-R31). -->
+    <string name="fate_txt_oem_redirected_no_app">Software from the phone maker took it</string>
+
+    <!-- Reason line: why a flagged message is flagged, one short line under the title. -->
+    <string name="hero_na_title">NightJar is not active</string>
+    <string name="hero_na_sub">Open Vector or LSPosed. Turn on the NightJar module with scope Phone Services. Then reboot the phone.</string>
+    <string name="hero_uns_title">NightJar does not support this build</string>
+
+    <!-- Label of a message whose type this app version does not know (a newer module sent it). -->
+    <string name="generic_unknown_class">Unknown message type</string>
+
+    <string name="reason_broadcast">The network sent this message to all phones in the area.</string>
+    <string name="reason_incomplete">Some parts of this message did not arrive.</string>
+    <string name="reason_phone_change">This message tries to change a setting of your phone.</string>
+    <string name="reason_push">This message sends data to an app on your phone.</string>
+    <string name="reason_rare_format">This message uses a type that most phones do not receive.</string>
+    <string name="reason_replace">This message can replace a message that is already on your phone.</string>
+    <string name="reason_service">This message is for your phone, not for you.</string>
+    <string name="fate_txt_rejected">Android rejected it and did not keep it</string>
+    <string name="fate_txt_accepted">Android accepted it. NightJar did not see an app receive it.</string>
+    <string name="fate_txt_not_dispatched">Android did not deliver it to an app</string>
+    <string name="fate_txt_phone_stopped">The phone service stopped before the message had a result</string>
+    <string name="fate_txt_unlock_expired">Android kept it for the first unlock. NightJar stopped waiting for the result.</string>
+    <string name="fate_txt_not_sent">Android did not send it</string>
+    <string name="fate_txt_send_unconfirmed">Android sent it to the modem. NightJar did not get a send result.</string>
+    <string name="fate_reject_generic">Android reported a general error.</string>
+    <string name="fate_reject_unsupported">Android does not support this type of message.</string>
+    <string name="fate_reject_duplicate">Android already received this message.</string>
+    <string name="fate_reject_dispatch">Android could not deliver the message.</string>
+    <string name="fate_reject_unreadable">Android could not read the message.</string>
+    <string name="fate_reject_locked">The phone storage was locked.</string>
+    <string name="fate_reject_database">Android could not save the message.</string>
+    <string name="title_cl_unreadable_sms">Unreadable SMS</string>
+    <string name="exp_cl_unreadable_sms">Wrong message type. NightJar cannot read this message, so it cannot check it.</string>
+    <string name="reason_unreadable">NightJar cannot read this message, so it cannot check it.</string>
+    <!-- Short list titles, max 24 characters. -->
+    <string name="title_list_data_port">Data to port {port}</string>
+    <string name="title_list_device_mgmt">Device management</string>
+    <string name="title_list_sim_update">SIM update</string>
+    <string name="title_list_oem">Phone maker message</string>
+    <string name="title_list_mo_hidden">Hidden sent message</string>
+    <string name="title_list_mo_raw">Raw sent message</string>
+    <string name="title_list_me_download">Data download</string>
+    <string name="title_list_class3">Message for a device</string>
+    <string name="title_list_binary">Binary message</string>
+    <string name="title_list_incomplete">Incomplete message</string>
+    <string name="title_list_flash">Flash SMS</string>
+    <string name="title_list_mwi_silent">Silent voicemail signal</string>
+    <string name="title_list_internet_config">Internet settings</string>
+    <string name="title_list_quake_tsunami">Earthquake and tsunami</string>
+    <string name="title_list_cb_sim">Cell broadcast for SIM</string>
+    <!-- List descriptions. The important words come first. -->
+    <string name="reason_list_malformed">{anomaly}. A damaged header like this can crash a phone.</string>
+    <string name="reason_list_binary">Data with no port. Most phones do not receive this type.</string>
+    <string name="reason_list_telematic">{detail} service. Most phones do not receive this type.</string>
+    <string name="reason_list_flash_empty">Empty. It shows on the screen, and Android does not save it.</string>
+    <string name="reason_list_wap_secure">Secure session for an app. It has no text.</string>
+    <string name="reason_list_detail">{detail}.</string>
+    <string name="reason_list_app_sent">{app} sent this message.</string>
+    <string name="reason_list_app_added">{app} added this message.</string>
+    <string name="reason_rare_class3">This message is for a device that you connect to the phone. Most phones do not receive this type.</string>
+    <string name="reason_rare_telematic">This message came through a telematic service, for example fax or paging. Most phones do not receive this type.</string>
+    <string name="reason_rare_empty">This message has no text. Most phones do not receive this type.</string>
+    <string name="reason_rare_binary">This message contains data but no port. Most phones do not receive this type.</string>
+    <string name="reason_rare_compressed">This message contains compressed text. Most phones do not receive this type.</string>
+    <string name="reason_rare_smart">This message contains Smart Messaging data. Most phones do not receive this type.</string>
+    <string name="reason_smart_ringtone">This message contains a ringtone. Most phones do not receive this type.</string>
+    <string name="reason_smart_oplogo">This message contains an operator logo. Most phones do not receive this type.</string>
+    <string name="reason_smart_clilogo">This message contains a caller logo. Most phones do not receive this type.</string>
+    <string name="reason_smart_picture">This message contains a picture. Most phones do not receive this type.</string>
+    <string name="reason_smart_vcard">This message contains a contact card. Most phones do not receive this type.</string>
+    <string name="reason_smart_vcal">This message contains a calendar entry. Most phones do not receive this type.</string>
+    <!-- Line 2 of a sent row. %1$s = masked number, e.g. "+91•••••110". -->
+    <string name="row_sent_to">To %1$s</string>
+    <!-- The third line of a sent data message row. %1$s = app label, e.g. "Example Sender". -->
+    <string name="row_sent_data_by_app">%1$s sent this message. It has no text.</string>
+    <string name="row_sent_data_no_app">This message has no text.</string>
+</resources>

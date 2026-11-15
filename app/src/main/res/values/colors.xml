@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Window background behind the first Compose frame. It must match the role "bg" of NjTokens (light #F2F3F7, dark #0A0E15), so no colour flash shows. -->
+    <color name="window_background">#F2F3F7</color>
+    <color name="window_background_dark">#0A0E15</color>
+</resources>

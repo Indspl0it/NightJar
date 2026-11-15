@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SIM names for the status lines of Health and the global banner. TextKey.SIM_SLOT_NAME and
+  TextKey.SIM_PAIR_NAMES use these resources. Text follows the copy standard (ASD-STE100).
+-->
+<resources>
+    <!-- {n} = 1-based SIM slot number, e.g. "1". The copy standard writes SIM as "SIM 1", "SIM 2". -->
+    <string name="sim_slot_name">SIM {n}</string>
+    <!-- {first}, {second} = two SIM names, e.g. "SIM 1" and "SIM 2". -->
+    <string name="sim_pair_names">{first} and {second}</string>
+</resources>

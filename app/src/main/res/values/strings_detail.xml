@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copy for the message detail screen. Names are prefixed detail_x_. Text follows the copy standard (ASD-STE100).
+  The other detail text is in strings.xml (detail_*).
+-->
+<resources>
+    <!-- The action badge in the header. "On hold" uses detail_on_hold. -->
+    <string name="detail_x_badge_blocked">Blocked</string>
+    <string name="detail_x_badge_allowed">Allowed</string>
+
+    <!-- Steps of the "What happened" timeline. -->
+    <string name="detail_x_tl_received">The phone service received it</string>
+    <string name="detail_x_tl_sent">The phone service sent it</string>
+    <string name="detail_x_tl_classified">Classified as %1$s</string>
+    <string name="detail_x_tl_report_delivered">Delivery report: delivered</string>
+    <string name="detail_x_tl_report_pending">Delivery report: pending</string>
+    <string name="detail_x_tl_report_failed">Delivery report: failed</string>
+    <string name="detail_x_tl_report_unknown">Delivery report</string>
+    <string name="detail_x_tl_report_of">This is a delivery report. Open the sent message.</string>
+
+    <!-- The Raw PDU card. -->
+    <string name="detail_x_raw_hide">Hide</string>
+
+    <!-- The anomaly rows in the Evidence card (fills them). -->
+    <string name="detail_x_anomalies">Anomalies</string>
+    <string name="detail_x_format_error">%1$s: %2$s</string>
+
+    <!-- Release failures (Home and Detail) -->
+    <string name="release_failed">NightJar did not release the message. The message is still on hold.</string>
+    <string name="release_not_found">NightJar cannot find this message.</string>
+    <string name="release_not_releasable">NightJar cannot release this type of message. The message is still on hold.</string>
+    <string name="release_no_pdu">NightJar has no copy of this message, so it cannot release it.</string>
+    <string name="release_not_active">The module is not active, so NightJar cannot release the message. The message is still on hold.</string>
+    <string name="release_timeout">The phone did not answer in time. Try again. The message is still on hold.</string>
+    <string name="release_no_dispatcher">The phone did not accept the message for delivery. The message is still on hold.</string>
+    <string name="release_rejected">The phone did not accept the release request from NightJar. The message is still on hold.</string>
+    <!-- Detail -->
+    <string name="detail_debug_test">Debug test</string>
+    <string name="detail_debug_label">Test</string>
+    <string name="detail_debug_text">NightJar added this message for a debug test.</string>
+    <string name="detail_to">To</string>
+    <string name="detail_clamp_label">Safety limit</string>
+    <string name="detail_clamp">The rule action was %1$s. A safety limit changed it to %2$s.</string>
+    <string name="detail_clamp_reason">Reason for the limit</string>
+    <string name="detail_ota_field">OTA %1$s</string>
+    <string name="detail_hex_byte">Offset %1$s, byte %2$s</string>
+</resources>

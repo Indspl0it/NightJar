@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Anomaly names and the detail rows for the IPC version 2 event fields. Text follows the copy standard
+  (ASD-STE100). One name for each AnomalyCode, wording from testdata/scenarios.json
+  anomalyNames. The names are lower case so that a title can put one after a colon ("Malformed SMS: address cut off").
+  Key: anomaly_name_ + the AnomalyCode enum name in lower case. AnomalyNames.kt maps the codes to these keys.
+-->
+<resources>
+    <string name="anomaly_name_addr_trunc">address cut off</string>
+    <string name="anomaly_name_addr_len">address too long</string>
+    <string name="anomaly_name_addr_toa">unknown address type</string>
+    <string name="anomaly_name_pdu_short">message too short</string>
+    <string name="anomaly_name_mti">unknown message type</string>
+    <string name="anomaly_name_pid_rsv">unknown protocol identifier</string>
+    <string name="anomaly_name_dcs_rsv">unknown coding scheme</string>
+    <string name="anomaly_name_udl_long">length is more than the data</string>
+    <string name="anomaly_name_udl_short">data is more than the length</string>
+    <string name="anomaly_name_udh_len">header length is wrong</string>
+    <string name="anomaly_name_ie_overrun">header element is too long</string>
+    <string name="anomaly_name_ie_rsv">unknown header element</string>
+    <string name="anomaly_name_ie_dup">repeated port element</string>
+    <string name="anomaly_name_port_zero">port 0</string>
+    <string name="anomaly_name_concat_bad">bad multipart numbers</string>
+    <string name="anomaly_name_concat_dup">repeated multipart number</string>
+    <string name="anomaly_name_wsp_type">unknown WSP type</string>
+    <string name="anomaly_name_wsp_hlen">WSP header length is wrong</string>
+    <string name="anomaly_name_wsp_ctype">content type is unreadable</string>
+    <string name="anomaly_name_wsp_appid">application ID is unreadable</string>
+    <string name="anomaly_name_wbxml_ver">unknown WBXML version</string>
+    <string name="anomaly_name_wbxml_str">WBXML string table is wrong</string>
+    <string name="anomaly_name_wbxml_tok">bad WBXML token</string>
+    <string name="anomaly_name_ota_hdr">SIM command header is wrong</string>
+    <!-- A code that a newer module sends and this app does not know. -->
+    <string name="anomaly_name_unknown">unknown format problem</string>
+
+    <!-- The Evidence card: the other detection rules that matched the message. -->
+    <string name="detail_x_extra_subtypes">Other matching types</string>
+</resources>

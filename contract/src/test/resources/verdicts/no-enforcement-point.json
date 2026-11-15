@@ -1,0 +1,176 @@
+{
+  "cases": [
+    {
+      "expected": {
+        "action": "ALLOW",
+        "clampReason": "ACTION_NOT_ALLOWED",
+        "clampedFrom": "BLOCK",
+        "hasRule": false,
+        "ruleId": null,
+        "source": "CLASS_ACTION"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-VVM",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": null,
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "VVM BLOCK is clamped",
+      "snapshot": {
+        "classActions": {
+          "CL-VVM": "BLOCK"
+        },
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "ALLOW",
+        "clampReason": "ACTION_NOT_ALLOWED",
+        "clampedFrom": "QUARANTINE",
+        "hasRule": false,
+        "ruleId": null,
+        "source": "CLASS_ACTION"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-APP-TOKEN",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": null,
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "APP_TOKEN QUARANTINE is clamped",
+      "snapshot": {
+        "classActions": {
+          "CL-APP-TOKEN": "QUARANTINE"
+        },
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "ALLOW",
+        "clampReason": "ACTION_NOT_ALLOWED",
+        "clampedFrom": "BLOCK",
+        "hasRule": true,
+        "ruleId": 951,
+        "source": "RULE"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-MISSED-CALL",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": "+15550001",
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "a MISSED-CALL rule with a sender condition cannot BLOCK",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "BLOCK",
+            "enabled": true,
+            "id": 951,
+            "name": "r951",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-MISSED-CALL"
+              ],
+              "originator": {
+                "op": "IS",
+                "value": "+15550001"
+              }
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "ALLOW",
+        "clampReason": "ACTION_NOT_ALLOWED",
+        "clampedFrom": "BLOCK",
+        "hasRule": false,
+        "ruleId": null,
+        "source": "CLASS_ACTION"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-OEM",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": null,
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "OEM BLOCK is clamped",
+      "snapshot": {
+        "classActions": {
+          "CL-OEM": "BLOCK"
+        },
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [],
+        "schema": 1
+      }
+    }
+  ]
+}

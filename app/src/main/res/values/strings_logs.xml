@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Log screens. -->
+<resources>
+    <!-- ============================== Logs Logs ============================== -->
+    <string name="log_tab_payload">Module</string>
+    <string name="log_tab_app">App</string>
+    <string name="log_tab_companion">Framework</string>
+    <string name="log_tab_audit">Audit</string>
+    <string name="log_search">Search logs</string>
+    <string name="log_copy_all">Copy all</string>
+    <string name="log_export">Export</string>
+    <string name="log_refresh">Refresh</string>
+    <string name="log_empty">No log lines match.</string>
+    <string name="log_empty_file">This log is empty.</string>
+    <string name="log_payload_missing">No module log arrived yet. The module sends its log a few seconds after it connects. Check that NightJar is on in Vector or LSPosed, with scope Phone Services. If necessary, reboot the phone. Then refresh.</string>
+    <string name="log_companion_root">NightJar needs root to read the Vector or LSPosed log. Allow NightJar in your root manager. Then refresh.</string>
+    <string name="log_copied">Copied to the clipboard.</string>
+    <string name="log_exported">Log exported.</string>
+    <string name="log_export_failed">NightJar cannot write the log to the file. Select a different file. Then try again.</string>
+    <!-- Label of the clipboard entry that "Copy all" makes. -->
+    <string name="log_clip_label">NightJar logs</string>
+    <!-- Level filter chips on the log screen. -->
+    <string name="log_level_errors">Errors</string>
+    <string name="log_level_warnings">Warnings</string>
+    <string name="log_level_info">Info</string>
+    <string name="log_level_debug">Debug</string>
+    <!-- ============================== Accessibility descriptions ============================== -->
+    <string name="log_payload_title">No module log yet</string>
+</resources>

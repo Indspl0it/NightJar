@@ -1,0 +1,11 @@
+NightJar
+Copyright 2026 The NightJar authors
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+Third-party components bundled in the APK:
+- AndroidX (including Jetpack Compose, Room, WorkManager, DataStore, Paging, Navigation) (Apache-2.0) - https://developer.android.com/jetpack/androidx
+- Kotlin standard library, kotlinx.coroutines, kotlinx.serialization (Apache-2.0) - https://github.com/JetBrains
+- Dagger Hilt (Apache-2.0) - https://github.com/google/dagger
+- SQLCipher for Android (BSD-style, Zetetic LLC) - Maven net.zetetic:sqlcipher-android
+- libsu (Apache-2.0) - https://github.com/topjohnwu/libsu (Maven com.github.topjohnwu.libsu)

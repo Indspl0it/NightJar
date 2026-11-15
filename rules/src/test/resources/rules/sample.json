@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "revision": 42,
+  "preset": "CUSTOM",
+  "classActions": {
+    "CL-WAP-CP": "QUARANTINE",
+    "CL-SILENT": "ALLOW"
+  },
+  "rules": [
+    {
+      "id": 7,
+      "priority": 1,
+      "enabled": true,
+      "origin": "USER",
+      "name": "Unknown settings push",
+      "action": "QUARANTINE",
+      "when": {
+        "classes": ["CL-WAP-CP", "CL-WAP-DM"],
+        "originator": { "op": "PREFIX", "value": "+9190" },
+        "originatorKnown": false,
+        "smsc": { "op": "PREFIX", "value": "+9190" },
+        "port": { "from": 16000, "to": 16999 },
+        "contentType": { "op": "PREFIX", "value": "application/vnd.wap" },
+        "slot": 0,
+        "roaming": true,
+        "textContains": "Example",
+        "direction": "IN"
+      }
+    },
+    {
+      "id": 8,
+      "priority": 2,
+      "enabled": false,
+      "origin": "PRESET",
+      "name": "disabled example",
+      "action": "BLOCK",
+      "when": { "classes": ["CL-WAP-DM"] }
+    }
+  ],
+  "knownOriginators": {
+    "exact": ["+919000000000"],
+    "prefix": ["+9190"]
+  },
+  "guards": { "suplGraceMin": 10 }
+}

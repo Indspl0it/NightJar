@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copy for the component library (ui/components).
+  Names are prefixed nj_cmp_. Text follows the copy standard (ASD-STE100).
+  The nj_cmp_preview_* strings are sample text for @Preview only.
+-->
+<resources>
+
+    <!-- %1$s = day name or stat label, %2$d = number of messages. -->
+    <string name="nj_cmp_stat_cd">%1$s: %2$d</string>
+    <string name="nj_cmp_week_bar_cd">%1$s: %2$d</string>
+
+    <string name="nj_cmp_action_allow">Allow</string>
+    <string name="nj_cmp_action_hold">Hold</string>
+    <string name="nj_cmp_action_block">Block</string>
+
+    <string name="nj_cmp_swipe_review">Mark as reviewed</string>
+    <string name="nj_cmp_swipe_block">Block</string>
+
+    <!-- Content description of the button that clears the search box. -->
+    <string name="nj_cmp_search_clear">Clear search</string>
+
+    <string name="nj_cmp_preview_hidden">Hidden</string>
+    <string name="nj_cmp_preview_suspicious">Suspicious</string>
+    <string name="nj_cmp_preview_on_hold">On hold</string>
+    <string name="nj_cmp_preview_blocked">Blocked</string>
+    <!-- Seven day names, separated by commas. The last one is the current day. -->
+    <string name="nj_cmp_preview_days">Sat,Sun,Mon,Tue,Wed,Thu,Fri</string>
+    <string name="nj_cmp_preview_chart_title">Hidden messages per day</string>
+    <string name="nj_cmp_preview_chart_hint">Select a day to filter</string>
+    <string name="nj_cmp_preview_row_nav">Appearance</string>
+    <string name="nj_cmp_preview_row_nav_sub">Theme, colour and motion</string>
+    <string name="nj_cmp_preview_row_value">Dark</string>
+    <string name="nj_cmp_preview_row_switch">Notifications</string>
+
+    <!-- navigation. -->
+    <string name="nj_cmp_nav_protection">Protection</string>
+    <string name="nj_cmp_nav_bar_cd">Main navigation</string>
+    <string name="nj_cmp_preview_date">Friday, 13 November</string>
+    <string name="nj_cmp_preview_title">NightJar</string>
+
+    <string name="cd_drag_handle">Reorder %1$s</string>
+    <string name="sum_join">%1$s · %2$s</string>
+    <string name="list_join">%1$s, %2$s</string>
+    <!-- Screens-trust L7: TalkBack state of a row that opens more text, and of a locked action. -->
+    <string name="cd_row_open">Open</string>
+    <string name="cd_row_closed">Closed</string>
+    <string name="cd_action_locked">NightJar cannot do this action for this type.</string>
+</resources>

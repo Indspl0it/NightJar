@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "profiles": [
+    {
+      "id": "akita-CP3A.261005.005",
+      "fingerprint": "google/akita/akita:17/CP3A.261005.005/16271449",
+      "match": "EXACT",
+      "oem": "AOSP",
+      "apex": { "com.google.android.telephonycore": "unknown", "com.google.android.cellbroadcast": "unknown" },
+      "firewall": true,
+      "orphanPurgeDays": 7,
+      "hooks": { "HK-01": "REQUIRED", "HK-01b": "NA", "HK-30": "NA", "HK-23": "OPTIONAL" }
+    }
+  ]
+}

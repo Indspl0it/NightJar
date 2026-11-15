@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Known senders and trusted apps. -->
+<resources>
+    <!-- ============================== Known senders Known senders and trusted apps ============================== -->
+    <string name="known_add">Add sender</string>
+    <string name="known_edit_title">Edit sender</string>
+    <string name="known_value">Number or sender id</string>
+    <string name="known_kind_exact">Exact</string>
+    <string name="known_kind_prefix">Starts with</string>
+    <string name="known_label">Label (optional)</string>
+    <string name="known_sender_row">%1$s · %2$s</string>
+    <string name="known_until">Until %1$s</string>
+    <string name="known_until_always">Until you delete it</string>
+    <string name="known_error_empty">Enter a number or sender id.</string>
+    <string name="known_error_long">Use 32 characters or fewer.</string>
+    <string name="known_error_invalid">Use at least one letter or digit.</string>
+    <string name="known_error_duplicate">That sender is already on the list.</string>
+    <string name="known_deleted">Deleted</string>
+    <string name="known_restored">Not deleted</string>
+    <string name="known_add_confirm">Add</string>
+    <string name="known_cancel">Cancel</string>
+    <string name="known_added">Added %1$s</string>
+    <string name="known_empty_mutes">Nothing is muted.</string>
+    <string name="known_empty_senders">No known senders yet. Mark a sender as expected from a message, or add one here.</string>
+    <string name="known_remove">Delete</string>
+    <string name="known_remove_trust">Delete trust</string>
+    <string name="known_scope_class">Type</string>
+    <string name="known_scope_originator">Sender</string>
+    <string name="known_tab_mutes">Mutes</string>
+    <string name="known_tab_senders">Known senders</string>
+    <string name="known_unmute">Unmute</string>
+    <string name="known_remove_entry">%1$s %2$s</string>
+    <!-- Known senders -->
+    <string name="known_saved">Sender saved</string>
+    <string name="known_trust_deleted">Trust deleted</string>
+    <string name="known_trust_restored">NightJar trusts the app again</string>
+    <string name="known_mute_deleted">Mute deleted</string>
+    <string name="known_mute_restored">The mute is active again</string>
+    <string name="known_label_none">No label</string>
+    <string name="known_label_carrier">Carrier</string>
+    <string name="known_label_bank">Bank</string>
+    <string name="known_label_other">Other</string>
+    <string name="known_edit_entry">Edit %1$s</string>
+    <string name="trusted_tab_senders">Senders</string>
+    <string name="trusted_tab_apps">Apps</string>
+    <string name="trusted_empty_title">No trusted apps</string>
+    <string name="trusted_empty_body">Messages from a trusted app show as Normal.</string>
+    <string name="trusted_add_apps">Add apps</string>
+    <string name="trusted_picker_title">Add trusted apps</string>
+    <string name="trusted_search">Search apps</string>
+    <string name="trusted_filter_user">User</string>
+    <string name="trusted_filter_system">System</string>
+    <string name="trusted_filter_all">All</string>
+    <string name="trusted_select_all">Select all</string>
+    <string name="trusted_invert">Invert selection</string>
+    <string name="trusted_clear">Clear selection</string>
+    <!-- %d = how many apps have a check, for example 3. -->
+    <plurals name="trusted_selected">
+        <item quantity="one">%1$d selected</item>
+        <item quantity="other">%1$d selected</item>
+    </plurals>
+    <string name="trusted_saved">Trusted apps saved</string>
+    <string name="trusted_load_failed">NightJar cannot read the list of apps.</string>
+    <string name="trusted_no_match">No apps found</string>
+    <string name="trusted_no_match_body">Change the search text or the filter.</string>
+</resources>

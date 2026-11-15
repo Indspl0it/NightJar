@@ -1,0 +1,7 @@
+{
+  "fingerprint": "google/akita/akita:17/CP3A.261005.005/16271449", "payloadVersion": "0.1.0", "profile": "KNOWN",
+  "tiers": { "capture": {"live": 3, "total": 3}, "captureOptional": {"live": 5, "total": 6}, "meaning": {"live": 12, "total": 12}, "firewall": {"live": 3, "total": 3}, "outbound": {"live": 4, "total": 4} },
+  "hooks": { "HK-06": { "state": "LIVE", "tier": "capture-required", "target": "InboundSmsHandler#dispatchMessage", "errorCount": 0, "lastError": null, "p50Ns": 21000, "p99Ns": 88000 } },
+  "firewallAvailable": true, "firewallEnabled": true, "safeMode": false, "outboundEnabled": true,
+  "droppedCount": 0, "droppedObservations": 0
+}

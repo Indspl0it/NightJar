@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Only the export and diagnostics directories are shareable, and only through a temporary grant. -->
+<paths>
+    <cache-path
+        name="exports"
+        path="exports/" />
+    <cache-path
+        name="diagnostics"
+        path="diagnostics/" />
+</paths>

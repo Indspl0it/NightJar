@@ -1,0 +1,1 @@
+{ "spool": 1, "bootId": "9a1e0f3c-7d2b-4c8e-a1f0-2b3c4d5e6f70", "payloadVersion": "0.1.0", "entries": [ { "key": "ba7816bf8f01cfea414140de5dae2223", "eventId": "6f1c2a3e-8a47-4f0e-9a51-0d2b7c1e9f10", "revision": 1, "createdAtWall": 1762330931204, "predictedClass": "CL-WAP-SISL", "event": {} } ] }

@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "appPackage": "dev.nightjar",
+  "appCertSha256": "AB:CD:EF:01:23:45:67:89:AB:CD:EF:01:23:45:67:89:AB:CD:EF:01:23:45:67:89:AB:CD:EF:01:23:45:67:89",
+  "safeMode": false,
+  "outgoing": { "enabled": true, "logVisible": false, "blocked": [] },
+  "cb": { "log": true, "allChannels": false },
+  "debugLogging": { "until": 0 },
+  "detect": { "suplGraceMin": 5 },
+  "test": { "faultInject": { "HK-06": "throw-before" } }
+}

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Edge-to-edge is set from the activity (enableEdgeToEdge, always on for API 35+, so the bar colours are not set
+         here). The platform theme only removes the action bar and paints the window background behind the first
+         Compose frame. -->
+    <style name="Theme.Nightjar" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/window_background</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:enforceStatusBarContrast">false</item>
+        <item name="android:enforceNavigationBarContrast">false</item>
+        <!-- The system splash screen. The full round app logo on the dark app background, in light and dark
+             theme, because the logo itself is dark. The Compose launch screen (LaunchScreen.kt) then shows the logo at the
+             same place and size, with the name under it. -->
+        <item name="android:windowSplashScreenBackground">@color/window_background_dark</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/splash_logo</item>
+        <item name="android:windowSplashScreenIconBackgroundColor">#FF0E1626</item>
+    </style>
+</resources>

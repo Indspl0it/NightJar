@@ -1,0 +1,31 @@
+{
+  "schema": 1,
+  "revision": 42,
+  "preset": "CUSTOM",
+  "classActions": { "CL-WAP-CP": "QUARANTINE", "CL-SILENT": "ALLOW" },
+  "rules": [
+    {
+      "id": 7, "priority": 1, "enabled": true, "origin": "USER",
+      "name": "Unknown settings push", "action": "QUARANTINE",
+      "when": {
+        "classes": ["CL-WAP-CP"],
+        "originator": { "op": "PREFIX", "value": "12345" },
+        "originatorKnown": false,
+        "smsc": { "op": "PREFIX", "value": "+9190" },
+        "port": { "from": 16000, "to": 16999 },
+        "contentType": { "op": "PREFIX", "value": "application/vnd.wap" },
+        "slot": 0,
+        "roaming": true,
+        "textContains": "example",
+        "direction": "IN"
+      }
+    },
+    {
+      "id": 1000000006, "priority": 0, "enabled": true, "origin": "PRESET",
+      "name": "Block auto-open link pushes", "action": "BLOCK",
+      "when": { "classes": ["CL-WAP-SISL"], "subtypes": ["SL"] }
+    }
+  ],
+  "knownOriginators": { "exact": ["+919000000000"], "prefix": ["+9190"] },
+  "guards": { "suplGraceMin": 5 }
+}

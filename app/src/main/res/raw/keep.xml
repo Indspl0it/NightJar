@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Strings that ResourceStrings reads by name (TextKey.resource, getIdentifier). Lint and the resource shrinker
+    cannot see these reads, so this file keeps them. A prefix pattern is used only when every string with that
+    prefix is a TextKey resource. The list is on one line with no spaces, as the tools:keep examples show.
+    CopyCatalogueTest.everyTextKeyIsKept fails when a TextKey is not listed here.
+-->
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:keep="@string/anomaly_name_*,@string/det_*,@string/exp_*,@string/family_*,@string/fate_*,@string/generic_*,@string/hero_*,@string/msg_st_*,@string/notif_*,@string/pat_sim_*,@string/reason_*,@string/root_*,@string/release_*,@string/severity_*,@string/title_*,@string/msg_fw_01,@string/msg_na_01,@string/msg_sm_01,@string/msg_unknown_subs,@string/msg_uns_01,@string/msg_upd_01,@string/pat_cp_no_network_pin,@string/pat_malformed_burst,@string/pat_replace_no_first,@string/pat_silent_burst,@string/pat_silent_unknown_sender,@string/pat_supl_unknown_sender,@string/pat_unknown_port_repeat,@string/sim_pair_names,@string/sim_slot_name" />

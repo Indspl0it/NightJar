@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copy for the Home screen. Names are prefixed home_x_. Text follows the copy standard (ASD-STE100).
+  The other Home text is in strings.xml (home_*).
+-->
+<resources>
+    <!-- The chip in the status card. The state "Protected" uses home_module_active. -->
+    <string name="home_x_chip_paused">Blocking paused</string>
+    <string name="home_x_chip_monitor">Blocking off</string>
+    <string name="home_x_chip_not_active">Module not active</string>
+    <string name="home_x_chip_safe_mode">Safe mode</string>
+    <string name="home_x_chip_unsupported">Not supported</string>
+    <!-- Two tags in one badge. %1$s = first tag, %2$s = second tag, for example "Suspicious" and "On hold". -->
+    <string name="home_x_tag_separator">%1$s · %2$s</string>
+
+    <!-- Home title bar: round icon buttons. Spoken by TalkBack. -->
+    <string name="home_search_messages">Search messages</string>
+    <!-- Home status card: the SIM cards in the phone. The copy standard writes SIM as "SIM 1", "SIM 2". -->
+    <!-- %1$d = SIM slot number, e.g. 1. -->
+    <string name="home_sim_slot">SIM %1$d</string>
+    <!-- %1$s = first SIM label, e.g. "SIM 1"; %2$s = second SIM label, e.g. "SIM 2". -->
+    <string name="home_sim_pair">%1$s and %2$s</string>
+    <string name="home_filter_messages">Filter messages</string>
+    <!-- Accessibility action of the whole status card. TalkBack reads it after "Double tap to". -->
+    <string name="home_card_open_status">Open protection status</string>
+    <!-- The one fix button of the card when the user paused blocking with safe mode. -->
+    <string name="home_turn_off_safe_mode">Turn off safe mode</string>
+    <!-- The line under "Safe mode" in the Home menu. -->
+    <string name="shell_safe_mode_supporting">Allow all messages</string>
+</resources>

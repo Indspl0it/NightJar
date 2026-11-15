@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Rules list and rule editor. -->
+<resources>
+    <!-- ============================== Custom rules Custom rules ============================== -->
+    <string name="rules_empty_title">No custom rules</string>
+    <string name="rules_empty_body">A preset is enough for most needs. Add a rule for a specific sender or port.</string>
+    <string name="rules_from_preset">From preset</string>
+    <string name="rules_preset_locked">NightJar cannot edit preset rules here.</string>
+    <string name="rules_move_up">Move up</string>
+    <string name="rules_move_down">Move down</string>
+    <string name="rules_deleted">Rule deleted</string>
+    <string name="rules_restored">Rule not deleted</string>
+    <string name="rules_any_class">Any message</string>
+    <!-- ============================== Rule editor Rule editor ============================== -->
+    <string name="rule_edit_title_new">New rule</string>
+    <string name="rule_edit_title_edit">Edit rule</string>
+    <string name="rule_edit_when">When a message…</string>
+    <string name="rule_edit_type">Type</string>
+    <string name="rule_edit_type_hint">Select one or more types.</string>
+    <string name="rule_edit_from">From</string>
+    <string name="rule_edit_value">Value</string>
+    <string name="rule_edit_enabled">Rule is on</string>
+    <string name="rule_edit_sim">SIM</string>
+    <string name="rule_edit_sim_slot">SIM %1$d</string>
+    <string name="rule_edit_sim_any">Any SIM</string>
+    <string name="rule_edit_add_condition">Add condition</string>
+    <string name="rule_edit_then">Then</string>
+    <string name="rule_edit_name">Name</string>
+    <string name="rule_edit_preview">Preview</string>
+    <string name="rule_edit_preview_hint">Paste a PDU (hex) to test this rule against real bytes.</string>
+    <string name="rule_edit_preview_label">PDU hex</string>
+    <string name="rule_edit_preview_sender">From %1$s</string>
+    <string name="rule_edit_preview_smsc">SMSC %1$s</string>
+    <string name="rule_edit_preview_type">Type %1$s</string>
+    <string name="rule_edit_preview_match">This rule would match this message.</string>
+    <string name="rule_edit_preview_no_match">This rule would not match this message.</string>
+    <string name="rule_edit_preview_error">That is not a valid PDU: %1$s</string>
+    <string name="rule_edit_conditions">Conditions</string>
+    <string name="rule_edit_remove_condition">Delete %1$s</string>
+    <string name="rule_edit_op_is">is</string>
+    <string name="rule_edit_op_is_not">is not</string>
+    <string name="rule_edit_op_starts_with">starts with</string>
+    <string name="rule_edit_op_matches_regex">matches regex</string>
+    <string name="rule_edit_cond_port">Port</string>
+    <string name="rule_edit_cond_port_range">Port range</string>
+    <string name="rule_edit_cond_content_type">Content type</string>
+    <string name="rule_edit_cond_smsc">SMSC</string>
+    <string name="rule_edit_cond_roaming">Roaming</string>
+    <string name="rule_edit_cond_text">Text contains</string>
+    <string name="rule_edit_cond_port_to">to</string>
+    <string name="rule_edit_roaming_any">Any</string>
+    <string name="rule_edit_roaming_only">Roaming</string>
+    <string name="rule_edit_roaming_not">Not roaming</string>
+    <string name="rule_edit_error_regex">This regular expression is not valid: %1$s</string>
+    <string name="rule_edit_error_regex_long">A regular expression can have 200 characters at most.</string>
+    <string name="rule_edit_error_action">This action is not allowed for every selected type.</string>
+    <string name="rule_edit_error_g05">NightJar does not allow a rule that blocks or holds every normal message. Add a sender, port or text condition. Or select Allow for normal messages.</string>
+    <string name="rule_edit_error_too_large">The rules file would be larger than 64 KB. Delete or shorten a rule.</string>
+    <string name="rule_edit_error_classes">Select at least one type.</string>
+    <string name="rule_edit_error_port">Use a port from 0 to 65535.</string>
+    <string name="rule_edit_why">Why?</string>
+    <string name="rule_edit_save_disabled">Fix the highlighted fields. Then save.</string>
+    <string name="rule_edit_no_action">This selection has no blocking action. Add a sender, port or text condition to get more actions.</string>
+    <string name="rule_edit_name_suggestion">%1$s from %2$s</string>
+    <string name="rule_edit_save">Save</string>
+    <string name="rule_edit_step_name">Name and status</string>
+    <string name="rules_never_matched">never matched</string>
+    <!-- Messages -->
+    <!-- Rule editor -->
+    <string name="rule_edit_save_failed">NightJar did not save the rule. Try again.</string>
+    <string name="rule_edit_load_failed">NightJar cannot read this rule.</string>
+    <string name="rule_edit_not_found">NightJar cannot find this rule. The rule may have been deleted.</string>
+    <string name="rule_edit_add_condition_chip">+ %1$s</string>
+    <string name="rule_edit_name_join">%1$s + %2$s</string>
+    <string name="rule_edit_preview_port">Port %1$d</string>
+    <string name="rule_edit_preview_outcome">Result: %1$s</string>
+    <string name="rule_edit_preview_clamped">A safety limit changes the action of this rule for this message.</string>
+    <string name="rule_edit_preview_malformed">the bytes are not a complete SMS PDU in hex</string>
+    <string name="rule_edit_preview_no_fields">it has no sender, SMSC or text that a rule can test</string>
+    <string name="rule_edit_error_empty">Enter a value. NightJar treats a value of only + or 00 as empty.</string>
+    <string name="rule_edit_error_invalid_value">A subtype of this rule does not belong to the selected types. Select the type again.</string>
+    <plurals name="rule_edit_history">
+        <item quantity="one">This rule matches %1$d recorded message from the last %2$d days.</item>
+        <item quantity="other">This rule matches %1$d recorded messages from the last %2$d days.</item>
+    </plurals>
+    <plurals name="rule_edit_history_clamped">
+        <item quantity="one">For %1$d of them, a safety limit changes the action.</item>
+        <item quantity="other">For %1$d of them, a safety limit changes the action.</item>
+    </plurals>
+    <string name="rules_sum_from">From %1$s %2$s</string>
+    <string name="rules_sum_port_range">Ports %1$d to %2$d</string>
+    <string name="rules_sum_content_type">Content type %1$s</string>
+    <string name="rules_sum_smsc">SMSC %1$s</string>
+    <string name="rules_sum_text">Text contains “%1$s”</string>
+    <string name="rules_sum_subtypes">Subtype %1$s</string>
+    <string name="rules_subtypes_title">Subtypes</string>
+    <string name="rules_subtypes_hint">The preset sets this condition. You cannot change it.</string>
+</resources>

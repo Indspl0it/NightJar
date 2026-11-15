@@ -1,0 +1,1414 @@
+{
+  "cases": [
+    {
+      "expected": {
+        "action": "BLOCK",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": true,
+        "ruleId": 901,
+        "source": "RULE"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-WAP-CP",
+        "contentType": null,
+        "destPort": 16384,
+        "direction": "IN",
+        "originator": "+15550001",
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "destination port inside the range matches",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "BLOCK",
+            "enabled": true,
+            "id": 901,
+            "name": "r901",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-WAP-CP"
+              ],
+              "originator": {
+                "op": "IS",
+                "value": "+15550001"
+              },
+              "port": {
+                "from": 16000,
+                "to": 16999
+              }
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "ALLOW",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": false,
+        "ruleId": null,
+        "source": "DEFAULT"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-WAP-CP",
+        "contentType": null,
+        "destPort": 15000,
+        "direction": "IN",
+        "originator": "+15550001",
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "destination port outside the range does not match",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "ALLOW",
+            "enabled": true,
+            "id": 902,
+            "name": "r902",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-WAP-CP"
+              ],
+              "originator": {
+                "op": "IS",
+                "value": "+15550001"
+              },
+              "port": {
+                "from": 16000,
+                "to": 16999
+              }
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "BLOCK",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": true,
+        "ruleId": 903,
+        "source": "RULE"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-WAP-CP",
+        "contentType": "application/vnd.wap.mms-message",
+        "destPort": -1,
+        "direction": "IN",
+        "originator": "+15550001",
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "content type prefix matches",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "BLOCK",
+            "enabled": true,
+            "id": 903,
+            "name": "r903",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-WAP-CP"
+              ],
+              "contentType": {
+                "op": "PREFIX",
+                "value": "application/vnd.wap"
+              },
+              "originator": {
+                "op": "IS",
+                "value": "+15550001"
+              }
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "ALLOW",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": false,
+        "ruleId": null,
+        "source": "DEFAULT"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-WAP-CP",
+        "contentType": "text/plain",
+        "destPort": -1,
+        "direction": "IN",
+        "originator": "+15550001",
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "content type mismatch does not match",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "ALLOW",
+            "enabled": true,
+            "id": 904,
+            "name": "r904",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-WAP-CP"
+              ],
+              "contentType": {
+                "op": "PREFIX",
+                "value": "application/vnd.wap"
+              },
+              "originator": {
+                "op": "IS",
+                "value": "+15550001"
+              }
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "BLOCK",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": true,
+        "ruleId": 905,
+        "source": "RULE"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-WAP-CP",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": "+15550001",
+        "roaming": false,
+        "slot": 0,
+        "smsc": null,
+        "text": null
+      },
+      "name": "slot condition matches",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "BLOCK",
+            "enabled": true,
+            "id": 905,
+            "name": "r905",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-WAP-CP"
+              ],
+              "originator": {
+                "op": "IS",
+                "value": "+15550001"
+              },
+              "slot": 0
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "ALLOW",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": false,
+        "ruleId": null,
+        "source": "DEFAULT"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-WAP-CP",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": "+15550001",
+        "roaming": false,
+        "slot": 1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "slot condition mismatch does not match",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "ALLOW",
+            "enabled": true,
+            "id": 906,
+            "name": "r906",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-WAP-CP"
+              ],
+              "originator": {
+                "op": "IS",
+                "value": "+15550001"
+              },
+              "slot": 0
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "BLOCK",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": true,
+        "ruleId": 907,
+        "source": "RULE"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-WAP-CP",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": "+15550001",
+        "roaming": true,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "roaming true matches a roaming input",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "BLOCK",
+            "enabled": true,
+            "id": 907,
+            "name": "r907",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-WAP-CP"
+              ],
+              "originator": {
+                "op": "IS",
+                "value": "+15550001"
+              },
+              "roaming": true
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "ALLOW",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": false,
+        "ruleId": null,
+        "source": "DEFAULT"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-WAP-CP",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": "+15550001",
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "roaming true does not match a home input",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "ALLOW",
+            "enabled": true,
+            "id": 908,
+            "name": "r908",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-WAP-CP"
+              ],
+              "originator": {
+                "op": "IS",
+                "value": "+15550001"
+              },
+              "roaming": true
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "BLOCK",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": true,
+        "ruleId": 909,
+        "source": "RULE"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-WAP-CP",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": "+15550001",
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": "say hello there"
+      },
+      "name": "textContains is case-insensitive",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "BLOCK",
+            "enabled": true,
+            "id": 909,
+            "name": "r909",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-WAP-CP"
+              ],
+              "originator": {
+                "op": "IS",
+                "value": "+15550001"
+              },
+              "textContains": "HeLLo"
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "ALLOW",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": false,
+        "ruleId": null,
+        "source": "DEFAULT"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-WAP-CP",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": "+15550001",
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": "say hello there"
+      },
+      "name": "textContains misses different text",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "ALLOW",
+            "enabled": true,
+            "id": 910,
+            "name": "r910",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-WAP-CP"
+              ],
+              "originator": {
+                "op": "IS",
+                "value": "+15550001"
+              },
+              "textContains": "prize"
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "BLOCK",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": true,
+        "ruleId": 911,
+        "source": "RULE"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-WAP-CP",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": "+15550001",
+        "roaming": false,
+        "slot": -1,
+        "smsc": "+919000000678",
+        "text": null
+      },
+      "name": "SMSC prefix matches",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "BLOCK",
+            "enabled": true,
+            "id": 911,
+            "name": "r911",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-WAP-CP"
+              ],
+              "originator": {
+                "op": "IS",
+                "value": "+15550001"
+              },
+              "smsc": {
+                "op": "PREFIX",
+                "value": "+9190"
+              }
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "ALLOW",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": false,
+        "ruleId": null,
+        "source": "DEFAULT"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-WAP-CP",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": "+15550001",
+        "roaming": false,
+        "slot": -1,
+        "smsc": "+15551234567",
+        "text": null
+      },
+      "name": "SMSC prefix misses another SMSC",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "ALLOW",
+            "enabled": true,
+            "id": 912,
+            "name": "r912",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-WAP-CP"
+              ],
+              "originator": {
+                "op": "IS",
+                "value": "+15550001"
+              },
+              "smsc": {
+                "op": "PREFIX",
+                "value": "+9190"
+              }
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "BLOCK",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": true,
+        "ruleId": 913,
+        "source": "RULE"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-WAP-CP",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": "+91555",
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "originator prefix matches after normalisation",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "BLOCK",
+            "enabled": true,
+            "id": 913,
+            "name": "r913",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-WAP-CP"
+              ],
+              "originator": {
+                "op": "PREFIX",
+                "value": "0091 555"
+              }
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "BLOCK",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": true,
+        "ruleId": 914,
+        "source": "RULE"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-WAP-CP",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": "+15551234",
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "originator regex matches",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "BLOCK",
+            "enabled": true,
+            "id": 914,
+            "name": "r914",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-WAP-CP"
+              ],
+              "originator": {
+                "op": "REGEX",
+                "value": "^\\+1555[0-9]{4}$"
+              }
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "BLOCK",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": true,
+        "ruleId": 915,
+        "source": "RULE"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-WAP-CP",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": "+15559999",
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "originator IS_NOT matches a different sender",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "BLOCK",
+            "enabled": true,
+            "id": 915,
+            "name": "r915",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-WAP-CP"
+              ],
+              "originator": {
+                "op": "IS_NOT",
+                "value": "+15550001"
+              }
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "ALLOW",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": false,
+        "ruleId": null,
+        "source": "DEFAULT"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-WAP-CP",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": "+15550001",
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "originatorKnown=false rejects a listed sender",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [
+            "+15550001"
+          ],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "ALLOW",
+            "enabled": true,
+            "id": 916,
+            "name": "r916",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-WAP-CP"
+              ],
+              "originator": {
+                "op": "IS",
+                "value": "+15550001"
+              },
+              "originatorKnown": false
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "BLOCK",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": true,
+        "ruleId": 917,
+        "source": "RULE"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-WAP-CP",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": "+15550001",
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "originatorKnown=true accepts a prefix-listed sender",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": [
+            "+1555"
+          ]
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "BLOCK",
+            "enabled": true,
+            "id": 917,
+            "name": "r917",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-WAP-CP"
+              ],
+              "originator": {
+                "op": "IS",
+                "value": "+15550001"
+              },
+              "originatorKnown": true
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "ALLOW",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": false,
+        "ruleId": null,
+        "source": "DEFAULT"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-WAP-CP",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": "+15550001",
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "direction OUT does not match an inbound message",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "ALLOW",
+            "enabled": true,
+            "id": 918,
+            "name": "r918",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-WAP-CP"
+              ],
+              "direction": "OUT",
+              "originator": {
+                "op": "IS",
+                "value": "+15550001"
+              }
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "BLOCK",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": true,
+        "ruleId": 919,
+        "source": "RULE"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-WAP-CP",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": "+15550001",
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "direction IN matches an inbound message",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "BLOCK",
+            "enabled": true,
+            "id": 919,
+            "name": "r919",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-WAP-CP"
+              ],
+              "direction": "IN",
+              "originator": {
+                "op": "IS",
+                "value": "+15550001"
+              }
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "BLOCK",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": true,
+        "ruleId": 920,
+        "source": "RULE"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-WAP-DM",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": "+15550001",
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "a two-class rule matches either class",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "BLOCK",
+            "enabled": true,
+            "id": 920,
+            "name": "r920",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-WAP-CP",
+                "CL-WAP-DM"
+              ],
+              "originator": {
+                "op": "IS",
+                "value": "+15550001"
+              }
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "ALLOW",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": false,
+        "ruleId": null,
+        "source": "DEFAULT"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-WAP-DM",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": "+15550001",
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "a class list without the input class does not match",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "ALLOW",
+            "enabled": true,
+            "id": 921,
+            "name": "r921",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-WAP-CP"
+              ],
+              "originator": {
+                "op": "IS",
+                "value": "+15550001"
+              }
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "BLOCK",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": true,
+        "ruleId": 922,
+        "source": "RULE"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-FLASH",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": "+15550001",
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "a rule without classes matches any class",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "BLOCK",
+            "enabled": true,
+            "id": 922,
+            "name": "r922",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "originator": {
+                "op": "IS",
+                "value": "+15550001"
+              }
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "ALLOW",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": false,
+        "ruleId": null,
+        "source": "DEFAULT"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-WAP-SISL",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": null,
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "a subtypes rule does not match a message without a subtype",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "BLOCK",
+            "enabled": true,
+            "id": 923,
+            "name": "r923",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-WAP-SISL"
+              ],
+              "subtypes": [
+                "SL"
+              ]
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "BLOCK",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": true,
+        "ruleId": 924,
+        "source": "RULE"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-WAP-SISL",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": null,
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "subtype": "SL",
+        "text": null
+      },
+      "name": "a subtypes rule matches the message subtype",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "BLOCK",
+            "enabled": true,
+            "id": 924,
+            "name": "r924",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-WAP-SISL"
+              ],
+              "subtypes": [
+                "SL"
+              ]
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "ALLOW",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": false,
+        "ruleId": null,
+        "source": "DEFAULT"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-WAP-SISL",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": null,
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "subtype": "SI",
+        "text": null
+      },
+      "name": "a subtypes rule does not match another subtype",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "BLOCK",
+            "enabled": true,
+            "id": 925,
+            "name": "r925",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-WAP-SISL"
+              ],
+              "subtypes": [
+                "SL"
+              ]
+            }
+          }
+        ],
+        "schema": 1
+      }
+    }
+  ]
+}

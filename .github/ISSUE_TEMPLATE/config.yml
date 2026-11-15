@@ -1,0 +1,3 @@
+# Pull requests are reviewed against the hard rules in CONTRIBUTING.md.
+# No CI secrets: the release is built locally.
+blank_issues_enabled: false

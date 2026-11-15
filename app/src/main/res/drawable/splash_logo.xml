@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    The full round app logo for the system splash screen and the Compose launch screen.
+    It is the launcher icon: the background colour of ic_launcher_background.xml as a circle, and the paths of
+    ic_launcher_foreground.xml. The circle is the centre two thirds of the drawable, as the splash screen API expects
+    (240 dp icon, 160 dp circle). Keep the paths the same as in ic_launcher_foreground.xml.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp"
+    android:viewportWidth="108" android:viewportHeight="108">
+    <path android:fillColor="#FF0E1626" android:pathData="M18 54a36 36 0 1 0 72 0a36 36 0 1 0 -72 0Z" />
+    <group android:pivotX="54" android:pivotY="54" android:scaleX="0.785" android:scaleY="0.785" android:translateY="-2">
+        <path
+            android:strokeColor="#FF8DB0FF" android:strokeWidth="4" android:strokeLineCap="round"
+            android:strokeAlpha="0.35"
+            android:pathData="M24 82A30 30 0 0 1 84 82" />
+        <path
+            android:strokeColor="#FF8DB0FF" android:strokeWidth="4" android:strokeLineCap="round"
+            android:strokeAlpha="0.65"
+            android:pathData="M34 82A20 20 0 0 1 74 82" />
+        <path
+            android:strokeColor="#FF8DB0FF" android:strokeWidth="4" android:strokeLineCap="round"
+            android:pathData="M44 82A10 10 0 0 1 64 82" />
+        <group android:translateX="8" android:translateY="6" android:scaleX="0.44" android:scaleY="0.44">
+            <path
+                android:fillColor="#FFE9EDF4"
+                android:pathData="M105 70C97 64 82 58 34 54C68 66 82 71 94 76L88 94L105 85L122 94L116 76C128 71 142 66 176 54C128 58 113 64 105 70Z" />
+            <path
+                android:fillColor="#FFE9EDF4"
+                android:pathData="M99 68a6 6 0 1 0 12 0a6 6 0 1 0-12 0Z" />
+            <path
+                android:fillColor="#FFF4B740"
+                android:pathData="M104.8 67a2.2 2.2 0 1 0 4.4 0a2.2 2.2 0 1 0 -4.4 0Z" />
+        </group>
+    </group>
+</vector>

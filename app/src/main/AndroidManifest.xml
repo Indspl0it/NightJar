@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Never add INTERNET. The :app:checkManifest task enforces this.
+         Backup is on; cloud backup is excluded in data_extraction_rules.
+         Permissions are exactly POST_NOTIFICATIONS, RECEIVE_BOOT_COMPLETED, USE_BIOMETRIC,
+         QUERY_ALL_PACKAGES. No READ_SMS, RECEIVE_SMS or READ_PHONE_STATE.
+         The app uses the platform BiometricPrompt (USE_BIOMETRIC only). The remove line below stops a library from
+         merging the pre-API-28 USE_FINGERPRINT permission. -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="QueryAllPackagesPermission" />
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" tools:node="remove" />
+
+    <application
+        android:name=".NightjarApp"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Nightjar"
+        tools:targetApi="36">
+        <!-- Vector/LSPosed discover the module from these (legacy Xposed API 82); the scope list pre-selects Phone Services. -->
+        <meta-data android:name="xposedmodule" android:value="true" />
+        <meta-data android:name="xposeddescription" android:value="NightJar SMS monitor: hooks the phone process to see every SMS." />
+        <meta-data android:name="xposedminversion" android:value="82" />
+        <meta-data android:name="xposedscope" android:resource="@array/xposed_scope" />
+
+
+        <!-- Live in one activity; screens are Compose destinations.
+             Not directBootAware: the UI needs credential-protected storage. -->
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboardHidden|uiMode"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <!-- Notification deep links: nightjar://message/{id}, nightjar://messages?filter=…,
+                 nightjar://rule/new?messageId=…, nightjar://health. Deliberately not BROWSABLE: the notification
+                 intents set this package explicitly, and without BROWSABLE a web page cannot drive the app. -->
+            <intent-filter android:autoVerify="false">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="nightjar" />
+            </intent-filter>
+        </activity>
+
+        <!-- Payload → app IPC. Exported because the phone process calls it; the provider itself
+             rejects every caller whose uid is not 1001. directBootAware so events before the first unlock
+             reach the staging database. -->
+        <provider
+            android:name=".core.ipc.EventProvider"
+            tools:ignore="ExportedContentProvider"
+            android:authorities="${applicationId}.ipc"
+            android:directBootAware="true"
+            android:exported="true"
+            android:grantUriPermissions="false" />
+
+        <!-- Notification actions: allow (release) or block a held message. Not exported: the
+             PendingIntents the app itself creates still reach it. -->
+        <receiver
+            android:name=".notifications.NotificationActionReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="dev.nightjar.app.action.RELEASE" />
+                <action android:name="dev.nightjar.app.action.BLOCK_HELD" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Boot and unlock: directBootAware so LOCKED_BOOT_COMPLETED and USER_UNLOCKED are
+             delivered before credential-protected storage is available. -->
+        <receiver
+            android:name=".feature.protection.BootCompletedReceiver"
+            android:directBootAware="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+                <action android:name="android.intent.action.USER_UNLOCKED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Exports and diagnostics: read-only, temporary grants only. -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.files"
+            android:directBootAware="false"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <!-- WorkManager is configured by NightjarApp (HiltWorkerFactory), so the default initializer must not run. -->
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+            <meta-data
+                android:name="androidx.work.WorkManagerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
+        </provider>
+    </application>
+</manifest>

@@ -1,0 +1,1159 @@
+{
+ "version": 1,
+ "about": "CL-03 anomaly fixtures. kind uses the Decoders kind names; tpdu hex holds the SMSC prefix. tpdu_sequence parts go through one ConcatTracker; expect is for the last part. expect lists AnomalyCode wire names in contract order. simOta (CL-08) lists the SIM OTA subtype codes of SimOtaSubtypes, subtype first; an empty list means the message is not a SIM OTA message. Synthetic data only.",
+ "fixtures": [
+  {
+   "name": "clean-text-7bit",
+   "kind": "tpdu",
+   "hex": "059151551000040891515510240000621150214365220ED4F29C0E6A97E7F3F0B90C8A01",
+   "expect": [],
+   "source": "scenario text-7bit"
+  },
+  {
+   "name": "clean-wap-si",
+   "kind": "tpdu",
+   "hex": "05915155100044089151551024000462115021436522370605040B8423F0010603AEAF8402056A0045C60C036578616D706C652E746573742F6100010354657374206D6573736167652031000101",
+   "expect": [],
+   "source": "scenario wap-sic-si"
+  },
+  {
+   "name": "clean-wap-cp",
+   "kind": "tpdu",
+   "hex": "05915155100044089151551024000462115021436522250605040B8423F0010603B6AF8A020B6A0045C6550187070603546573742041504E00010101",
+   "expect": [],
+   "source": "scenario wap-cp-nosec"
+  },
+  {
+   "name": "clean-sim-ota-rfm",
+   "kind": "tpdu",
+   "hex": "059151551000440891515510247FF6621150214365221F027000001A1502000000B00000000000000100000000000000000000000000",
+   "expect": [],
+   "simOta": [
+    "SIM-OTA-RFM"
+   ],
+   "source": "scenario sim-ota-rfm"
+  },
+  {
+   "name": "clean-status-report",
+   "kind": "tpdu",
+   "hex": "059151551000060108915155102462115021436522621150214365220000",
+   "expect": [],
+   "source": "scenario status-delivered"
+  },
+  {
+   "name": "clean-multipart-part",
+   "kind": "tpdu",
+   "hex": "05915155100044089151551024000062115021436522150500032B0201A8E5391DD42ECFE7E173191403",
+   "expect": [],
+   "source": "scenario multipart-incomplete"
+  },
+  {
+   "name": "clean-push-si",
+   "kind": "wsp",
+   "hex": "010603AEAF8102056A0045C60D0378797A008503656D61696C2F3132332F6162632E776D6C000AC3071999062515231510C304199906300103596F7520686176652034206E657720652D6D61696C73000101",
+   "expect": [],
+   "source": "corpus wsp/push_si.hex"
+  },
+  {
+   "name": "clean-push-sl",
+   "kind": "wsp",
+   "hex": "010603B0AF8102066A00850A0378797A00850370706169642F3132332F6162632E776D6C0001",
+   "expect": [],
+   "source": "corpus wsp/push_sl.hex"
+  },
+  {
+   "name": "clean-push-mms",
+   "kind": "wsp",
+   "hex": "010603BEAF848C829861800D",
+   "expect": [],
+   "source": "corpus wsp/push_mms.hex"
+  },
+  {
+   "name": "clean-push-oma-cp",
+   "kind": "wsp",
+   "hex": "010603B6AF8A020B6A0045C65501870706034D792041504E000187080603696E7465726E6574000101C652018720060331302E302E302E3100018723060338303830000101C65101871C0603687474703A2F2F6578616D706C652E636F6D2F00010101",
+   "expect": [],
+   "source": "corpus wsp/push_oma_cp.hex"
+  },
+  {
+   "name": "clean-push-supl",
+   "kind": "wsp",
+   "hex": "01060603020312AF9001020304",
+   "expect": [],
+   "source": "corpus wsp/push_supl.hex"
+  },
+  {
+   "name": "clean-si-example",
+   "kind": "wbxml",
+   "hex": "02056A0045C60D0378797A008503656D61696C2F3132332F6162632E776D6C000AC3071999062515231510C304199906300103596F7520686176652034206E657720652D6D61696C73000101",
+   "expect": [],
+   "source": "corpus wbxml/si_example.hex"
+  },
+  {
+   "name": "clean-sl-example",
+   "kind": "wbxml",
+   "hex": "02066A00850A0378797A00850370706169642F3132332F6162632E776D6C0001",
+   "expect": [],
+   "source": "corpus wbxml/sl_example.hex"
+  },
+  {
+   "name": "clean-co-example",
+   "kind": "wbxml",
+   "hex": "02076A0045860503666F6F2E776D6C00018705032F626172000101",
+   "expect": [],
+   "source": "corpus wbxml/co_example.hex"
+  },
+  {
+   "name": "clean-spi-cc",
+   "kind": "sms_pp",
+   "hex": "001B1502000002B00010000000000200112233445566778848656C6C6F",
+   "expect": [],
+   "source": "corpus sms_pp/spi_cc.hex"
+  },
+  {
+   "name": "clean-spi-none",
+   "kind": "sms_pp",
+   "hex": "00130D00000000B0001000000000010048656C6C6F",
+   "expect": [],
+   "source": "corpus sms_pp/spi_none.hex"
+  },
+  {
+   "name": "clean-udh-ports",
+   "kind": "udh",
+   "hex": "0605040B8423F0",
+   "expect": [],
+   "source": "corpus udh/ports_16bit.hex"
+  },
+  {
+   "name": "addr-trunc",
+   "kind": "tpdu",
+   "hex": "059151551000040C915155",
+   "expect": [
+    "AN-ADDR-TRUNC"
+   ],
+   "source": "scenario anomaly-addr-trunc"
+  },
+  {
+   "name": "addr-trunc-cut-text",
+   "kind": "tpdu",
+   "hex": "0591515510000408915155",
+   "expect": [
+    "AN-ADDR-TRUNC"
+   ],
+   "source": "text-7bit cut inside TP-OA"
+  },
+  {
+   "name": "addr-trunc-cut-status",
+   "kind": "tpdu",
+   "hex": "0591515510000601089151",
+   "expect": [
+    "AN-ADDR-TRUNC"
+   ],
+   "source": "status-delivered cut inside TP-RA"
+  },
+  {
+   "name": "addr-len",
+   "kind": "tpdu",
+   "hex": "05915155100004169151551024515510245155100000621150214365220ED4F29C0E6A97E7F3F0B90C8A01",
+   "expect": [
+    "AN-ADDR-LEN"
+   ],
+   "source": "scenario anomaly-addr-len"
+  },
+  {
+   "name": "addr-len-mutated",
+   "kind": "tpdu",
+   "hex": "059151551000041591515510240000621150214365220ED4F29C0E6A97E7F3F0B90C8A01",
+   "expect": [
+    "AN-ADDR-LEN",
+    "AN-PID-RSV",
+    "AN-UDL-LONG"
+   ],
+   "source": "text-7bit TP-OA length 0x08 -> 0x15 (21 digits)"
+  },
+  {
+   "name": "addr-toa",
+   "kind": "tpdu",
+   "hex": "0591515510000408F1515510240000621150214365220ED4F29C0E6A97E7F3F0B90C8A01",
+   "expect": [
+    "AN-ADDR-TOA"
+   ],
+   "source": "scenario anomaly-addr-toa"
+  },
+  {
+   "name": "addr-toa-bit7",
+   "kind": "tpdu",
+   "hex": "059151551000040811515510240000621150214365220ED4F29C0E6A97E7F3F0B90C8A01",
+   "expect": [
+    "AN-ADDR-TOA"
+   ],
+   "source": "text-7bit TOA 0x91 -> 0x11 (bit 7 clear)"
+  },
+  {
+   "name": "pdu-short",
+   "kind": "tpdu",
+   "hex": "059151551000040891515510240000",
+   "expect": [
+    "AN-PDU-SHORT"
+   ],
+   "source": "scenario anomaly-pdu-short"
+  },
+  {
+   "name": "pdu-short-no-udl",
+   "kind": "tpdu",
+   "hex": "05915155100004089151551024000062115021436522",
+   "expect": [
+    "AN-PDU-SHORT"
+   ],
+   "source": "text-7bit cut before TP-UDL"
+  },
+  {
+   "name": "pdu-short-status",
+   "kind": "tpdu",
+   "hex": "0591515510000601089151551024621150214365",
+   "expect": [
+    "AN-PDU-SHORT"
+   ],
+   "source": "status-delivered cut inside the discharge time"
+  },
+  {
+   "name": "mti",
+   "kind": "tpdu",
+   "hex": "059151551000070891515510240000621150214365220ED4F29C0E6A97E7F3F0B90C8A01",
+   "expect": [
+    "AN-MTI"
+   ],
+   "source": "scenario anomaly-mti"
+  },
+  {
+   "name": "mti-udhi",
+   "kind": "tpdu",
+   "hex": "059151551000430891515510240000621150214365220ED4F29C0E6A97E7F3F0B90C8A01",
+   "expect": [
+    "AN-MTI"
+   ],
+   "source": "text-7bit first octet 0x04 -> 0x43 (MTI 3, UDHI)"
+  },
+  {
+   "name": "pid-rsv",
+   "kind": "tpdu",
+   "hex": "059151551000040891515510245000621150214365220ED4F29C0E6A97E7F3F0B90C8A01",
+   "expect": [
+    "AN-PID-RSV"
+   ],
+   "source": "scenario anomaly-pid-rsv"
+  },
+  {
+   "name": "pid-rsv-0x80",
+   "kind": "tpdu",
+   "hex": "059151551000040891515510248000621150214365220ED4F29C0E6A97E7F3F0B90C8A01",
+   "expect": [
+    "AN-PID-RSV"
+   ],
+   "source": "text-7bit PID 0x00 -> 0x80"
+  },
+  {
+   "name": "pid-rsv-telematic",
+   "kind": "tpdu",
+   "hex": "059151551000040891515510242E00621150214365220ED4F29C0E6A97E7F3F0B90C8A01",
+   "expect": [
+    "AN-PID-RSV"
+   ],
+   "source": "text-7bit PID 0x00 -> 0x2E (reserved telematic)"
+  },
+  {
+   "name": "dcs-rsv-group",
+   "kind": "tpdu",
+   "hex": "059151551000040891515510240080621150214365220ED4F29C0E6A97E7F3F0B90C8A01",
+   "expect": [
+    "AN-DCS-RSV"
+   ],
+   "source": "scenario anomaly-dcs-rsv"
+  },
+  {
+   "name": "dcs-rsv-alphabet",
+   "kind": "tpdu",
+   "hex": "05915155100004089151551024000C621150214365220DD4F29C0E6A97E7F3F0B90C8A01",
+   "expect": [
+    "AN-DCS-RSV"
+   ],
+   "source": "scenario anomaly-dcs-rsv-alphabet"
+  },
+  {
+   "name": "dcs-rsv-f8",
+   "kind": "tpdu",
+   "hex": "0591515510000408915155102400F8621150214365220ED4F29C0E6A97E7F3F0B90C8A01",
+   "expect": [
+    "AN-DCS-RSV"
+   ],
+   "source": "text-7bit DCS 0x00 -> 0xF8 (bit 3 of group F)"
+  },
+  {
+   "name": "udl-long",
+   "kind": "tpdu",
+   "hex": "0591515510000408915155102400006211502143652228D4F29C0E6A97E7F3F0B90C8A01",
+   "expect": [
+    "AN-UDL-LONG"
+   ],
+   "source": "scenario anomaly-udl-long"
+  },
+  {
+   "name": "udl-long-cut",
+   "kind": "tpdu",
+   "hex": "059151551000040891515510240000621150214365220ED4F29C0E6A97E7F3F0B9",
+   "expect": [
+    "AN-UDL-LONG"
+   ],
+   "source": "text-7bit with the last 3 octets cut"
+  },
+  {
+   "name": "udl-short",
+   "kind": "tpdu",
+   "hex": "0591515510000408915155102400006211502143652205D4F29C0E6A97E7F3F0B90C8A01",
+   "expect": [
+    "AN-UDL-SHORT"
+   ],
+   "source": "scenario anomaly-udl-short"
+  },
+  {
+   "name": "udl-short-extra",
+   "kind": "tpdu",
+   "hex": "059151551000040891515510240000621150214365220ED4F29C0E6A97E7F3F0B90C8A010000",
+   "expect": [
+    "AN-UDL-SHORT"
+   ],
+   "source": "text-7bit with 2 octets added"
+  },
+  {
+   "name": "udh-len",
+   "kind": "tpdu",
+   "hex": "05915155100044089151551024000462115021436522067F0102030405",
+   "expect": [
+    "AN-UDH-LEN"
+   ],
+   "source": "scenario anomaly-udh-len"
+  },
+  {
+   "name": "udh-len-mutated",
+   "kind": "tpdu",
+   "hex": "05915155100044089151551024000062115021436522153000032B0201A8E5391DD42ECFE7E173191403",
+   "expect": [
+    "AN-UDH-LEN"
+   ],
+   "source": "multipart-incomplete UDHL 0x05 -> 0x30"
+  },
+  {
+   "name": "udh-len-standalone",
+   "kind": "udh",
+   "hex": "05000301",
+   "expect": [
+    "AN-UDH-LEN"
+   ],
+   "source": "corpus udh/malformed_truncated.hex"
+  },
+  {
+   "name": "ie-overrun",
+   "kind": "tpdu",
+   "hex": "05915155100044089151551024000462115021436522080305040BDEADBEEF",
+   "expect": [
+    "AN-IE-OVERRUN"
+   ],
+   "source": "scenario anomaly-ie-overrun"
+  },
+  {
+   "name": "ie-overrun-mutated",
+   "kind": "tpdu",
+   "hex": "05915155100044089151551024000062115021436522150500052B0201A8E5391DD42ECFE7E173191403",
+   "expect": [
+    "AN-IE-OVERRUN"
+   ],
+   "source": "multipart-incomplete concat IEDL 3 -> 5"
+  },
+  {
+   "name": "ie-overrun-standalone",
+   "kind": "udh",
+   "hex": "0400030102",
+   "expect": [
+    "AN-IE-OVERRUN"
+   ],
+   "source": "UDHL 4 with a concat IE of 3 octets"
+  },
+  {
+   "name": "ie-rsv",
+   "kind": "tpdu",
+   "hex": "0591515510004408915155102400046211502143652206033001000102",
+   "expect": [
+    "AN-IE-RSV"
+   ],
+   "source": "scenario anomaly-ie-rsv"
+  },
+  {
+   "name": "ie-rsv-mutated",
+   "kind": "tpdu",
+   "hex": "05915155100044089151551024000062115021436522150502032B0201A8E5391DD42ECFE7E173191403",
+   "expect": [
+    "AN-IE-RSV"
+   ],
+   "source": "multipart-incomplete IEI 0x00 -> 0x02"
+  },
+  {
+   "name": "ie-rsv-standalone",
+   "kind": "udh",
+   "hex": "03E00100",
+   "expect": [
+    "AN-IE-RSV"
+   ],
+   "source": "IEI 0xE0 (reserved)"
+  },
+  {
+   "name": "ie-dup",
+   "kind": "tpdu",
+   "hex": "05915155100044089151551024000462115021436522110C05043E81000005043E82000001020304",
+   "expect": [
+    "AN-IE-DUP"
+   ],
+   "source": "scenario anomaly-ie-dup"
+  },
+  {
+   "name": "ie-dup-8-and-16",
+   "kind": "udh",
+   "hex": "0A04020B8405040B8423F0",
+   "expect": [
+    "AN-IE-DUP"
+   ],
+   "source": "8-bit and 16-bit port IEs"
+  },
+  {
+   "name": "ie-dup-bad-length",
+   "kind": "udh",
+   "hex": "0505030B8423",
+   "expect": [
+    "AN-IE-OVERRUN",
+    "AN-IE-DUP"
+   ],
+   "source": "16-bit port IE with IEDL 3: the framework reads 4 octets past the header"
+  },
+  {
+   "name": "port-zero",
+   "kind": "tpdu",
+   "hex": "059151551000440891515510240004621150214365220B0605040000000001020304",
+   "expect": [
+    "AN-PORT-ZERO"
+   ],
+   "source": "scenario data-port-0"
+  },
+  {
+   "name": "port-zero-8bit",
+   "kind": "udh",
+   "hex": "04040200F0",
+   "expect": [
+    "AN-PORT-ZERO"
+   ],
+   "source": "8-bit port IE with destination port 0"
+  },
+  {
+   "name": "concat-bad-total0",
+   "kind": "tpdu",
+   "hex": "0591515510004408915155102400006211502143652215050003310001A8E5391DD42ECFE7E173191403",
+   "expect": [
+    "AN-CONCAT-BAD"
+   ],
+   "source": "scenario anomaly-concat-bad-total0"
+  },
+  {
+   "name": "concat-bad-seq0",
+   "kind": "tpdu",
+   "hex": "0591515510004408915155102400006211502143652215050003320200A8E5391DD42ECFE7E173191403",
+   "expect": [
+    "AN-CONCAT-BAD"
+   ],
+   "source": "scenario anomaly-concat-bad-seq0"
+  },
+  {
+   "name": "concat-bad-seq-gt-total",
+   "kind": "tpdu",
+   "hex": "0591515510004408915155102400006211502143652215050003330203A8E5391DD42ECFE7E173191403",
+   "expect": [
+    "AN-CONCAT-BAD"
+   ],
+   "source": "scenario anomaly-concat-bad-seq-gt-total"
+  },
+  {
+   "name": "concat-bad-16bit",
+   "kind": "udh",
+   "hex": "06080401010203",
+   "expect": [
+    "AN-CONCAT-BAD"
+   ],
+   "source": "16-bit concat IE, sequence 3 of 2"
+  },
+  {
+   "name": "concat-bad-length",
+   "kind": "udh",
+   "hex": "0400020102",
+   "expect": [
+    "AN-IE-OVERRUN",
+    "AN-CONCAT-BAD"
+   ],
+   "source": "8-bit concat IE with IEDL 2: the framework reads 3 octets past the header"
+  },
+  {
+   "name": "wsp-type",
+   "kind": "tpdu",
+   "hex": "059151551000440891515510240004621150214365220D0605040B8423F0014003AEAF84",
+   "expect": [
+    "AN-WSP-TYPE"
+   ],
+   "source": "scenario anomaly-wsp-type"
+  },
+  {
+   "name": "wsp-type-raw-2948",
+   "kind": "tpdu",
+   "hex": "059151551000440891515510240004621150214365220B0605040B840000DEADBEEF",
+   "expect": [
+    "AN-WSP-TYPE"
+   ],
+   "source": "scenario data-port-2948-raw"
+  },
+  {
+   "name": "wsp-type-standalone",
+   "kind": "wsp",
+   "hex": "014003AEAF8102056A0045C60D0378797A008503656D61696C2F3132332F6162632E776D6C000AC3071999062515231510C304199906300103596F7520686176652034206E657720652D6D61696C73000101",
+   "expect": [
+    "AN-WSP-TYPE"
+   ],
+   "source": "corpus push_si with PDU type 0x40"
+  },
+  {
+   "name": "wsp-hlen",
+   "kind": "tpdu",
+   "hex": "059151551000440891515510240004621150214365220B0605040B8423F0010640AE",
+   "expect": [
+    "AN-WSP-HLEN"
+   ],
+   "source": "scenario anomaly-wsp-hlen"
+  },
+  {
+   "name": "wsp-hlen-standalone",
+   "kind": "wsp",
+   "hex": "010640AE",
+   "expect": [
+    "AN-WSP-HLEN"
+   ],
+   "source": "corpus wsp/malformed_bad_header_length.hex"
+  },
+  {
+   "name": "wsp-hlen-zero",
+   "kind": "wsp",
+   "hex": "010600AE",
+   "expect": [
+    "AN-WSP-HLEN"
+   ],
+   "source": "HeadersLen 0 (no content type)"
+  },
+  {
+   "name": "wsp-ctype",
+   "kind": "tpdu",
+   "hex": "059151551000440891515510240004621150214365220D0605040B8423F001060305AF84",
+   "expect": [
+    "AN-WSP-CTYPE"
+   ],
+   "source": "scenario anomaly-wsp-ctype"
+  },
+  {
+   "name": "wsp-ctype-text",
+   "kind": "wsp",
+   "hex": "01060461626364",
+   "expect": [
+    "AN-WSP-CTYPE"
+   ],
+   "source": "text content type without NUL inside the headers"
+  },
+  {
+   "name": "wsp-appid",
+   "kind": "tpdu",
+   "hex": "05915155100044089151551024000462115021436522370605040B8423F0010603AEAF0502056A0045C60C036578616D706C652E746573742F6100010354657374206D6573736167652031000101",
+   "expect": [
+    "AN-WSP-APPID"
+   ],
+   "source": "scenario anomaly-wsp-appid"
+  },
+  {
+   "name": "wsp-hlen-truncated",
+   "kind": "wsp",
+   "hex": "010603AEAF",
+   "expect": [
+    "AN-WSP-HLEN"
+   ],
+   "source": "corpus wsp/malformed_truncated.hex"
+  },
+  {
+   "name": "wsp-appid-no-value",
+   "kind": "wsp",
+   "hex": "010602AEAF02056A0045C60D0378797A008503656D61696C2F3132332F6162632E776D6C000AC3071999062515231510C304199906300103596F7520686176652034206E657720652D6D61696C73000101",
+   "expect": [
+    "AN-WSP-APPID"
+   ],
+   "source": "X-Wap-Application-Id is the last header octet (no value)"
+  },
+  {
+   "name": "wbxml-ver",
+   "kind": "tpdu",
+   "hex": "05915155100044089151551024000462115021436522370605040B8423F0010603AEAF8409056A0045C60C036578616D706C652E746573742F6100010354657374206D6573736167652031000101",
+   "expect": [
+    "AN-WBXML-VER"
+   ],
+   "source": "scenario anomaly-wbxml-ver"
+  },
+  {
+   "name": "wbxml-ver-standalone",
+   "kind": "wbxml",
+   "hex": "05056A0045C60D0378797A008503656D61696C2F3132332F6162632E776D6C000AC3071999062515231510C304199906300103596F7520686176652034206E657720652D6D61696C73000101",
+   "expect": [
+    "AN-WBXML-VER"
+   ],
+   "source": "corpus si_example with version 0x05"
+  },
+  {
+   "name": "wbxml-str",
+   "kind": "tpdu",
+   "hex": "05915155100044089151551024000462115021436522370605040B8423F0010603AEAF8402056A5045C60C036578616D706C652E746573742F6100010354657374206D6573736167652031000101",
+   "expect": [
+    "AN-WBXML-STR"
+   ],
+   "source": "scenario anomaly-wbxml-str"
+  },
+  {
+   "name": "wbxml-str-past-table",
+   "kind": "wbxml",
+   "hex": "02056A02410045830501",
+   "expect": [
+    "AN-WBXML-STR"
+   ],
+   "source": "STR_T reference 5 past a 2-octet table"
+  },
+  {
+   "name": "wbxml-str-cut",
+   "kind": "wbxml",
+   "hex": "02056A0A4142",
+   "expect": [
+    "AN-WBXML-STR"
+   ],
+   "source": "string table of 10 octets with 2 present"
+  },
+  {
+   "name": "wbxml-tok",
+   "kind": "tpdu",
+   "hex": "05915155100044089151551024000462115021436522130605040B8423F0010603AEAF8402056A003F01",
+   "expect": [
+    "AN-WBXML-TOK"
+   ],
+   "source": "scenario anomaly-wbxml-tok"
+  },
+  {
+   "name": "wbxml-tok-truncated",
+   "kind": "wbxml",
+   "hex": "02056A0045C60D037879",
+   "expect": [
+    "AN-WBXML-TOK"
+   ],
+   "source": "corpus wbxml/malformed_truncated.hex"
+  },
+  {
+   "name": "wbxml-tok-trailing-end",
+   "kind": "wsp",
+   "hex": "010603C2AF87020C6A00450101",
+   "expect": [
+    "AN-WBXML-TOK"
+   ],
+   "source": "corpus wsp/push_oma_dm.hex: one END more than open elements"
+  },
+  {
+   "name": "wbxml-tok-unclosed",
+   "kind": "wbxml",
+   "hex": "02056A0045C60D0378797A008503656D61696C2F3132332F6162632E776D6C000AC3071999062515231510C304199906300103596F7520686176652034206E657720652D6D61696C7300",
+   "expect": [
+    "AN-WBXML-TOK"
+   ],
+   "source": "corpus si_example without the two ENDs"
+  },
+  {
+   "name": "ota-hdr",
+   "kind": "tpdu",
+   "hex": "059151551000440891515510247FF6621150214365220B027000001A1502000000B0",
+   "expect": [
+    "AN-OTA-HDR"
+   ],
+   "simOta": [
+    "SIM-OTA-OTHER"
+   ],
+   "source": "scenario anomaly-ota-hdr"
+  },
+  {
+   "name": "ota-hdr-standalone",
+   "kind": "sms_pp",
+   "hex": "00130D00000000B00010",
+   "expect": [
+    "AN-OTA-HDR"
+   ],
+   "simOta": [
+    "SIM-OTA-OTHER",
+    "SIM-OTA-NOSEC",
+    "SIM-OTA-RFM"
+   ],
+   "source": "corpus sms_pp/malformed_truncated.hex"
+  },
+  {
+   "name": "udl-long-ota-cut",
+   "kind": "tpdu",
+   "hex": "059151551000440891515510247FF6621150214365221F027000001A1502000000B00000000000000100000000000000",
+   "expect": [
+    "AN-UDL-LONG"
+   ],
+   "simOta": [
+    "SIM-OTA-OTHER"
+   ],
+   "source": "sim-ota-rfm with 6 octets cut (UDL longer than the data)"
+  },
+  {
+   "name": "ota-hdr-cpl",
+   "kind": "tpdu",
+   "hex": "059151551000440891515510247FF6621150214365221F027000001B1502000000B00000000000000100000000000000000000000000",
+   "expect": [
+    "AN-OTA-HDR"
+   ],
+   "simOta": [
+    "SIM-OTA-OTHER",
+    "SIM-OTA-RFM"
+   ],
+   "source": "sim-ota-rfm with CPL 0x1A -> 0x1B"
+  },
+  {
+   "name": "ota-hdr-chl",
+   "kind": "sms_pp",
+   "hex": "001B0C02000002B00010000000000200112233445566778848656C6C6F",
+   "expect": [
+    "AN-OTA-HDR"
+   ],
+   "simOta": [
+    "SIM-OTA-OTHER",
+    "SIM-OTA-RFM"
+   ],
+   "source": "corpus spi_cc with CHL 0x15 -> 0x0C"
+  },
+  {
+   "name": "concat-dup-same-part",
+   "kind": "tpdu_sequence",
+   "sequence": [
+    "05915155100044089151551024000062115021436522150500032B0201A8E5391DD42ECFE7E173191403",
+    "05915155100044089151551024000062115021436522150500032B0201A8E5391DD42ECFE7E173191403"
+   ],
+   "expect": [
+    "AN-CONCAT-DUP"
+   ],
+   "source": "scenario anomaly-concat-dup (multipart-incomplete twice)"
+  },
+  {
+   "name": "concat-dup-after-other-part",
+   "kind": "tpdu_sequence",
+   "sequence": [
+    "05915155100044089151551024000062115021436522150500032B0201A8E5391DD42ECFE7E173191403",
+    "05915155100044089151551024000062115021436522150500032B0202A8E5391DD42ECFE7E173191403",
+    "05915155100044089151551024000062115021436522150500032B0201A8E5391DD42ECFE7E173191403"
+   ],
+   "expect": [
+    "AN-CONCAT-DUP"
+   ],
+   "source": "part 1, part 2, then part 1 again (mutated sequence octet)"
+  },
+  {
+   "name": "concat-no-dup-two-parts",
+   "kind": "tpdu_sequence",
+   "sequence": [
+    "05915155100044089151551024000062115021436522150500032B0201A8E5391DD42ECFE7E173191403",
+    "05915155100044089151551024000062115021436522150500032B0202A8E5391DD42ECFE7E173191403"
+   ],
+   "expect": [],
+   "source": "parts 1 and 2 of one reference"
+  },
+  {
+   "name": "sim-ota-sat-push-nosec",
+   "kind": "tpdu",
+   "hex": "059151551000440891515510247FF6621150214365221A02700000150D0001000050534800000000010042050000000000",
+   "expect": [],
+   "simOta": [
+    "SIM-OTA-SAT",
+    "SIM-OTA-NOSEC"
+   ],
+   "source": "CL-08 S@T low priority push TAR 'PSH' (S@T 01.23 section 7), SPI 0x0001, S@T push shape: the Simjacker shape"
+  },
+  {
+   "name": "sim-ota-sat-tar-ciphered",
+   "kind": "tpdu",
+   "hex": "059151551000440891515510247FF66211502143652223027000001E151621151553405400000000010000000000000000000000000000000000",
+   "expect": [],
+   "simOta": [
+    "SIM-OTA-SAT"
+   ],
+   "source": "CL-08 TAR 'S@T' (SIMtester S@T list), CC and ciphering"
+  },
+  {
+   "name": "sim-ota-sat-shape-proprietary-tar",
+   "kind": "tpdu",
+   "hex": "059151551000440891515510247FF6621150214365221A02700000150D00000000C1234500000000010042050000000000",
+   "expect": [],
+   "simOta": [
+    "SIM-OTA-SAT",
+    "SIM-OTA-NOSEC"
+   ],
+   "source": "CL-08 proprietary TAR, no security, S@T push shape"
+  },
+  {
+   "name": "sim-ota-sat-class2-pid0",
+   "kind": "tpdu",
+   "hex": "0591515510004408915155102400F66211502143652223027000001E151621151550534800000000010000000000000000000000000000000000",
+   "expect": [],
+   "simOta": [
+    "SIM-OTA-SAT"
+   ],
+   "source": "CL-08 class 2, PID 0, IE 0x70, TAR 'PSH', CC and ciphering"
+  },
+  {
+   "name": "sim-ota-wib-tar-nosec",
+   "kind": "tpdu",
+   "hex": "059151551000440891515510247FF6621150214365221902700000140D00000000000001000000000100000410000000",
+   "expect": [],
+   "simOta": [
+    "SIM-OTA-WIB",
+    "SIM-OTA-NOSEC"
+   ],
+   "source": "CL-08 TAR 00 00 01 (SIMtester WIB list), no security, WIB command shape"
+  },
+  {
+   "name": "sim-ota-wib-tar-ciphered",
+   "kind": "tpdu",
+   "hex": "059151551000440891515510247FF66211502143652223027000001E151621151500000500000000010000000000000000000000000000000000",
+   "expect": [],
+   "simOta": [
+    "SIM-OTA-WIB"
+   ],
+   "source": "CL-08 TAR 00 00 05 (SIMtester WIB list), CC and ciphering"
+  },
+  {
+   "name": "sim-ota-wib-shape-rc",
+   "kind": "tpdu",
+   "hex": "059151551000440891515510247FF6621150214365221D02700000181101000000BFFF0000000000010000000000000410000000",
+   "expect": [],
+   "simOta": [
+    "SIM-OTA-WIB",
+    "SIM-OTA-NOSEC"
+   ],
+   "source": "CL-08 proprietary TAR, redundancy check only, WIB command shape"
+  },
+  {
+   "name": "sim-ota-nosec-unknown-tar",
+   "kind": "tpdu",
+   "hex": "059151551000440891515510247FF6621150214365221702700000120D0000000044556600000000010000000000",
+   "expect": [],
+   "simOta": [
+    "SIM-OTA-NOSEC"
+   ],
+   "source": "CL-08 unknown TAR, SPI 0x0000"
+  },
+  {
+   "name": "sim-ota-nosec-rfm-rc",
+   "kind": "tpdu",
+   "hex": "059151551000440891515510247FF6621150214365221B02700000161101000000B000000000000001000000000000000000",
+   "expect": [],
+   "simOta": [
+    "SIM-OTA-NOSEC",
+    "SIM-OTA-RFM"
+   ],
+   "source": "CL-08 RFM TAR, redundancy check only (a CRC is not a security check)"
+  },
+  {
+   "name": "sim-ota-nosec-ram",
+   "kind": "tpdu",
+   "hex": "059151551000440891515510247FF6621150214365221702700000120D0000000000000000000000010000000000",
+   "expect": [],
+   "simOta": [
+    "SIM-OTA-NOSEC",
+    "SIM-OTA-RAM"
+   ],
+   "source": "CL-08 RAM TAR (issuer security domain), SPI 0x0000"
+  },
+  {
+   "name": "sim-ota-rfm-usim-ciphered",
+   "kind": "tpdu",
+   "hex": "059151551000440891515510247FF66211502143652223027000001E1516211515B0001000000000010000000000000000000000000000000000",
+   "expect": [],
+   "simOta": [
+    "SIM-OTA-RFM"
+   ],
+   "source": "CL-08 RFM TAR B0 00 10 (SIM file system, TS 101 220 Annex D), CC and ciphering"
+  },
+  {
+   "name": "sim-ota-rfm-cc-shape",
+   "kind": "tpdu",
+   "hex": "059151551000440891515510247FF66211502143652222027000001D150A210015B00001000000000100000000000000000042050000000000",
+   "expect": [],
+   "simOta": [
+    "SIM-OTA-RFM"
+   ],
+   "source": "CL-08 RFM TAR B0 00 01, CC without ciphering; the S@T shape does not make an RFM TAR SAT"
+  },
+  {
+   "name": "sim-ota-ram-isd-ciphered",
+   "kind": "tpdu",
+   "hex": "059151551000440891515510247FF66211502143652223027000001E151621151500000000000000010000000000000000000000000000000000",
+   "expect": [],
+   "simOta": [
+    "SIM-OTA-RAM"
+   ],
+   "source": "CL-08 RAM TAR 00 00 00, CC and ciphering"
+  },
+  {
+   "name": "sim-ota-ram-expanded",
+   "kind": "tpdu",
+   "hex": "059151551000440891515510247FF66211502143652223027000001E1516211515B2010000000000010000000000000000000000000000000000",
+   "expect": [],
+   "simOta": [
+    "SIM-OTA-RAM"
+   ],
+   "source": "CL-08 RAM TAR B2 01 00 (expanded format), CC and ciphering"
+  },
+  {
+   "name": "sim-ota-other-cc",
+   "kind": "tpdu",
+   "hex": "059151551000440891515510247FF6621150214365221F027000001A1502000000445566000000000100000000000000000000000000",
+   "expect": [],
+   "simOta": [
+    "SIM-OTA-OTHER"
+   ],
+   "source": "CL-08 unknown TAR, CC"
+  },
+  {
+   "name": "sim-ota-other-proprietary",
+   "kind": "tpdu",
+   "hex": "059151551000440891515510247FF66211502143652223027000001E1516211515BFFF1500000000010000000000000000000000000000000000",
+   "expect": [],
+   "simOta": [
+    "SIM-OTA-OTHER"
+   ],
+   "source": "CL-08 proprietary TAR BF FF 15, CC and ciphering"
+  },
+  {
+   "name": "sim-ota-other-ciphered-shape",
+   "kind": "tpdu",
+   "hex": "059151551000440891515510247FF6621150214365221A02700000150D04001500C1234500000000010042050000000000",
+   "expect": [],
+   "simOta": [
+    "SIM-OTA-OTHER"
+   ],
+   "source": "CL-08 unknown TAR, ciphering: the data shape is not read"
+  },
+  {
+   "name": "ota-hdr-sat-tar",
+   "kind": "tpdu",
+   "hex": "059151551000440891515510247FF6621150214365221A02700000160D0001000050534800000000010042050000000000",
+   "expect": [
+    "AN-OTA-HDR"
+   ],
+   "simOta": [
+    "SIM-OTA-OTHER",
+    "SIM-OTA-SAT",
+    "SIM-OTA-NOSEC"
+   ],
+   "source": "CL-08 S@T TAR with CPL one more than the data: header anomaly, TAR and SPI codes as extras"
+  },
+  {
+   "name": "clean-sim-dd-no-cpi",
+   "kind": "tpdu",
+   "hex": "059151551000040891515510247FF6621150214365220400112233",
+   "expect": [],
+   "simOta": [
+    "SIM-OTA-OTHER"
+   ],
+   "source": "CL-08 PID 0x7F without a command packet identifier: no header to read"
+  },
+  {
+   "name": "sim-ota-response-rfm",
+   "kind": "tpdu",
+   "hex": "059151551000440891515510247FF66211502143652210027100000B0AB0000000000000010000",
+   "expect": [],
+   "simOta": [
+    "SIM-OTA-RFM"
+   ],
+   "source": "CL-08 response packet (IE 0x71), RFM TAR"
+  },
+  {
+   "name": "clean-ota-iei70-not-for-sim",
+   "kind": "tpdu",
+   "hex": "059151551000440891515510240004621150214365221702700000130D0000000050534800000000010000000000",
+   "expect": [],
+   "simOta": [],
+   "source": "CL-08 IE 0x70 in a message that does not go to the SIM (PID 0, 8-bit, no class): not parsed, no anomaly"
+  },
+  {
+   "name": "clean-status-report-pi-ext",
+   "kind": "tpdu",
+   "hex": "05915155100006010891515510246211502143652262115021436522008700000004D4F29C0E",
+   "expect": [],
+   "source": "status-delivered with TP-PI 0x87, one extension octet 0x00, PID, DCS and 4 septets (PDU-04)"
+  },
+  {
+   "name": "clean-mwi-voicemail-set",
+   "kind": "tpdu",
+   "hex": "0591515510000408915155102400C8621150214365220ED4F29C0E6A97E7F3F0B90C8A01",
+   "expect": [],
+   "source": "text-7bit DCS 0x00 -> 0xC8 (MWI discard, voicemail active)"
+  },
+  {
+   "name": "dcs-rsv-mwi-bit2",
+   "kind": "tpdu",
+   "hex": "0591515510000408915155102400C4621150214365220ED4F29C0E6A97E7F3F0B90C8A01",
+   "expect": [
+    "AN-DCS-RSV"
+   ],
+   "source": "text-7bit DCS 0x00 -> 0xC4 (MWI group, reserved bit 2 set, PDU-19)"
+  },
+  {
+   "name": "clean-ucs2",
+   "kind": "tpdu",
+   "hex": "05915155100004089151551024000862115021436522080054006500730074",
+   "expect": [],
+   "source": "UCS2 DCS 0x08, 8 octets"
+  },
+  {
+   "name": "clean-alnum-originator",
+   "kind": "tpdu",
+   "hex": "0591515510000408D0D4F29C0E0000621150214365220ED4F29C0E6A97E7F3F0B90C8A01",
+   "expect": [],
+   "source": "text-7bit with an alphanumeric TP-OA (TOA 0xD0, PDU-08)"
+  },
+  {
+   "name": "addr-toa-alnum-bit7",
+   "kind": "tpdu",
+   "hex": "059151551000040850D4F29C0E0000621150214365220ED4F29C0E6A97E7F3F0B90C8A01",
+   "expect": [
+    "AN-ADDR-TOA"
+   ],
+   "source": "alphanumeric TP-OA with TOA 0x50 (bit 7 clear): still read as alphanumeric (PDU-08)"
+  },
+  {
+   "name": "mti-submit-report",
+   "kind": "tpdu",
+   "hex": "059151551000050891515510240000621150214365220ED4F29C0E6A97E7F3F0B90C8A01",
+   "expect": [
+    "AN-MTI"
+   ],
+   "source": "text-7bit first octet 0x04 -> 0x05 (MTI 1, PDU-10)"
+  },
+  {
+   "name": "udl-long-over-140",
+   "kind": "tpdu",
+   "hex": "059151551000040891515510240004621150214365228D000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+   "expect": [
+    "AN-UDL-LONG"
+   ],
+   "source": "8-bit TP-UDL 141 with 141 octets present (PDU-15)"
+  },
+  {
+   "name": "wsp-type-7bit-2948",
+   "kind": "tpdu",
+   "hex": "059151551000440891515510240000621150214365220E0605040B8423F0014003AEAF84",
+   "expect": [
+    "AN-WSP-TYPE"
+   ],
+   "source": "scenario anomaly-wsp-type with DCS 0x04 -> 0x00 (GSM 7-bit) and a septet UDL (PDU-12)"
+  },
+  {
+   "name": "ie-dup-shift-hides-port",
+   "kind": "udh",
+   "hex": "0924070005040B8423F0",
+   "expect": [
+    "AN-IE-DUP"
+   ],
+   "source": "single shift IE with IEDL 7 around a 16-bit port IE: the framework reads the port (PDU-23)"
+  },
+  {
+   "name": "ie-dup-shift-hides-port-wsp",
+   "kind": "tpdu",
+   "hex": "05915155100044089151551024000462115021436522100924070005040B8423F0014003AEAF84",
+   "expect": [
+    "AN-IE-DUP",
+    "AN-WSP-TYPE"
+   ],
+   "source": "the shift IE header around port 2948 with a push of PDU type 0x40: the push checks run (PDU-23)"
+  },
+  {
+   "name": "clean-sim-ota-multipart-first",
+   "kind": "tpdu",
+   "hex": "059151551000440891515510247FF662115021436522240700032C0201700000401502000000B00000000000000001000000000000000000000000",
+   "expect": [],
+   "source": "sim-ota-rfm as the first of 2 segments: CPL 0x40 is more than this segment holds (PDU-13)"
+  },
+  {
+   "name": "clean-sim-ota-multipart-later",
+   "kind": "tpdu",
+   "hex": "059151551000440891515510247FF6621150214365221C0700032C020270000102030405060708090A0B0C0D0E0F1011121314",
+   "expect": [],
+   "source": "second segment with IE 0x70 and secured data only: no header is read (PDU-13)"
+  },
+  {
+   "name": "clean-push-supl-text-appid",
+   "kind": "wsp",
+   "hex": "01061E03020312AF782D6F6D612D6170706C69636174696F6E3A756C702E75610001020304",
+   "expect": [],
+   "source": "corpus push_supl with the application id as text"
+  },
+  {
+   "name": "wsp-appid-text-cut",
+   "kind": "wsp",
+   "hex": "01061D03020312AF782D6F6D612D6170706C69636174696F6E3A756C702E75610001020304",
+   "expect": [
+    "AN-WSP-APPID"
+   ],
+   "source": "text application id whose NUL is the first body octet (PDU-37, PDU-41)"
+  },
+  {
+   "name": "clean-push-oma-cp-sec",
+   "kind": "wsp",
+   "hex": "01060805B681EA9180AF8A020B6A0045C65501870706034D792041504E000187080603696E7465726E6574000101C652018720060331302E302E302E3100018723060338303830000101C65101871C0603687474703A2F2F6578616D706C652E636F6D2F00010101",
+   "expect": [],
+   "source": "corpus push_oma_cp with the parameters charset utf-8 then SEC NETWPIN (PDU-38)"
+  },
+  {
+   "name": "clean-wbxml-1-0",
+   "kind": "wbxml",
+   "hex": "000600850A0378797A00850370706169642F3132332F6162632E776D6C0001",
+   "expect": [],
+   "source": "corpus sl_example as WBXML 1.0 (no charset field, PDU-46)"
+  },
+  {
+   "name": "clean-wbxml-string-public-id",
+   "kind": "wbxml",
+   "hex": "0300006A1C2D2F2F574150464F52554D2F2F44544420534C20312E302F2F454E00850A0378797A00850370706169642F3132332F6162632E776D6C0001",
+   "expect": [],
+   "source": "corpus sl_example with the public id as a string table index (PDU-47)"
+  },
+  {
+   "name": "wbxml-tok-string-public-id",
+   "kind": "wbxml",
+   "hex": "0300006A1C2D2F2F574150464F52554D2F2F44544420534C20312E302F2F454E0006",
+   "expect": [
+    "AN-WBXML-TOK"
+   ],
+   "source": "string public id of SL and a tag that SL does not have (PDU-47)"
+  },
+  {
+   "name": "wbxml-str-public-id-index",
+   "kind": "wbxml",
+   "hex": "0300056A00850A0378797A00850370706169642F3132332F6162632E776D6C0001",
+   "expect": [
+    "AN-WBXML-STR"
+   ],
+   "source": "public id string index 5 with an empty string table (PDU-47)"
+  }
+ ]
+}

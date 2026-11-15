@@ -1,0 +1,65 @@
+# detekt on top of the default rule set.
+# Deviations are limited to two kinds and both are documented:
+#  - the line limit follows .editorconfig (140, not detekt's default 120);
+#  - complexity thresholds are relaxed for the byte-level parser (`:decoder`) and for the hook
+#    bodies, which are long by nature: one method per wire format / per hook, each a flat sequence of field reads.
+#    Splitting them further would scatter a single spec across helpers without making any of it easier to verify
+#    against 3GPP/WAP, and the code is covered by the golden corpus.
+# Everything else keeps the default rule set; the rules that find real defects (SwallowedException, UnusedParameter,
+# UnusedPrivateProperty, MatchingDeclarationName, ForbiddenImport, MagicNumber off only because of hex masks) stay on.
+style:
+  ForbiddenImport:
+    active: true
+    imports:
+      - value: 'android.util.Log'
+        reason: 'Use core.log (masked logging).'
+  MagicNumber:
+    active: false
+  WildcardImport:
+    active: true
+  UnusedPrivateMember:
+    active: true
+    ignoreAnnotated: ['Preview']
+  MaxLineLength:
+    maxLineLength: 140
+  ReturnCount:
+    max: 4
+  LoopWithTooManyJumpStatements:
+    maxJumpCount: 3
+  UnusedParameter:
+    active: true
+naming:
+  FunctionNaming:
+    ignoreAnnotated: ['Composable', 'Test']
+  MatchingDeclarationName:
+    mustBeFirst: false
+complexity:
+  LongMethod:
+    ignoreAnnotated: ['Composable']
+    threshold: 120
+  LongParameterList:
+    functionThreshold: 10
+    constructorThreshold: 10
+    # A screen takes one callback per user action plus its state; grouping them would add a per-screen bag type.
+    ignoreAnnotated: ['Composable']
+  CyclomaticComplexMethod:
+    threshold: 25
+    # A flat `when` that maps each enum value to one constant (Explainer.fateKey) is a table, not branching logic.
+    ignoreSimpleWhenEntries: true
+  TooManyFunctions:
+    thresholdInFiles: 30
+    thresholdInClasses: 30
+    thresholdInInterfaces: 30
+    thresholdInObjects: 30
+    thresholdInEnums: 30
+  NestedBlockDepth:
+    threshold: 6
+exceptions:
+  # Every catch of Exception/Throwable in this tree is a boundary that converts a foreign failure into a typed result:
+  # the binder proxy (Parcel/transact can raise anything), ViewModel coroutine roots (they emit Failed(...)), and the
+  # decoder guard, which must not throw on adversarial input. Narrowing those would let LinkageError /
+  # NullPointerException from the platform escape into a crash path, which is the opposite of the intent.
+  TooGenericExceptionCaught:
+    active: false
+  SwallowedException:
+    active: true

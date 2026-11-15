@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Cell broadcast titles and explanations by category.
+  The TextKey entries TITLE_CB_* and EXP_CB_* resolve these names. Text follows the copy standard (ASD-STE100).
+  The category comes from the message identifier (3GPP TS 23.041), never from the message text.
+-->
+<resources>
+    <!-- Titles: CMAS and EU-Alert levels (message identifiers 4370 to 4399). -->
+    <string name="title_cb_presidential">Emergency alert: presidential</string>
+    <string name="title_cb_extreme">Emergency alert: extreme</string>
+    <string name="title_cb_severe">Emergency alert: severe</string>
+    <string name="title_cb_amber">Emergency alert: amber</string>
+    <string name="title_cb_test">Emergency alert: test</string>
+    <string name="title_cb_exercise">Emergency alert: exercise</string>
+    <string name="title_cb_public_safety">Emergency alert: public safety</string>
+    <string name="title_cb_operator">Emergency alert: network operator</string>
+
+    <!-- Titles: ETWS (message identifiers 4352 to 4359). -->
+    <string name="title_cb_etws_eq">Earthquake warning</string>
+    <string name="title_cb_etws_tsunami">Tsunami warning</string>
+    <string name="title_cb_etws_both">Earthquake and tsunami warning</string>
+    <string name="title_cb_etws_test">Test warning</string>
+    <string name="title_cb_etws_other">Emergency warning</string>
+
+    <!-- {channel} = cell broadcast channel number, for example 50. -->
+    <string name="title_cb_area_info">Area information (channel {channel})</string>
+    <!-- {channel} = cell broadcast channel number, for example 221. -->
+    <string name="title_cb_channel">Cell broadcast (channel {channel})</string>
+    <string name="title_cb_sim">Cell broadcast for the SIM</string>
+
+    <!-- {channel} = cell broadcast channel number, for example 4370. -->
+    <string name="exp_cb_cmas">The public warning system sent this alert to all phones in the area on channel {channel}. NightJar never blocks or holds an emergency alert.</string>
+    <!-- {channel} = cell broadcast channel number, for example 4352. -->
+    <string name="exp_cb_etws">The earthquake and tsunami warning system sent this warning to all phones in the area on channel {channel}. NightJar never blocks or holds an emergency warning.</string>
+    <!-- {channel} = cell broadcast channel number, for example 50. -->
+    <string name="exp_cb_area_info">The network sent this message to all phones in the cell on channel {channel}. It can contain the name of the area.</string>
+    <!-- {channel} = cell broadcast channel number, for example 221. -->
+    <string name="exp_cb_channel">The network sent this cell broadcast to all phones in the cell on channel {channel}. The network operator can use a channel for local information.</string>
+    <!-- {channel} = cell broadcast message identifier, for example 4096. -->
+    <string name="exp_cb_sim">The network sent this cell broadcast to the SIM, not to you. Message identifier {channel} is in the range for data download to the SIM. A SIM app can use the data to change settings on the SIM.</string>
+</resources>

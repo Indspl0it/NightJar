@@ -1,0 +1,42 @@
+{
+  "comment": "DET-05 premium-rate destination patterns for India. Schema: prefixes = digit strings compared with the start of the destination digits (a '+' and other non-digits are removed first); regexes = Java regular expressions searched in the same digits; entries, excluded and sources are documentation only and the app does not read them. India publishes no premium-rate SMS number series and no consolidated list of short codes (TRAI CP 2019 para 3.20). The only sourced rule is the DoT decision that operators allocate content-provider short codes, including SMS-based services, from level 5. The NNP 2003 IN premium-rate prefix 0900 is not added (see excluded). Add an entry only with a cited primary source.",
+  "schemaVersion": 1,
+  "prefixes": [],
+  "regexes": [
+    "^5[0-9]{3,5}$"
+  ],
+  "entries": [
+    {
+      "regex": "^5[0-9]{3,5}$",
+      "meaning": "Level 5 short code: allocated by each access service provider to content providers, including SMS-based value-added services, inside its own network. These services can carry a charge.",
+      "length": "The source gives no length. The regex accepts 4 to 6 digits, the DET-05 short-code limit (SHORT_CODE_MAX_DIGITS = 6), so a level 5 fixed-line number (7 or more digits) and an international number that starts with +5 do not match.",
+      "sources": ["trai-cp-2019"]
+    }
+  ],
+  "excluded": [
+    {
+      "prefix": "0900",
+      "meaning": "NNP 2003 para 2.1.7 and table: IN Service - Premium Rate, format 0900 + XXX (SCP code) + IN number. This is a voice IN service prefix.",
+      "reason": "Not added. A national-format mobile number is 0 + 10 digits, and mobile numbers in the 900 series exist, so 0900 also matches ordinary mobile numbers. In the +91 format the same digits are mobile numbers.",
+      "sources": ["nnp-2003"]
+    }
+  ],
+  "sources": [
+    {
+      "id": "trai-cp-2019",
+      "title": "Consultation Paper on Developing a Unified Numbering Plan for Fixed Line and Mobile Services",
+      "issuer": "Telecom Regulatory Authority of India (TRAI), New Delhi",
+      "date": "2019-09-20",
+      "url": "https://trai.gov.in/sites/default/files/2024-09/CP_20092019.pdf",
+      "cites": "Para 2.15: by DoT OM dated 30.11.2006 (Annexure-II), all access service providers use level 5 to allocate short codes to content providers, including SMS-based services, inside their own networks. Para 3.20: DoT issues an allocation letter for each short code, but no consolidated list is published."
+    },
+    {
+      "id": "nnp-2003",
+      "title": "National Numbering Plan (2003)",
+      "issuer": "Department of Telecommunications, Ministry of Communications and Information Technology, Government of India",
+      "date": "2003-04",
+      "url": "https://www.team-bhp.com/forum/attachments/shifting-gears/237711d1259732117-11-digit-mobile-numbers-soon-nnp2003.pdf",
+      "cites": "Para 2.1.7: sub level 09 is used for cellular mobile, satellite and IN services such as premium rate. Table of level 0 prefixes: 0900 = IN Service - Premium Rate. The URL is a third-party copy because dot.gov.in refused the request (HTTP 403)."
+    }
+  ]
+}

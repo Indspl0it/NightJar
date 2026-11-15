@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  NightJar plural resources.
+  Naming contract: lowercase string id with '-' replaced by '_'.
+  Most plurals are here. strings_onboarding.xml and strings_messages.xml keep the plurals of their own screens.
+  A name is either a plain string or a plural, never both.
+-->
+<resources>
+
+    <!-- Confirmed deletion result; no undo. -->
+    <plurals name="snk_04">
+        <item quantity="one">%1$d message deleted</item>
+        <item quantity="other">%1$d messages deleted</item>
+    </plurals>
+
+    <!-- Log screen: how many lines the filter shows. -->
+    <plurals name="log_lines">
+        <item quantity="one">%1$d line</item>
+        <item quantity="other">%1$d lines</item>
+    </plurals>
+
+    <!-- Lost-events row. -->
+    <plurals name="msg_lost_01">
+        <item quantity="one">NightJar lost %1$d event while the app was unavailable.</item>
+        <item quantity="other">NightJar lost %1$d events while the app was unavailable.</item>
+    </plurals>
+
+    <!-- Quarantined-count badge on the Messages navigation item. -->
+    <plurals name="state_quarantine_badge">
+        <item quantity="one">%1$d message on hold</item>
+        <item quantity="other">%1$d messages on hold</item>
+    </plurals>
+
+    <!-- Title: delete one or more messages. -->
+    <plurals name="dlg_09_title">
+        <item quantity="one">Delete %1$d message?</item>
+        <item quantity="other">Delete %1$d messages?</item>
+    </plurals>
+
+    <!-- Title: retention reduced. -->
+    <plurals name="dlg_16_title">
+        <item quantity="one">Delete %1$d older message?</item>
+        <item quantity="other">Delete %1$d older messages?</item>
+    </plurals>
+
+    <!-- Multipart row (07). %1$d = parts still missing; %2$s = the date Android gives up. -->
+    <plurals name="msgs_parts_waiting">
+        <item quantity="one">Waiting for %1$d part · Android deletes incomplete messages on %2$s</item>
+        <item quantity="other">Waiting for %1$d parts · Android deletes incomplete messages on %2$s</item>
+    </plurals>
+
+    <!-- Top bar: messages matching the current filter (01). -->
+    <plurals name="msgs_count">
+        <item quantity="one">%1$d message</item>
+        <item quantity="other">%1$d messages</item>
+    </plurals>
+
+    <!-- Count line after the message count: the number of active filters. -->
+    <plurals name="msgs_filters_on">
+        <item quantity="one">%1$d filter on</item>
+        <item quantity="other">%1$d filters on</item>
+    </plurals>
+
+    <!-- Selection bar title (07). -->
+    <plurals name="msgs_selected">
+        <item quantity="one">%1$d selected</item>
+        <item quantity="other">%1$d selected</item>
+    </plurals>
+
+    <!-- Badge on the Messages filter button (05). -->
+    <plurals name="filter_active_count">
+        <item quantity="one">%1$d filter</item>
+        <item quantity="other">%1$d filters</item>
+    </plurals>
+
+    <!-- Result snackbar (SNK). -->
+    <plurals name="export_done">
+        <item quantity="one">Exported %1$d message</item>
+        <item quantity="other">Exported %1$d messages</item>
+    </plurals>
+
+    <!-- Rule row (04). %1$d = matches, %2$s = the last match date. -->
+
+    <!-- One app in "Apps that send SMS". %1$d = stored sent SMS of the app. %2$s = date and time of the last one. -->
+    <plurals name="settings_sending_apps_sent">
+        <item quantity="one">Sent %1$d message. Last: %2$s</item>
+        <item quantity="other">Sent %1$d messages. Last: %2$s</item>
+    </plurals>
+
+    <!-- Rules check value. %1$d = rules that the module in the phone service cannot use. -->
+    <plurals name="health_x_rules_skipped">
+        <item quantity="one">The phone service cannot use %1$d rule</item>
+        <item quantity="other">The phone service cannot use %1$d rules</item>
+    </plurals>
+
+    <!-- Hex view description for TalkBack. %1$d = number of byte rows. -->
+    <plurals name="cd_hex_view">
+        <item quantity="one">Message bytes, %1$d row</item>
+        <item quantity="other">Message bytes, %1$d rows</item>
+    </plurals>
+
+    <!--
+      Hooks check value (Researcher mode). %1$d = active hooks, for example 5. %2$d = all hooks, for example 6.
+      A plural of %1$d: in some languages "active" agrees with the number.
+    -->
+    <plurals name="health_x_hooks_value">
+        <item quantity="one">%1$d of %2$d active</item>
+        <item quantity="other">%1$d of %2$d active</item>
+    </plurals>
+    <plurals name="rules_matched">
+        <item quantity="one">matched %1$d time · last %2$s</item>
+        <item quantity="other">matched %1$d times · last %2$s</item>
+    </plurals>
+    <plurals name="msgs_parts">
+        <item quantity="one">%1$d of %2$d part</item>
+        <item quantity="other">%1$d of %2$d parts</item>
+    </plurals>
+</resources>

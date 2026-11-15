@@ -1,0 +1,381 @@
+{
+  "cases": [
+    {
+      "expected": {
+        "action": "ALLOW",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": false,
+        "ruleId": null,
+        "source": "CLASS_ACTION"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-RETURN-CALL",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": null,
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "class action ALLOW",
+      "snapshot": {
+        "classActions": {
+          "CL-RETURN-CALL": "ALLOW"
+        },
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "NOTIFY",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": false,
+        "ruleId": null,
+        "source": "CLASS_ACTION"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-RETURN-CALL",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": null,
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "class action NOTIFY",
+      "snapshot": {
+        "classActions": {
+          "CL-RETURN-CALL": "NOTIFY"
+        },
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "QUARANTINE",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": false,
+        "ruleId": null,
+        "source": "CLASS_ACTION"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-RETURN-CALL",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": null,
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "class action QUARANTINE",
+      "snapshot": {
+        "classActions": {
+          "CL-RETURN-CALL": "QUARANTINE"
+        },
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "BLOCK",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": false,
+        "ruleId": null,
+        "source": "CLASS_ACTION"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-RETURN-CALL",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": null,
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "class action BLOCK",
+      "snapshot": {
+        "classActions": {
+          "CL-RETURN-CALL": "BLOCK"
+        },
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "ALLOW",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": true,
+        "ruleId": 501,
+        "source": "RULE"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-RETURN-CALL",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": "+15550001",
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "rule with a sender condition -> ALLOW",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "ALLOW",
+            "enabled": true,
+            "id": 501,
+            "name": "case",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-RETURN-CALL"
+              ],
+              "originator": {
+                "op": "IS",
+                "value": "+15550001"
+              }
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "NOTIFY",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": true,
+        "ruleId": 501,
+        "source": "RULE"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-RETURN-CALL",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": "+15550001",
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "rule with a sender condition -> NOTIFY",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "NOTIFY",
+            "enabled": true,
+            "id": 501,
+            "name": "case",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-RETURN-CALL"
+              ],
+              "originator": {
+                "op": "IS",
+                "value": "+15550001"
+              }
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "QUARANTINE",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": true,
+        "ruleId": 501,
+        "source": "RULE"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-RETURN-CALL",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": "+15550001",
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "rule with a sender condition -> QUARANTINE",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "QUARANTINE",
+            "enabled": true,
+            "id": 501,
+            "name": "case",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-RETURN-CALL"
+              ],
+              "originator": {
+                "op": "IS",
+                "value": "+15550001"
+              }
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "BLOCK",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": true,
+        "ruleId": 501,
+        "source": "RULE"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-RETURN-CALL",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": "+15550001",
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "rule with a sender condition -> BLOCK",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "BLOCK",
+            "enabled": true,
+            "id": 501,
+            "name": "case",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-RETURN-CALL"
+              ],
+              "originator": {
+                "op": "IS",
+                "value": "+15550001"
+              }
+            }
+          }
+        ],
+        "schema": 1
+      }
+    }
+  ],
+  "class": "CL-RETURN-CALL"
+}

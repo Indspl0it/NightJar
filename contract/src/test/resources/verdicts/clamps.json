@@ -1,0 +1,1725 @@
+{
+  "cases": [
+    {
+      "expected": {
+        "action": "ALLOW",
+        "clampReason": "EMERGENCY_CB",
+        "clampedFrom": "BLOCK",
+        "hasRule": false,
+        "ruleId": null,
+        "source": "CLASS_ACTION"
+      },
+      "input": {
+        "cbEmergency": true,
+        "classId": "CL-CB",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": null,
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "G-01 emergency CB clamps a class-action BLOCK",
+      "snapshot": {
+        "classActions": {
+          "CL-CB": "BLOCK"
+        },
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "ALLOW",
+        "clampReason": "EMERGENCY_CB",
+        "clampedFrom": "NOTIFY",
+        "hasRule": true,
+        "ruleId": 701,
+        "source": "RULE"
+      },
+      "input": {
+        "cbEmergency": true,
+        "classId": "CL-CB",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": "+15550001",
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "G-01 emergency CB clamps a rule NOTIFY",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "NOTIFY",
+            "enabled": true,
+            "id": 701,
+            "name": "r701",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-CB"
+              ],
+              "originator": {
+                "op": "IS",
+                "value": "+15550001"
+              }
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "ALLOW",
+        "clampReason": "EMERGENCY_CB",
+        "clampedFrom": "NOTIFY",
+        "hasRule": false,
+        "ruleId": null,
+        "source": "CLASS_ACTION"
+      },
+      "input": {
+        "cbEmergency": true,
+        "classId": "CL-CB",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": null,
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "G-01 emergency CB clamps a class-action NOTIFY",
+      "snapshot": {
+        "classActions": {
+          "CL-CB": "NOTIFY"
+        },
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "BLOCK",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": false,
+        "ruleId": null,
+        "source": "CLASS_ACTION"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-CB",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": null,
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "G-01 non-emergency CB keeps BLOCK",
+      "snapshot": {
+        "classActions": {
+          "CL-CB": "BLOCK"
+        },
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "ALLOW",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": false,
+        "ruleId": null,
+        "source": "DEFAULT"
+      },
+      "input": {
+        "cbEmergency": true,
+        "classId": "CL-CB",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": null,
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "G-01 emergency CB keeps ALLOW untouched",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "ALLOW",
+        "clampReason": "SUPL_EMERGENCY",
+        "clampedFrom": "QUARANTINE",
+        "hasRule": false,
+        "ruleId": null,
+        "source": "CLASS_ACTION"
+      },
+      "guards": {
+        "emergencyCallActive": true,
+        "emergencyCallEndedAtMs": -1,
+        "firewallAvailable": true,
+        "firewallEnabled": true,
+        "nowMs": 0,
+        "safeMode": false
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-WAP-SUPL",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": null,
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "G-04 SUPL class action QUARANTINE during an emergency call",
+      "snapshot": {
+        "classActions": {
+          "CL-WAP-SUPL": "QUARANTINE"
+        },
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "ALLOW",
+        "clampReason": "SUPL_EMERGENCY",
+        "clampedFrom": "BLOCK",
+        "hasRule": true,
+        "ruleId": 702,
+        "source": "RULE"
+      },
+      "guards": {
+        "emergencyCallActive": false,
+        "emergencyCallEndedAtMs": 1000000,
+        "firewallAvailable": true,
+        "firewallEnabled": true,
+        "nowMs": 1060000,
+        "safeMode": false
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-WAP-SUPL",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": "+15550001",
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "G-04 SUPL rule BLOCK inside the grace period",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "BLOCK",
+            "enabled": true,
+            "id": 702,
+            "name": "r702",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-WAP-SUPL"
+              ],
+              "originator": {
+                "op": "IS",
+                "value": "+15550001"
+              }
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "BLOCK",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": true,
+        "ruleId": 703,
+        "source": "RULE"
+      },
+      "guards": {
+        "emergencyCallActive": false,
+        "emergencyCallEndedAtMs": 0,
+        "firewallAvailable": true,
+        "firewallEnabled": true,
+        "nowMs": 360000,
+        "safeMode": false
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-WAP-SUPL",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": "+15550001",
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "G-04 SUPL rule BLOCK after the grace period",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "BLOCK",
+            "enabled": true,
+            "id": 703,
+            "name": "r703",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-WAP-SUPL"
+              ],
+              "originator": {
+                "op": "IS",
+                "value": "+15550001"
+              }
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "ALLOW",
+        "clampReason": "SUPL_EMERGENCY",
+        "clampedFrom": "NOTIFY",
+        "hasRule": false,
+        "ruleId": null,
+        "source": "CLASS_ACTION"
+      },
+      "guards": {
+        "emergencyCallActive": true,
+        "emergencyCallEndedAtMs": -1,
+        "firewallAvailable": true,
+        "firewallEnabled": true,
+        "nowMs": 0,
+        "safeMode": false
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-WAP-SUPL",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": null,
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "G-04 SUPL NOTIFY is clamped too during an emergency call",
+      "snapshot": {
+        "classActions": {
+          "CL-WAP-SUPL": "NOTIFY"
+        },
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "ALLOW",
+        "clampReason": "SUPL_EMERGENCY",
+        "clampedFrom": "QUARANTINE",
+        "hasRule": false,
+        "ruleId": null,
+        "source": "CLASS_ACTION"
+      },
+      "guards": {
+        "emergencyCallActive": true,
+        "emergencyCallEndedAtMs": -1,
+        "firewallAvailable": true,
+        "firewallEnabled": true,
+        "nowMs": 0,
+        "safeMode": false
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-LOC-SUPL",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": null,
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "G-04 LOC-SUPL class action QUARANTINE during an emergency call",
+      "snapshot": {
+        "classActions": {
+          "CL-LOC-SUPL": "QUARANTINE"
+        },
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "ALLOW",
+        "clampReason": "SUPL_EMERGENCY",
+        "clampedFrom": "BLOCK",
+        "hasRule": true,
+        "ruleId": 702,
+        "source": "RULE"
+      },
+      "guards": {
+        "emergencyCallActive": false,
+        "emergencyCallEndedAtMs": 1000000,
+        "firewallAvailable": true,
+        "firewallEnabled": true,
+        "nowMs": 1060000,
+        "safeMode": false
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-LOC-SUPL",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": "+15550001",
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "G-04 LOC-SUPL rule BLOCK inside the grace period",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "BLOCK",
+            "enabled": true,
+            "id": 702,
+            "name": "r702",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-LOC-SUPL"
+              ],
+              "originator": {
+                "op": "IS",
+                "value": "+15550001"
+              }
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "BLOCK",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": true,
+        "ruleId": 703,
+        "source": "RULE"
+      },
+      "guards": {
+        "emergencyCallActive": false,
+        "emergencyCallEndedAtMs": 0,
+        "firewallAvailable": true,
+        "firewallEnabled": true,
+        "nowMs": 360000,
+        "safeMode": false
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-LOC-SUPL",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": "+15550001",
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "G-04 LOC-SUPL rule BLOCK after the grace period",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "BLOCK",
+            "enabled": true,
+            "id": 703,
+            "name": "r703",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-LOC-SUPL"
+              ],
+              "originator": {
+                "op": "IS",
+                "value": "+15550001"
+              }
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "ALLOW",
+        "clampReason": "SAFE_MODE",
+        "clampedFrom": "BLOCK",
+        "hasRule": false,
+        "ruleId": null,
+        "source": "CLASS_ACTION"
+      },
+      "guards": {
+        "emergencyCallActive": false,
+        "emergencyCallEndedAtMs": -1,
+        "firewallAvailable": true,
+        "firewallEnabled": true,
+        "nowMs": 0,
+        "safeMode": true
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-WAP-CP",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": null,
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "safe mode clamps a class-action BLOCK",
+      "snapshot": {
+        "classActions": {
+          "CL-WAP-CP": "BLOCK"
+        },
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "ALLOW",
+        "clampReason": "SAFE_MODE",
+        "clampedFrom": "QUARANTINE",
+        "hasRule": true,
+        "ruleId": 704,
+        "source": "RULE"
+      },
+      "guards": {
+        "emergencyCallActive": false,
+        "emergencyCallEndedAtMs": -1,
+        "firewallAvailable": true,
+        "firewallEnabled": true,
+        "nowMs": 0,
+        "safeMode": true
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-WAP-DM",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": "+15550001",
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "safe mode clamps a rule QUARANTINE",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "QUARANTINE",
+            "enabled": true,
+            "id": 704,
+            "name": "r704",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-WAP-DM"
+              ],
+              "originator": {
+                "op": "IS",
+                "value": "+15550001"
+              }
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "NOTIFY",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": false,
+        "ruleId": null,
+        "source": "CLASS_ACTION"
+      },
+      "guards": {
+        "emergencyCallActive": false,
+        "emergencyCallEndedAtMs": -1,
+        "firewallAvailable": true,
+        "firewallEnabled": true,
+        "nowMs": 0,
+        "safeMode": true
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-WAP-CP",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": null,
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "safe mode keeps NOTIFY",
+      "snapshot": {
+        "classActions": {
+          "CL-WAP-CP": "NOTIFY"
+        },
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "ALLOW",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": false,
+        "ruleId": null,
+        "source": "CLASS_ACTION"
+      },
+      "guards": {
+        "emergencyCallActive": false,
+        "emergencyCallEndedAtMs": -1,
+        "firewallAvailable": true,
+        "firewallEnabled": true,
+        "nowMs": 0,
+        "safeMode": true
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-WAP-CP",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": null,
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "safe mode leaves ALLOW alone",
+      "snapshot": {
+        "classActions": {
+          "CL-WAP-CP": "ALLOW"
+        },
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "ALLOW",
+        "clampReason": "FIREWALL_OFF",
+        "clampedFrom": "BLOCK",
+        "hasRule": false,
+        "ruleId": null,
+        "source": "CLASS_ACTION"
+      },
+      "guards": {
+        "emergencyCallActive": false,
+        "emergencyCallEndedAtMs": -1,
+        "firewallAvailable": true,
+        "firewallEnabled": false,
+        "nowMs": 0,
+        "safeMode": false
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-WAP-CP",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": null,
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "firewall disabled clamps BLOCK",
+      "snapshot": {
+        "classActions": {
+          "CL-WAP-CP": "BLOCK"
+        },
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "ALLOW",
+        "clampReason": "FIREWALL_OFF",
+        "clampedFrom": "QUARANTINE",
+        "hasRule": false,
+        "ruleId": null,
+        "source": "CLASS_ACTION"
+      },
+      "guards": {
+        "emergencyCallActive": false,
+        "emergencyCallEndedAtMs": -1,
+        "firewallAvailable": false,
+        "firewallEnabled": false,
+        "nowMs": 0,
+        "safeMode": false
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-DATA-PORT",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": null,
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "firewall unavailable clamps QUARANTINE",
+      "snapshot": {
+        "classActions": {
+          "CL-DATA-PORT": "QUARANTINE"
+        },
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "NOTIFY",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": false,
+        "ruleId": null,
+        "source": "CLASS_ACTION"
+      },
+      "guards": {
+        "emergencyCallActive": false,
+        "emergencyCallEndedAtMs": -1,
+        "firewallAvailable": false,
+        "firewallEnabled": false,
+        "nowMs": 0,
+        "safeMode": false
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-WAP-CP",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": null,
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "firewall off keeps NOTIFY",
+      "snapshot": {
+        "classActions": {
+          "CL-WAP-CP": "NOTIFY"
+        },
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "ALLOW",
+        "clampReason": "EMERGENCY_CB",
+        "clampedFrom": "BLOCK",
+        "hasRule": false,
+        "ruleId": null,
+        "source": "CLASS_ACTION"
+      },
+      "guards": {
+        "emergencyCallActive": false,
+        "emergencyCallEndedAtMs": -1,
+        "firewallAvailable": false,
+        "firewallEnabled": false,
+        "nowMs": 0,
+        "safeMode": true
+      },
+      "input": {
+        "cbEmergency": true,
+        "classId": "CL-CB",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": null,
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "clamp order: emergency CB beats safe mode and firewall off",
+      "snapshot": {
+        "classActions": {
+          "CL-CB": "BLOCK"
+        },
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "ALLOW",
+        "clampReason": "SAFE_MODE",
+        "clampedFrom": "BLOCK",
+        "hasRule": false,
+        "ruleId": null,
+        "source": "CLASS_ACTION"
+      },
+      "guards": {
+        "emergencyCallActive": false,
+        "emergencyCallEndedAtMs": -1,
+        "firewallAvailable": false,
+        "firewallEnabled": false,
+        "nowMs": 0,
+        "safeMode": true
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-WAP-CP",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": null,
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "clamp order: safe mode beats firewall off",
+      "snapshot": {
+        "classActions": {
+          "CL-WAP-CP": "BLOCK"
+        },
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "ALLOW",
+        "clampReason": "ACTION_NOT_ALLOWED",
+        "clampedFrom": "BLOCK",
+        "hasRule": false,
+        "ruleId": null,
+        "source": "CLASS_ACTION"
+      },
+      "guards": {
+        "emergencyCallActive": false,
+        "emergencyCallEndedAtMs": -1,
+        "firewallAvailable": true,
+        "firewallEnabled": true,
+        "nowMs": 0,
+        "safeMode": true
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-SILENT",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": null,
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "clamp order: action-not-allowed beats safe mode",
+      "snapshot": {
+        "classActions": {
+          "CL-SILENT": "BLOCK"
+        },
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "ALLOW",
+        "clampReason": "BLOCKS_ALL_NORMAL",
+        "clampedFrom": "BLOCK",
+        "hasRule": true,
+        "ruleId": 705,
+        "source": "RULE"
+      },
+      "guards": {
+        "emergencyCallActive": false,
+        "emergencyCallEndedAtMs": -1,
+        "firewallAvailable": true,
+        "firewallEnabled": true,
+        "nowMs": 0,
+        "safeMode": true
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-NORMAL",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": null,
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "clamp order: G-05 beats safe mode",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "BLOCK",
+            "enabled": true,
+            "id": 705,
+            "name": "r705",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-NORMAL"
+              ]
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "ALLOW",
+        "clampReason": "BLOCKS_ALL_NORMAL",
+        "clampedFrom": "BLOCK",
+        "hasRule": true,
+        "ruleId": 706,
+        "source": "RULE"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-NORMAL",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": null,
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "G-05 CL-NORMAL BLOCK without a condition is rejected",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "BLOCK",
+            "enabled": true,
+            "id": 706,
+            "name": "r706",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-NORMAL"
+              ]
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "ALLOW",
+        "clampReason": "BLOCKS_ALL_NORMAL",
+        "clampedFrom": "QUARANTINE",
+        "hasRule": true,
+        "ruleId": 707,
+        "source": "RULE"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-NORMAL",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": null,
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "G-05 CL-NORMAL QUARANTINE without a condition is rejected",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "QUARANTINE",
+            "enabled": true,
+            "id": 707,
+            "name": "r707",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-NORMAL"
+              ]
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "BLOCK",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": true,
+        "ruleId": 708,
+        "source": "RULE"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-NORMAL",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": "+15550001",
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "G-05 CL-NORMAL BLOCK with a sender condition is allowed",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "BLOCK",
+            "enabled": true,
+            "id": 708,
+            "name": "r708",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-NORMAL"
+              ],
+              "originator": {
+                "op": "IS",
+                "value": "+15550001"
+              }
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "QUARANTINE",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": true,
+        "ruleId": 709,
+        "source": "RULE"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-NORMAL",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": null,
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": "you won a PRIZE"
+      },
+      "name": "G-05 CL-NORMAL QUARANTINE with a text condition is allowed",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "QUARANTINE",
+            "enabled": true,
+            "id": 709,
+            "name": "r709",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-NORMAL"
+              ],
+              "textContains": "prize"
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "NOTIFY",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": true,
+        "ruleId": 710,
+        "source": "RULE"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-NORMAL",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": null,
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "G-05 CL-NORMAL NOTIFY needs no condition",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "NOTIFY",
+            "enabled": true,
+            "id": 710,
+            "name": "r710",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-NORMAL"
+              ]
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "ALLOW",
+        "clampReason": "ACTION_NOT_ALLOWED",
+        "clampedFrom": "BLOCK",
+        "hasRule": true,
+        "ruleId": 711,
+        "source": "RULE"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-SILENT",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": "+15550001",
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "a clamped rule still reports hasRule and its ruleId",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "BLOCK",
+            "enabled": true,
+            "id": 711,
+            "name": "r711",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-SILENT"
+              ],
+              "originator": {
+                "op": "IS",
+                "value": "+15550001"
+              }
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "ALLOW",
+        "clampReason": "EMERGENCY_CB",
+        "clampedFrom": "QUARANTINE",
+        "hasRule": false,
+        "ruleId": null,
+        "source": "CLASS_ACTION"
+      },
+      "input": {
+        "cbEmergency": true,
+        "classId": "CL-WAP-CP",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": null,
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "G-01 emergency CB flag clamps whatever class was predicted",
+      "snapshot": {
+        "classActions": {
+          "CL-WAP-CP": "QUARANTINE"
+        },
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "ALLOW",
+        "clampReason": "BLOCKS_ALL_NORMAL",
+        "clampedFrom": "BLOCK",
+        "hasRule": true,
+        "ruleId": 911,
+        "source": "RULE"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-NORMAL",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": "+15550002",
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "G-05 CL-NORMAL BLOCK with an IS_NOT sender condition is rejected",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "BLOCK",
+            "enabled": true,
+            "id": 911,
+            "name": "r911",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-NORMAL"
+              ],
+              "originator": {
+                "op": "IS_NOT",
+                "value": "+15550001"
+              }
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "ALLOW",
+        "clampReason": "BLOCKS_ALL_NORMAL",
+        "clampedFrom": "BLOCK",
+        "hasRule": true,
+        "ruleId": 912,
+        "source": "RULE"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-NORMAL",
+        "contentType": null,
+        "destPort": 2948,
+        "direction": "IN",
+        "originator": "+15550002",
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "G-05 CL-NORMAL BLOCK with the full port range is rejected",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "BLOCK",
+            "enabled": true,
+            "id": 912,
+            "name": "r912",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-NORMAL"
+              ],
+              "port": {
+                "from": 0,
+                "to": 65535
+              }
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "ALLOW",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": false,
+        "ruleId": null,
+        "source": "DEFAULT"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-NORMAL",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": "+15550002",
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "G-05 CL-NORMAL BLOCK with a prefix that normalises to empty is skipped (fail open)",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "BLOCK",
+            "enabled": true,
+            "id": 913,
+            "name": "r913",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-NORMAL"
+              ],
+              "originator": {
+                "op": "PREFIX",
+                "value": "00"
+              }
+            }
+          }
+        ],
+        "schema": 1
+      }
+    },
+    {
+      "expected": {
+        "action": "ALLOW",
+        "clampReason": null,
+        "clampedFrom": null,
+        "hasRule": false,
+        "ruleId": null,
+        "source": "DEFAULT"
+      },
+      "input": {
+        "cbEmergency": false,
+        "classId": "CL-NORMAL",
+        "contentType": null,
+        "destPort": -1,
+        "direction": "IN",
+        "originator": "+15550002",
+        "roaming": false,
+        "slot": -1,
+        "smsc": null,
+        "text": null
+      },
+      "name": "G-05 CL-NORMAL BLOCK with a port outside 0..65535 is skipped (fail open)",
+      "snapshot": {
+        "classActions": {},
+        "guards": {
+          "suplGraceMin": 5
+        },
+        "knownOriginators": {
+          "exact": [],
+          "prefix": []
+        },
+        "preset": "CUSTOM",
+        "revision": 0,
+        "rules": [
+          {
+            "action": "BLOCK",
+            "enabled": true,
+            "id": 914,
+            "name": "r914",
+            "origin": "USER",
+            "priority": 0,
+            "when": {
+              "classes": [
+                "CL-NORMAL"
+              ],
+              "port": {
+                "from": -1,
+                "to": -1
+              }
+            }
+          }
+        ],
+        "schema": 1
+      }
+    }
+  ]
+}

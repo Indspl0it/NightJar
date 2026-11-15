@@ -1,0 +1,66 @@
+name: Bug report
+description: Something is wrong with Nightjar (not a security problem)
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not paste a real SMS body, a full phone number, or anything from a bank/2FA message. Redact first.
+        For a security problem use GitHub's private vulnerability reporting instead.
+  - type: input
+    id: version
+    attributes:
+      label: Nightjar version
+      description: From Settings > About in the app, or the Versions card of the Health screen.
+    validations:
+      required: true
+  - type: input
+    id: fingerprint
+    attributes:
+      label: Build fingerprint
+      description: Output of `adb shell getprop ro.build.fingerprint`.
+    validations:
+      required: true
+  - type: dropdown
+    id: root
+    attributes:
+      label: Root manager
+      options:
+        - Magisk (Zygisk)
+        - KernelSU + ZygiskNext
+        - APatch + ZygiskNext
+        - Other
+    validations:
+      required: true
+  - type: dropdown
+    id: xposed
+    attributes:
+      label: Xposed framework
+      description: NightJar is an Xposed module. It needs Vector or LSPosed with the scope Phone Services (com.android.phone).
+      options:
+        - Vector
+        - LSPosed
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: xposed-version
+    attributes:
+      label: Xposed framework version
+      description: From the manager app of Vector or LSPosed.
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected, what you saw. Include the hook IDs from Protection health if they are relevant.
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Diagnostics
+      description: Attach the masked diagnostics bundle from Settings → Diagnostics. It contains no message text or full numbers.
+    validations:
+      required: false

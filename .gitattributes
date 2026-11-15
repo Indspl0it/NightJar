@@ -1,0 +1,19 @@
+* text=auto
+
+# Source files keep LF on every checkout.
+*.java       text eol=lf
+*.kt         text eol=lf
+*.kts        text eol=lf
+*.py         text eol=lf
+*.sh         text eol=lf
+*.prop       text eol=lf
+*.properties text eol=lf
+gradlew      text eol=lf
+*.bat        text eol=crlf
+
+# Binary files
+*.jar  binary
+*.png  binary
+*.webp binary
+*.dex  binary
+*.zip  binary

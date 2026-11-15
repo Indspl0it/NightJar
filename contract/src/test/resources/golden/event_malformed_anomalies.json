@@ -1,0 +1,30 @@
+{
+  "eventId": "3d9a6b52-71c4-4e0b-8f2a-5b1e6c0d4a22",
+  "revision": 1,
+  "sessionId": "s-0001",
+  "direction": "IN",
+  "transport": "CS",
+  "source": 0,
+  "subId": 1,
+  "slot": 0,
+  "pdus": ["AAEC"],
+  "format": "3gpp",
+  "parts": [{ "seq": 1, "tNs": 0 }],
+  "receivedAtWall": 1762330933000,
+  "receivedAtElapsedNs": 98767000000,
+  "ackResult": 1,
+  "provisionalClass": "CL-MALFORMED-SMS",
+  "finalClass": "CL-MALFORMED-SMS",
+  "subtype": "AN-UDH-LEN",
+  "anomalies": ["AN-UDH-LEN", "AN-DCS-RSV"],
+  "verdict": { "action": "BLOCK" },
+  "fate": "FT-BLOCKED",
+  "trace": [
+    { "stage": "radio.cs.newSms", "tNs": 0, "detail": "len=3 phone=0" },
+    { "stage": "fate", "tNs": 100000, "detail": "FT-BLOCKED" }
+  ],
+  "flags": { "selfTest": false, "replay": false, "debug": false },
+  "env": { "roaming": false, "emergencyCallActive": false, "userUnlocked": true, "bootCount": 12 },
+  "payloadVersion": "0.1.0",
+  "buildFingerprint": "google/akita/akita:17/CP3A.261005.005/16271449"
+}

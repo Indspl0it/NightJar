@@ -1,0 +1,30 @@
+{
+  "eventId": "8c41f0d2-5a7e-4b19-9e63-0d2f7a1c9b54",
+  "revision": 1,
+  "sessionId": "s-0001",
+  "direction": "IN",
+  "transport": "CS",
+  "source": 0,
+  "subId": 1,
+  "slot": 0,
+  "pdus": ["AAEC"],
+  "format": "3gpp",
+  "parts": [{ "seq": 1, "tNs": 0 }],
+  "receivedAtWall": 1762330934000,
+  "receivedAtElapsedNs": 98768000000,
+  "ackResult": 1,
+  "provisionalClass": "CL-UNREADABLE-SMS",
+  "finalClass": "CL-UNREADABLE-SMS",
+  "subtype": "AN-MTI",
+  "anomalies": ["AN-MTI"],
+  "verdict": { "action": "QUARANTINE" },
+  "fate": "FT-QUARANTINED",
+  "trace": [
+    { "stage": "radio.cs.newSms", "tNs": 0, "detail": "len=3 phone=0" },
+    { "stage": "fate", "tNs": 100000, "detail": "FT-QUARANTINED" }
+  ],
+  "flags": { "selfTest": false, "replay": false, "debug": false },
+  "env": { "roaming": false, "emergencyCallActive": false, "userUnlocked": true, "bootCount": 12 },
+  "payloadVersion": "0.1.0",
+  "buildFingerprint": "google/akita/akita:17/CP3A.261005.005/16271449"
+}

@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Protection. Keys prot_x_*. Copy standard: docs/copy-standard.md. -->
+    <string name="prot_x_title">Protection</string>
+    <string name="prot_x_reason_locked">Allow is the only action for this type.</string>
+    <string name="prot_x_reason_no_block">NightJar cannot block this type.</string>
+    <!-- A type that no hook can hold or block (voicemail control, missed call, app code, carrier, chat setup, phone maker). -->
+    <string name="prot_x_reason_not_enforced">NightJar cannot hold or block this type. Use the row of the type that it arrives as, for example Data message to a port.</string>
+    <string name="prot_x_emergency_reason">NightJar cannot block or hold emergency alerts.</string>
+    <string name="prot_x_cd_actions">%1$s action</string>
+
+    <string name="prot_x_desc_silent">This message has no text. The phone only sends a confirmation to the network.</string>
+    <string name="prot_x_desc_flash">Shows on the screen. Android does not save it.</string>
+    <string name="prot_x_desc_replace">Replaces an earlier message in your messaging app.</string>
+    <string name="prot_x_desc_mwi">Turns the voicemail indicator on or off.</string>
+    <string name="prot_x_desc_vvm">Controls visual voicemail on your phone.</string>
+    <string name="prot_x_desc_missed_call">Tells you about a call that you missed.</string>
+    <string name="prot_x_desc_carrier">A message from your mobile carrier.</string>
+    <string name="prot_x_desc_rcs_prov">Configures chat features on your phone.</string>
+    <string name="prot_x_desc_app_token">A code that an app receives by message.</string>
+    <string name="prot_x_desc_data_port">A message for an app, sent to a data port.</string>
+    <string name="prot_x_desc_wap_mms">Tells the phone that a picture message is ready.</string>
+    <string name="prot_x_desc_wap_sisl">A push message that opens a web link.</string>
+    <string name="prot_x_desc_wap_cp">Tries to change your network settings.</string>
+    <string name="prot_x_desc_wap_dm">Asks your phone to contact a device management server.</string>
+    <string name="prot_x_desc_wap_supl">Asks the phone for its location.</string>
+    <string name="prot_x_desc_wap_other">A push message of another type.</string>
+    <string name="prot_x_desc_sim_dd">The network sends data to your SIM.</string>
+    <string name="prot_x_desc_cb">A broadcast message from the network.</string>
+    <string name="prot_x_desc_oem">A message for the software of the phone maker.</string>
+    <string name="prot_x_desc_injected">A message that an app added to your messages.</string>
+
+    <!-- The switch on a type card that shows only on Allow. On = "Allow and notify" (NOTIFY). -->
+    <string name="prot_x_notify_me">Notify me</string>
+
+    <!-- ============================== Values ============================== -->
+    <!-- ============================== Protection Firewall ============================== -->
+    <string name="preset">Preset</string>
+    <string name="preset_monitor">Monitor</string>
+    <string name="preset_recommended">Recommended</string>
+    <string name="preset_strict">Strict</string>
+    <string name="preset_quarantine">Quarantine</string>
+    <string name="preset_custom">Custom</string>
+    <string name="preset_label">Preset: %1$s</string>
+    <string name="preset_desc_monitor">NightJar records all messages. NightJar blocks nothing.</string>
+    <string name="preset_desc_recommended">NightJar records all messages. It holds or blocks the hidden message types that can be a risk. It notifies you about suspicious messages.</string>
+    <string name="preset_desc_strict">NightJar allows regular SMS and emergency alerts. It holds flash SMS, voicemail indicators, MMS, email and DRM notifications, and data messages to unknown ports. It blocks the other types that it can block. It notifies you about the remaining types and about unusual messages.</string>
+    <string name="preset_desc_quarantine">NightJar holds every type that it can hold, except regular SMS and emergency alerts. It blocks or notifies you about the other types.</string>
+    <string name="preset_desc_custom">Your own actions and rules.</string>
+    <string name="firewall_custom_rules">Custom rules (%1$d)</string>
+    <string name="firewall_new_rule">New rule</string>
+    <string name="firewall_emergency">Emergency alerts</string>
+    <string name="firewall_emergency_explained">NightJar can never block or hold emergency alerts. NightJar still records them.</string>
+    <string name="firewall_reason_hooks">A blocking hook failed to load, so NightJar cannot block messages.</string>
+    <string name="firewall_reason_not_active">The NightJar module is not active yet. Turn on NightJar in Vector or LSPosed. Then reboot the phone.</string>
+    <string name="firewall_reason_safe_mode">Safe mode is on, so NightJar paused blocking.</string>
+    <string name="action_allow">Allow</string>
+    <string name="action_notify">Allow and notify</string>
+    <string name="action_quarantine">Hold</string>
+    <string name="action_block">Block</string>
+    <string name="action_desc_allow">NightJar records it. Nothing else happens.</string>
+    <string name="action_desc_notify">NightJar records it and notifies you, based on its severity.</string>
+    <string name="action_desc_quarantine">NightJar holds it until you decide. No other app receives it.</string>
+    <string name="action_desc_block">NightJar blocks it before any app sees it.</string>
+    <string name="guard_consumer_title">This may break %1$s</string>
+    <string name="guard_consumer_body">If NightJar blocks this type, %1$s does not work as intended. Calls and normal messages still work.</string>
+    <!-- Short per-class row labels (the long titles carry placeholders that a list row cannot fill). -->
+    <string name="class_settings_push">Settings push</string>
+    <string name="class_device_management">Device management request</string>
+    <string name="class_location_request">Location request</string>
+    <string name="class_web_link">Web link push</string>
+    <string name="class_mms">MMS notification</string>
+    <string name="class_push_other">Other push message</string>
+    <string name="class_sim_update">SIM update</string>
+    <string name="class_silent_ping">Silent SMS (Type 0)</string>
+    <string name="class_flash">Flash SMS (Class 0)</string>
+    <string name="class_replace">Replacement message</string>
+    <string name="class_mwi">Voicemail indicator</string>
+    <string name="class_vvm">Voicemail control</string>
+    <string name="class_missed_call">Missed-call notice</string>
+    <string name="class_carrier">Carrier app message</string>
+    <string name="class_rcs_setup">Chat (RCS) setup</string>
+    <string name="class_app_token">App-only message</string>
+    <string name="class_data_port">Data message to a port</string>
+    <string name="class_broadcast">Broadcast</string>
+    <string name="class_oem">Handled by the phone maker</string>
+    <string name="class_injected">Added by an app</string>
+    <string name="class_normal">Normal message</string>
+    <string name="class_status">Delivery report</string>
+    <string name="class_sim_stored">Saved to the SIM</string>
+    <string name="class_mo_visible">Message sent and saved</string>
+    <string name="class_mo_unpersisted">Message sent, not saved</string>
+    <string name="class_mo_data">Data message sent</string>
+    <string name="class_mo_raw">Raw message sent</string>
+    <string name="class_mo_stk">Sent by the SIM</string>
+    <string name="class_mo_vvm">Voicemail setup sent</string>
+    <string name="class_return_call">Return call request</string>
+    <string name="class_me_download">Data download to the phone</string>
+    <string name="class_me_deperso">Phone unlock message</string>
+    <string name="class_class3">Message for a connected device</string>
+    <string name="class_telematic">Telematic message</string>
+    <string name="class_empty">Empty message</string>
+    <string name="class_binary">Binary message without a port</string>
+    <string name="class_compressed">Compressed message</string>
+    <string name="class_multipart_incomplete">Incomplete multipart message</string>
+    <string name="class_malformed_sms">Malformed SMS</string>
+    <string name="class_smart">Smart message</string>
+    <string name="class_loc_supl">Location request (SUPL)</string>
+    <string name="class_wap_co">Cache control push</string>
+    <string name="class_wap_ds">Data sync request</string>
+    <string name="class_wap_emn">Email notification</string>
+    <string name="class_wap_drm">DRM licence</string>
+    <string name="class_wap_vcard">Contact card push</string>
+    <string name="class_wap_imps">Chat service wake-up</string>
+    <string name="class_wap_unreadable">Malformed WAP push</string>
+    <string name="class_cb_sim">Cell broadcast for the SIM</string>
+    <!-- ============================== Settings Settings ============================== -->
+    <string name="group_messages">Messages</string>
+    <!-- Protection -->
+    <string name="prot_desc_normal">A normal message with text.</string>
+    <string name="prot_desc_sim_stored">The network tells the phone to keep the message on your SIM.</string>
+    <string name="prot_desc_status">A delivery report for a message that you sent.</string>
+    <string name="prot_desc_return_call">Asks you to call a number.</string>
+    <string name="prot_desc_me_download">Sends data to the phone, not to the SIM.</string>
+    <string name="prot_desc_me_deperso">Tries to unlock the phone from a network.</string>
+    <string name="prot_desc_class3">A message for a device that you connect to the phone.</string>
+    <string name="prot_desc_telematic">A message for a fax, a pager or a different type of device.</string>
+    <string name="prot_desc_empty">A message that has no content.</string>
+    <string name="prot_desc_binary">A message that has data and no text.</string>
+    <string name="prot_desc_compressed">A message that has compressed content.</string>
+    <string name="prot_desc_multipart_incomplete">A long message. Some parts did not arrive.</string>
+    <string name="prot_desc_malformed_sms">Cut address or too short. It can crash a phone.</string>
+    <string name="prot_desc_smart">Data for the phone, for example a ringtone or a contact card.</string>
+    <string name="prot_desc_loc_supl">Asks the phone for its location through a data port.</string>
+    <string name="prot_desc_wap_co">A push message that deletes web pages from the browser cache.</string>
+    <string name="prot_desc_wap_ds">Starts a sync of your contacts or calendar.</string>
+    <string name="prot_desc_wap_emn">Tells the phone that new email is available.</string>
+    <string name="prot_desc_wap_drm">Sends the rights for protected media files.</string>
+    <string name="prot_desc_wap_vcard">A push message with a contact card or a calendar entry.</string>
+    <string name="prot_desc_wap_imps">A push message for a chat service.</string>
+    <string name="prot_desc_wap_unreadable">A push message that NightJar cannot read.</string>
+    <string name="prot_desc_cb_sim">A broadcast message for your SIM.</string>
+    <string name="firewall_reason_not_enabled">You turned off blocking. NightJar records messages but does not block or hold them. Use the Blocking switch to turn it on again.</string>
+    <string name="firewall_not_sent">NightJar saved the change. The phone service did not receive it. NightJar sends it again when the phone service connects.</string>
+    <string name="firewall_off_title">Turn off blocking?</string>
+    <string name="firewall_off_body">NightJar will record messages but will not block or hold them.</string>
+    <string name="firewall_off_confirm">Turn off</string>
+    <string name="firewall_off_cancel">Cancel</string>
+    <!-- Short type names of the Protection rows. Other screens keep class_*. -->
+    <string name="prot_silent">Silent SMS</string>
+    <string name="prot_flash">Flash SMS</string>
+    <string name="firewall_class_unreadable_sms">Unreadable SMS</string>
+    <!-- The summary line of the row on the Protection screen. -->
+    <string name="firewall_prot_desc_unreadable_sms">Wrong message type. NightJar cannot check it.</string>
+    <!-- Protection screen. The top card title, and the "why" line that a tap on a type name shows. -->
+    <string name="prot_blocking">Blocking</string>
+    <string name="prot_why_no_hold">NightJar cannot release this type later, so it cannot hold it.</string>
+    <string name="prot_why_allow_notify">NightJar can only allow this type. Select the bell to get a notification for each message.</string>
+    <!-- What NightJar cannot see. One row for each limit: title, one line, and 1 or 2 more sentences. -->
+    <string name="blindspot_intro">NightJar sees only what reaches Android.</string>
+    <string name="blindspot_modem_title">Modem-only messages</string>
+    <string name="blindspot_modem_line">The modem answers them alone.</string>
+    <string name="blindspot_modem_more">Some networks send messages that the modem of the phone answers. The modem does not tell Android, so NightJar cannot see or block these messages.</string>
+    <string name="blindspot_rcs_title">RCS chats</string>
+    <string name="blindspot_rcs_line">They use the internet, not SMS.</string>
+    <string name="blindspot_rcs_more">Google Messages sends RCS chats over the internet. NightJar monitors only SMS, so it does not see RCS chats.</string>
+    <string name="blindspot_delivery_title">After delivery</string>
+    <string name="blindspot_delivery_line">The receiving app decides what to show.</string>
+    <string name="blindspot_delivery_more">NightJar records when Android gives a message to an app. NightJar does not record what the app does with the message after that.</string>
+    <string name="blindspot_unlock_title">Before the first unlock</string>
+    <string name="blindspot_unlock_line">Notifications wait for the unlock.</string>
+    <string name="blindspot_unlock_more">NightJar records messages that arrive before you unlock the phone. Notifications cannot show the content of these messages until you unlock the phone.</string>
+    <string name="blindspot_oneplus_title">OnePlus and Oppo</string>
+    <string name="blindspot_oneplus_line">The phone maker\'s service sees it first.</string>
+    <string name="blindspot_oneplus_more">Some OnePlus and Oppo builds send messages through their own service first. NightJar then reports the message as handled by the phone maker.</string>
+</resources>

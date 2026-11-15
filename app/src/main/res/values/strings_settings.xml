@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copy for the settings screens added by the redesign. Names are prefixed nj_set_.
+  Text follows the copy standard (ASD-STE100).
+-->
+<resources>
+
+    <string name="nj_set_appearance_preview_title">Preview</string>
+    <string name="nj_set_appearance_preview_headline">Protected</string>
+    <string name="nj_set_appearance_preview_sub">47 hidden messages this week</string>
+    <string name="nj_set_appearance_preview_action">Open</string>
+    <string name="nj_set_appearance_preview_cd">Preview of the colours and surfaces you chose</string>
+
+    <string name="nj_set_appearance_section_theme">Theme</string>
+    <string name="nj_set_appearance_colour">Colour theme</string>
+    <string name="nj_set_appearance_section_colour">Colour</string>
+    <string name="nj_set_appearance_wallpaper">Wallpaper colours</string>
+    <string name="nj_set_appearance_wallpaper_sub">Use colours from your wallpaper.</string>
+    <string name="nj_set_appearance_true_black">True black</string>
+    <string name="nj_set_appearance_true_black_sub">Use a black background in dark mode.</string>
+
+    <string name="nj_set_accent_night_blue">Night blue</string>
+    <string name="nj_set_accent_moss">Moss</string>
+    <string name="nj_set_accent_ember">Ember</string>
+    <string name="nj_set_accent_orchid">Orchid</string>
+    <string name="nj_set_accent_mono">Mono</string>
+
+
+    <string name="nj_set_appearance_section_motion">Motion</string>
+    <string name="nj_set_appearance_list_animations">List animations</string>
+    <string name="nj_set_appearance_list_animations_sub">Animate list items when they appear.</string>
+    <string name="nj_set_appearance_bounce">Bounce at list end</string>
+    <string name="nj_set_appearance_bounce_sub">Lists bounce when you scroll past the end.</string>
+    <string name="nj_set_appearance_reduce_motion">Reduce motion</string>
+    <string name="nj_set_appearance_reduce_motion_sub">Turn off most animations. NightJar also follows the Android setting.</string>
+    <string name="nj_set_appearance_haptics">Haptic feedback</string>
+    <string name="nj_set_appearance_haptics_sub">The phone vibrates a little when you press a control.</string>
+
+    <!-- Settings home: groups, rows and search. -->
+    <string name="nj_set_group_protection">Protection</string>
+    <string name="nj_set_group_data">Data and storage</string>
+    <string name="nj_set_group_diagnostics">Diagnostics</string>
+    <string name="nj_set_row_notify_more">Frequency and channels</string>
+    <string name="nj_set_row_safe_mode_sub">NightJar blocks no messages. NightJar still records them.</string>
+    <string name="nj_set_search_hint">Search settings</string>
+    <string name="nj_set_search_empty_title">No settings found</string>
+    <string name="nj_set_search_empty_body">Use a different word.</string>
+
+    <!-- "Apps that send SMS" (Settings > Outgoing messages). -->
+    <string name="settings_sending_apps">Apps that send messages</string>
+    <string name="settings_sending_apps_intro">These apps sent messages from this phone. To block messages from an app, turn on its switch. The block works only when Outgoing monitor is on, safe mode is off and blocking is on.</string>
+    <string name="settings_sending_apps_empty">No app sent a message yet.</string>
+    <!-- A blocked app that has no stored sent SMS any more (retention or Delete all removed them). -->
+    <string name="settings_sending_apps_none_stored">No recorded messages</string>
+    <!-- %1$s = the app label, for example "Messages". -->
+    <string name="settings_sending_apps_block_title">Block messages from %1$s?</string>
+    <!-- OutboundGate blocks every SMS of a blocked app, also normal saved texts. Emergency numbers still go out. The app gets RESULT_ERROR_GENERIC_FAILURE. -->
+    <string name="settings_sending_apps_block_body">NightJar blocks every message that this app sends. The app may show a send error. The phone still sends messages to emergency numbers.</string>
+    <!-- Added to the confirm when the app is the default SMS app (RoleManager ROLE_SMS holder). -->
+    <string name="settings_sending_apps_block_default">This is your messaging app. After you block it, you cannot send messages from it.</string>
+    <string name="settings_sending_apps_block_confirm">Block</string>
+    <string name="nj_set_appearance_floating_bar">Floating bar</string>
+    <string name="nj_set_appearance_floating_bar_sub">Show the tab bar as a floating panel.</string>
+    <string name="nj_set_appearance_section_surfaces">Surfaces</string>
+    <string name="nj_set_row_appearance_sub">Theme, colour, surfaces and motion</string>
+    <string name="nj_set_row_notify_more_sub">Digest, notification limit and system channels</string>
+
+    <string name="settings_save_failed">NightJar cannot save the setting. Try again.</string>
+    <string name="settings_saved">Saved</string>
+    <string name="settings_minutes_suffix">min</string>
+    <string name="settings_retention_30">30 days</string>
+    <string name="settings_retention_90">90 days</string>
+    <string name="settings_retention_365">365 days</string>
+    <string name="settings_retention_forever">Forever</string>
+    <string name="settings_rate_limit">%1$d min</string>
+    <string name="settings_minutes">%1$d min</string>
+    <string name="settings_severity_default">Default</string>
+    <string name="settings_lock_immediately">Immediately</string>
+    <string name="settings_open_channel">Open channel settings</string>
+    <string name="settings_delete_all">Delete all data</string>
+    <string name="settings_delete_all_body">NightJar deletes messages, history and logs. NightJar keeps rules and settings. Type DELETE to continue.</string>
+    <string name="settings_delete_all_confirm">Delete everything</string>
+    <string name="settings_delete_all_hint">DELETE</string>
+    <string name="settings_delete_all_typing_error">Type DELETE to continue.</string>
+    <string name="settings_delete_all_done">NightJar deleted all captured data.</string>
+    <string name="settings_delete_all_failed">NightJar cannot delete the data. Try again.</string>
+    <string name="settings_remove_module">Turn off NightJar</string>
+    <string name="settings_restart_phone">Restart phone service</string>
+    <string name="settings_restart_done">The phone service restarted.</string>
+    <!-- Under the number field of a settings number dialog. %1$d = lowest, %2$d = highest value. -->
+    <string name="settings_number_range">From %1$d to %2$d</string>
+    <string name="settings_restart_failed">NightJar cannot restart the phone service: %1$s</string>
+    <string name="module_failure_root_denied">your root manager denied root access</string>
+    <string name="module_failure_cli_failed">the root command failed</string>
+    <string name="module_failure_checksum">the module file did not match its checksum</string>
+    <string name="module_failure_unreadable">NightJar could not read the module file</string>
+    <string name="settings_debug_window">NightJar turns it off after 24 hours.</string>
+    <string name="settings_retention_confirm">NightJar will delete messages older than %1$s now.</string>
+    <string name="settings_version">Version %1$s</string>
+    <string name="settings_severity_title">Severity for %1$s</string>
+    <string name="settings_export">Export</string>
+    <string name="settings_what_cant_see">What NightJar cannot see</string>
+    <string name="settings_audit_history">Audit history</string>
+    <string name="settings_view_logs">View logs</string>
+    <string name="settings_trusted_apps">Trusted apps</string>
+    <string name="settings_known_senders">Known senders</string>
+    <string name="settings_digest_daily">Daily</string>
+    <string name="settings_digest_off">Off</string>
+    <string name="settings_digest_weekly">Weekly</string>
+    <string name="settings_sending_apps_blocked">Sending blocked</string>
+    <!-- Custom rules -->
+    <string name="change_failed">NightJar did not save the change. Try again.</string>
+    <!-- Phone watchdog -->
+    <string name="watchdog_title">Phone service runs without NightJar</string>
+    <string name="watchdog_text">The phone service started again without the NightJar module. Open Protection status to restart the phone service.</string>
+    <string name="watchdog_restart">Restart phone service</string>
+    <string name="watchdog_blocked_call">You cannot restart the phone service during a call.</string>
+    <string name="watchdog_blocked_safe_mode">You cannot restart the phone service in safe mode.</string>
+</resources>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Nightjar" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/window_background_dark</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:enforceStatusBarContrast">false</item>
+        <item name="android:enforceNavigationBarContrast">false</item>
+        <!-- The system splash screen. The full round app logo on the dark app background, in light and dark
+             theme, because the logo itself is dark. The Compose launch screen (LaunchScreen.kt) then shows the logo at the
+             same place and size, with the name under it. -->
+        <item name="android:windowSplashScreenBackground">@color/window_background_dark</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/splash_logo</item>
+        <item name="android:windowSplashScreenIconBackgroundColor">#FF0E1626</item>
+    </style>
+</resources>

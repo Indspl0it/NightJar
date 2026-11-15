@@ -1,0 +1,54 @@
+{
+  "comment": "DET-02 TARs (Toolkit Application Reference, ETSI TS 101 220 Annex D, 3 octets) of SIM-toolkit applications that SIM-Trojan attacks use (S@T Browser for Simjacker, Wireless Internet Browser for WIBattack). Schema: tars = 6 hex digits each, an optional 0x prefix; entries and sources are documentation only and the app does not read them. A message to a listed TAR gets the DET_SIM_OTA_TAR sentence and stays Suspicious. Only TARs that both sources name are listed. The WIB TARs 000001 and 000002 are low values: a vendor can use them for a different applet, so a match is a strong sign, not a proof. Add a TAR only with a cited source.",
+  "schemaVersion": 1,
+  "tars": [
+    "505348",
+    "534054",
+    "000001",
+    "000002"
+  ],
+  "entries": [
+    {
+      "tar": "505348",
+      "application": "S@T Browser (TAR text 'PSH')",
+      "attack": "Simjacker",
+      "sources": ["srlabs-simtester", "360-simjacker"]
+    },
+    {
+      "tar": "534054",
+      "application": "S@T Browser (TAR text 'S@T')",
+      "attack": "Simjacker",
+      "sources": ["srlabs-simtester", "360-simjacker"]
+    },
+    {
+      "tar": "000001",
+      "application": "Wireless Internet Browser (WIB)",
+      "attack": "WIBattack",
+      "sources": ["srlabs-simtester", "360-simjacker"]
+    },
+    {
+      "tar": "000002",
+      "application": "Wireless Internet Browser (WIB)",
+      "attack": "WIBattack",
+      "sources": ["srlabs-simtester", "360-simjacker"]
+    }
+  ],
+  "sources": [
+    {
+      "id": "srlabs-simtester",
+      "title": "SIMTester, FuzzerFactory.java, list defaultTARs",
+      "issuer": "Security Research Labs (SRLabs)",
+      "date": "2022-10-27",
+      "url": "https://github.com/srlabs/SIMTester/blob/d197fefd0b05693147145f21b5390e8360a01b1a/SIMTester/src/de/srlabs/simtester/FuzzerFactory.java",
+      "cites": "The tool labels SAT:505348, SAT:534054 and WIB:000001 to WIB:000009 (also WIB:BFFF00 and higher). The list is a set of scan candidates, so only the TARs that the second source confirms are used."
+    },
+    {
+      "id": "360-simjacker",
+      "title": "深入分析Simjacker攻击：影响范围相对有限 (In-depth analysis of the Simjacker attack: the affected range is relatively limited)",
+      "issuer": "360 IoT Security Research Lab, published on secrss.com",
+      "date": "2019-10-09",
+      "url": "https://www.secrss.com/articles/14150",
+      "cites": "The S@T Browser uses TAR 0x505348 ('PSH') and 0x534054 ('S@T'). The WIB uses TAR 0x000001 and 0x000002."
+    }
+  ]
+}

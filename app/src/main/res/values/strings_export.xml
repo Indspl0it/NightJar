@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Export screen. -->
+<resources>
+    <!-- ============================== Export Export ============================== -->
+    <string name="export_scope">Scope</string>
+    <string name="export_scope_selection">Selection (%1$d)</string>
+    <string name="export_scope_filter">Current filter (%1$d)</string>
+    <string name="export_scope_all">Everything (%1$d)</string>
+    <string name="export_format">Format</string>
+    <string name="export_format_json">JSON</string>
+    <string name="export_format_pdu">PDU hex</string>
+    <string name="export_format_csv">CSV</string>
+    <string name="export_options">Options</string>
+    <string name="export_include_tree">Include decoded tree</string>
+    <string name="export_include_text">Include message text</string>
+    <string name="export_mask_numbers">Mask phone numbers</string>
+    <!-- The rule of the contract Masker: +91•••••210 keeps the country code and the last 3 digits. -->
+    <string name="export_mask_numbers_hint">NightJar keeps the first digits of the country code and the last three digits.</string>
+    <!-- Mask row when message text is on: masking also removes the raw message data (showsRawPdu). -->
+    <string name="export_export">Export…</string>
+    <string name="export_share">Share…</string>
+    <string name="export_progress">Exporting %1$d of %2$d</string>
+    <string name="export_cancel">Cancel export</string>
+    <string name="export_cancelled">Export cancelled.</string>
+    <string name="export_failed">NightJar cannot complete the export. Try again.</string>
+    <string name="export_open">Open</string>
+    <string name="export_share_title">Share export</string>
+    <string name="export_filter_hint">To export filtered messages, open Export from the filtered Messages list.</string>
+    <string name="export_include_text_hint">This is off until you turn it on. Anyone who gets the file can read the text.</string>
+    <string name="export_selection_hint">Select messages in the Messages screen. Then export the selection.</string>
+    <string name="export_tree_unavailable">NightJar adds a decoded tree only to JSON files with message text on and numbers not masked. A decoded tree can contain the sender and the message text.</string>
+    <string name="export_hex_hidden">The PDU contains the sender and the message text. When you mask numbers or do not include message text, NightJar shows only the length of each PDU.</string>
+</resources>

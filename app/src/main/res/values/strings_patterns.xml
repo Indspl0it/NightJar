@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copy for the suspicious patterns (PAT-01 to PAT-09). Names are prefixed pat_. Text follows the copy standard
+  (ASD-STE100). Each pat_* reason has a TextKey with the same name and the same {placeholders}; the TextKey template is
+  the English fallback. The detail screen lists the reasons under pat_detail_why.
+-->
+<resources>
+    <!-- Section title on the message detail screen, above the reasons. -->
+    <string name="pat_detail_why">Why NightJar marks this as suspicious</string>
+
+    <!-- 3 or more Type 0 messages from one sender in 60 minutes. -->
+    <string name="pat_silent_burst">Repeated silent SMS can show where a phone is.</string>
+    <!-- Type 0 from a sender that is not in Known senders. -->
+    <string name="pat_silent_unknown_sender">The sender is not in Known senders.</string>
+    <!-- Location request (SUPL) from a sender that is not a known carrier number. -->
+    <string name="pat_supl_unknown_sender">The sender is not a known carrier number.</string>
+    <!-- Settings push with security NOSEC or USERPIN from an unknown sender. -->
+    <string name="pat_cp_no_network_pin">A settings push without a network PIN came from an unknown sender.</string>
+    <!-- SIM OTA command for the S@T browser (Simjacker path). -->
+    <string name="pat_sim_browser_sat">A message sent a command to the S@T browser on the SIM.</string>
+    <!-- SIM OTA command for the WIB browser (WIBattack path). -->
+    <string name="pat_sim_browser_wib">A message sent a command to the WIB browser on the SIM.</string>
+    <!-- The SIM sent a message within 10 minutes after a SIM update. -->
+    <string name="pat_sim_sends_after_update">The SIM sent a message after it received an update. This is the Simjacker pattern.</string>
+    <!-- {count} is 3 or more. The window is always 24 hours. -->
+    <string name="pat_unknown_port_repeat">The same sender sent {count} messages to an unknown port in 24 hours.</string>
+    <!-- {count} is 2 or more. The window is always 10 minutes. -->
+    <string name="pat_malformed_burst">The same phone received {count} malformed messages in 10 minutes.</string>
+    <!-- Replacement message with no earlier message of the same replace type from the sender. -->
+    <string name="pat_replace_no_first">No earlier message of this type came from this sender.</string>
+</resources>

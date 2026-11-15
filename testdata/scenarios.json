@@ -1,0 +1,2885 @@
+{
+  "version": 1,
+  "anomalyNames": {
+    "AN-ADDR-TRUNC": "address cut off",
+    "AN-ADDR-LEN": "address too long",
+    "AN-ADDR-TOA": "unknown address type",
+    "AN-PDU-SHORT": "message too short",
+    "AN-MTI": "unknown message type",
+    "AN-PID-RSV": "unknown protocol identifier",
+    "AN-DCS-RSV": "unknown coding scheme",
+    "AN-UDL-LONG": "length is more than the data",
+    "AN-UDL-SHORT": "data is more than the length",
+    "AN-UDH-LEN": "header length is wrong",
+    "AN-IE-OVERRUN": "header element is too long",
+    "AN-IE-RSV": "unknown header element",
+    "AN-IE-DUP": "repeated port element",
+    "AN-PORT-ZERO": "port 0",
+    "AN-CONCAT-BAD": "bad multipart numbers",
+    "AN-CONCAT-DUP": "repeated multipart number",
+    "AN-WSP-TYPE": "unknown WSP type",
+    "AN-WSP-HLEN": "WSP header length is wrong",
+    "AN-WSP-CTYPE": "content type is unreadable",
+    "AN-WSP-APPID": "application ID is unreadable",
+    "AN-WBXML-VER": "unknown WBXML version",
+    "AN-WBXML-STR": "WBXML string table is wrong",
+    "AN-WBXML-TOK": "bad WBXML token",
+    "AN-OTA-HDR": "SIM command header is wrong"
+  },
+  "anomalyPolicy": {
+    "hard": [
+      "AN-ADDR-TRUNC",
+      "AN-ADDR-LEN",
+      "AN-PDU-SHORT",
+      "AN-MTI",
+      "AN-UDL-LONG",
+      "AN-UDH-LEN",
+      "AN-IE-OVERRUN"
+    ],
+    "wspHard": [
+      "AN-WSP-TYPE",
+      "AN-WSP-HLEN",
+      "AN-WSP-CTYPE"
+    ],
+    "soft": [
+      "AN-ADDR-TOA",
+      "AN-PID-RSV",
+      "AN-DCS-RSV",
+      "AN-UDL-SHORT",
+      "AN-IE-RSV",
+      "AN-IE-DUP",
+      "AN-PORT-ZERO",
+      "AN-CONCAT-BAD",
+      "AN-CONCAT-DUP",
+      "AN-WSP-APPID",
+      "AN-WBXML-VER",
+      "AN-WBXML-STR",
+      "AN-WBXML-TOK",
+      "AN-OTA-HDR"
+    ]
+  },
+  "scenarios": [
+    {
+      "id": "text-7bit",
+      "family": "text",
+      "title": "Text, GSM 7-bit",
+      "tier": 1,
+      "pdu": "059151551000040891515510240000621150214365220ED4F29C0E6A97E7F3F0B90C8A01",
+      "text": "Test message 1",
+      "expect": {
+        "class": "CL-NORMAL",
+        "subtype": null,
+        "severity": "Info",
+        "action": "Allow",
+        "title": "Normal message"
+      },
+      "spec": "3GPP TS 23.040 9.2.3.16, 3GPP TS 23.038 4"
+    },
+    {
+      "id": "text-multipart",
+      "family": "text",
+      "title": "Text, two parts",
+      "tier": 1,
+      "text": "Test message 1 Test message 1 Test message 1 Test message 1 Test message 1 Test message 1 Test message 1 Test message 1 Test message 1 Test message 1 Test message 2",
+      "parts": [
+        {
+          "text": "Test message 1 Test message 1 Test message 1 Test message 1 Test message 1 Test message 1 Test message 1 Test message 1 Test message 1 Test message 1 ",
+          "pdu": "059151551000440891515510240000621150214365229D0500032A0201A8E5391DD42ECFE7E17319140351CB733AA85D9ECFC3E7322806A296E77450BB3C9F87CF65500C442DCFE9A076793E0F9FCBA018885A9ED341EDF27C1E3E97413110B53CA783DAE5F93C7C2E8362206A794E07B5CBF379F85C06C540D4F29C0E6A97E7F3F0B90C8A81A8E5391DD42ECFE7E17319140351CB733AA85D9ECFC3E732280602"
+        },
+        {
+          "text": "Test message 2",
+          "pdu": "05915155100044089151551024000062115021436522150500032A0202A8E5391DD42ECFE7E173192403"
+        }
+      ],
+      "expect": {
+        "class": "CL-NORMAL",
+        "subtype": null,
+        "severity": "Info",
+        "action": "Allow",
+        "title": "Normal message"
+      },
+      "spec": "3GPP TS 23.040 9.2.3.24.1 (concatenation IE 0x00)"
+    },
+    {
+      "id": "text-ucs2",
+      "family": "text",
+      "title": "Text, UCS-2",
+      "tier": 1,
+      "pdu": "0591515510000408915155102400086211502143652212005400650073007400204E2D658700200031",
+      "text": "Test \u4e2d\u6587 1",
+      "expect": {
+        "class": "CL-NORMAL",
+        "subtype": null,
+        "severity": "Info",
+        "action": "Allow",
+        "title": "Normal message"
+      },
+      "spec": "3GPP TS 23.040 9.2.3.16, 3GPP TS 23.038 4"
+    },
+    {
+      "id": "multipart-incomplete",
+      "family": "text",
+      "title": "Multipart, part 2 never arrives",
+      "tier": 2,
+      "pdu": "05915155100044089151551024000062115021436522150500032B0201A8E5391DD42ECFE7E173191403",
+      "waitHours": 24,
+      "expect": {
+        "class": "CL-MULTIPART-INCOMPLETE",
+        "subtype": null,
+        "severity": "Notice",
+        "action": "Notify",
+        "title": "Incomplete multipart message"
+      },
+      "spec": "3GPP TS 23.040 9.2.3.24.1",
+      "note": "Send this part only. Do not send part 2. NightJar reports the class 24 hours after part 1."
+    },
+    {
+      "id": "data-port-2948-raw",
+      "family": "data-port",
+      "title": "Data to port 2948, not a WSP push",
+      "tier": 1,
+      "pdu": "059151551000440891515510240004621150214365220B0605040B840000DEADBEEF",
+      "port": 2948,
+      "payload": "DEADBEEF",
+      "expect": {
+        "class": "CL-WAP-UNREADABLE",
+        "subtype": "AN-WSP-TYPE",
+        "severity": "High",
+        "action": "Block",
+        "title": "Malformed WAP push: unknown WSP type",
+        "anomalies": [
+          "AN-WSP-TYPE"
+        ]
+      },
+      "spec": "WAP-230 8.2.1"
+    },
+    {
+      "id": "data-port-2949",
+      "family": "data-port",
+      "title": "8-bit data to port 2949",
+      "tier": 1,
+      "pdu": "059151551000440891515510240004621150214365220B0605040B85000001020304",
+      "port": 2949,
+      "payload": "01020304",
+      "expect": {
+        "class": "CL-DATA-PORT",
+        "subtype": "WAP-PUSH-SECURE",
+        "severity": "Notice",
+        "action": "Allow",
+        "title": "WAP push (secure)"
+      },
+      "spec": "IANA port 2949 (wap-pushsecure)"
+    },
+    {
+      "id": "data-port-9200",
+      "family": "data-port",
+      "title": "8-bit data to port 9200",
+      "tier": 1,
+      "pdu": "059151551000440891515510240004621150214365220B06050423F0000001020304",
+      "port": 9200,
+      "payload": "01020304",
+      "expect": {
+        "class": "CL-DATA-PORT",
+        "subtype": "WAP-CONNECTIONLESS-SESSION",
+        "severity": "Notice",
+        "action": "Allow",
+        "title": "WAP connectionless session"
+      },
+      "spec": "IANA port 9200 (wap-wsp)"
+    },
+    {
+      "id": "data-port-9201",
+      "family": "data-port",
+      "title": "8-bit data to port 9201",
+      "tier": 1,
+      "pdu": "059151551000440891515510240004621150214365220B06050423F1000001020304",
+      "port": 9201,
+      "payload": "01020304",
+      "expect": {
+        "class": "CL-DATA-PORT",
+        "subtype": "WAP-SESSION",
+        "severity": "Notice",
+        "action": "Allow",
+        "title": "WAP session"
+      },
+      "spec": "IANA port 9201",
+      "checkSpec": true
+    },
+    {
+      "id": "data-port-9202",
+      "family": "data-port",
+      "title": "8-bit data to port 9202",
+      "tier": 1,
+      "pdu": "059151551000440891515510240004621150214365220B06050423F2000001020304",
+      "port": 9202,
+      "payload": "01020304",
+      "expect": {
+        "class": "CL-DATA-PORT",
+        "subtype": "WAP-CONNECTIONLESS-SESSION-SECURE",
+        "severity": "Notice",
+        "action": "Allow",
+        "title": "WAP connectionless session (secure)"
+      },
+      "spec": "IANA port 9202",
+      "checkSpec": true
+    },
+    {
+      "id": "data-port-9203",
+      "family": "data-port",
+      "title": "8-bit data to port 9203",
+      "tier": 1,
+      "pdu": "059151551000440891515510240004621150214365220B06050423F3000001020304",
+      "port": 9203,
+      "payload": "01020304",
+      "expect": {
+        "class": "CL-DATA-PORT",
+        "subtype": "WAP-SESSION-SECURE",
+        "severity": "Notice",
+        "action": "Allow",
+        "title": "WAP session (secure)"
+      },
+      "spec": "IANA port 9203",
+      "checkSpec": true
+    },
+    {
+      "id": "data-port-9206",
+      "family": "data-port",
+      "title": "8-bit data to port 9206",
+      "tier": 1,
+      "pdu": "059151551000440891515510240004621150214365220B06050423F6000001020304",
+      "port": 9206,
+      "payload": "01020304",
+      "expect": {
+        "class": "CL-DATA-PORT",
+        "subtype": "WAP-VCARD-VCALENDAR",
+        "severity": "Notice",
+        "action": "Allow",
+        "title": "WAP vCard and vCalendar"
+      },
+      "spec": "IANA port 9206",
+      "checkSpec": true
+    },
+    {
+      "id": "data-port-9207",
+      "family": "data-port",
+      "title": "8-bit data to port 9207",
+      "tier": 1,
+      "pdu": "059151551000440891515510240004621150214365220B06050423F7000001020304",
+      "port": 9207,
+      "payload": "01020304",
+      "expect": {
+        "class": "CL-DATA-PORT",
+        "subtype": "WAP-VCARD-VCALENDAR",
+        "severity": "Notice",
+        "action": "Allow",
+        "title": "WAP vCard and vCalendar"
+      },
+      "spec": "IANA port 9207",
+      "checkSpec": true
+    },
+    {
+      "id": "data-port-5503",
+      "family": "data-port",
+      "title": "8-bit data to port 5503",
+      "tier": 1,
+      "pdu": "059151551000440891515510240004621150214365220B060504157F000001020304",
+      "port": 5503,
+      "payload": "01020304",
+      "expect": {
+        "class": "CL-DATA-PORT",
+        "subtype": "INTERNET-ACCESS-CONFIG",
+        "severity": "Notice",
+        "action": "Notify",
+        "title": "Internet access configuration"
+      },
+      "spec": "JSR 120 (WMA 1.1) Appendix A, restricted port 5503",
+      "note": "The payload is dummy bytes. The port carries phone settings, so the default action is Notify."
+    },
+    {
+      "id": "data-port-49996",
+      "family": "data-port",
+      "title": "8-bit data to port 49996",
+      "tier": 1,
+      "pdu": "059151551000440891515510240004621150214365220B060504C34C000001020304",
+      "port": 49996,
+      "payload": "01020304",
+      "expect": {
+        "class": "CL-DATA-PORT",
+        "subtype": "SYNCML-OTA-CONFIG",
+        "severity": "Notice",
+        "action": "Notify",
+        "title": "SyncML OTA configuration"
+      },
+      "spec": "JSR 120 (WMA 1.1) Appendix A, restricted port 49996",
+      "note": "The payload is dummy bytes. The port carries phone settings, so the default action is Notify."
+    },
+    {
+      "id": "data-port-49999",
+      "family": "data-port",
+      "title": "8-bit data to port 49999",
+      "tier": 1,
+      "pdu": "059151551000440891515510240004621150214365220B060504C34F000001020304",
+      "port": 49999,
+      "payload": "01020304",
+      "expect": {
+        "class": "CL-DATA-PORT",
+        "subtype": "WAP-OTA-CONFIG",
+        "severity": "Notice",
+        "action": "Notify",
+        "title": "WAP OTA configuration"
+      },
+      "spec": "JSR 120 (WMA 1.1) Appendix A, restricted port 49999",
+      "note": "The payload is dummy bytes. The port carries phone settings, so the default action is Notify."
+    },
+    {
+      "id": "data-port-16001",
+      "family": "data-port",
+      "title": "8-bit data to port 16001",
+      "tier": 1,
+      "pdu": "059151551000440891515510240004621150214365220B0605043E81000001020304",
+      "port": 16001,
+      "payload": "01020304",
+      "expect": {
+        "class": "CL-DATA-PORT",
+        "subtype": "UNKNOWN",
+        "severity": "Suspicious",
+        "action": "Notify",
+        "title": "Data message to port 16001"
+      },
+      "spec": "Plan section 8.4.2"
+    },
+    {
+      "id": "data-port-0",
+      "family": "data-port",
+      "title": "8-bit data to port 0",
+      "tier": 1,
+      "pdu": "059151551000440891515510240004621150214365220B0605040000000001020304",
+      "port": 0,
+      "payload": "01020304",
+      "expect": {
+        "class": "CL-DATA-PORT",
+        "subtype": "PORT0",
+        "severity": "Suspicious",
+        "action": "Hold",
+        "title": "Data message to port 0",
+        "anomalies": [
+          "AN-PORT-ZERO"
+        ]
+      },
+      "spec": "3GPP TS 23.040 9.2.3.24.4",
+      "note": "Android may refuse port 0 in sendDataMessage. Then send the pdu as tier 2."
+    },
+    {
+      "id": "smart-ringtone",
+      "family": "data-port",
+      "title": "Smart messaging to port 5505",
+      "tier": 1,
+      "pdu": "059151551000440891515510240004621150214365220C060504158100000102030405",
+      "port": 5505,
+      "payload": "0102030405",
+      "expect": {
+        "class": "CL-SMART",
+        "subtype": "RINGTONE",
+        "severity": "Notice",
+        "action": "Hold",
+        "title": "Ringtone"
+      },
+      "spec": "Nokia Smart Messaging, IANA port 5505",
+      "checkSpec": true
+    },
+    {
+      "id": "smart-oplogo",
+      "family": "data-port",
+      "title": "Smart messaging to port 5506",
+      "tier": 1,
+      "pdu": "059151551000440891515510240004621150214365220C060504158200000102030405",
+      "port": 5506,
+      "payload": "0102030405",
+      "expect": {
+        "class": "CL-SMART",
+        "subtype": "OPLOGO",
+        "severity": "Notice",
+        "action": "Hold",
+        "title": "Operator logo"
+      },
+      "spec": "Nokia Smart Messaging, IANA port 5506",
+      "checkSpec": true
+    },
+    {
+      "id": "smart-clilogo",
+      "family": "data-port",
+      "title": "Smart messaging to port 5507",
+      "tier": 1,
+      "pdu": "059151551000440891515510240004621150214365220C060504158300000102030405",
+      "port": 5507,
+      "payload": "0102030405",
+      "expect": {
+        "class": "CL-SMART",
+        "subtype": "CLILOGO",
+        "severity": "Notice",
+        "action": "Hold",
+        "title": "Caller logo"
+      },
+      "spec": "Nokia Smart Messaging, IANA port 5507",
+      "checkSpec": true
+    },
+    {
+      "id": "smart-picture",
+      "family": "data-port",
+      "title": "Smart messaging to port 5514",
+      "tier": 1,
+      "pdu": "059151551000440891515510240004621150214365220C060504158A00000102030405",
+      "port": 5514,
+      "payload": "0102030405",
+      "expect": {
+        "class": "CL-SMART",
+        "subtype": "PICTURE",
+        "severity": "Notice",
+        "action": "Hold",
+        "title": "Picture message"
+      },
+      "spec": "Nokia Smart Messaging, IANA port 5514",
+      "checkSpec": true
+    },
+    {
+      "id": "smart-vcard",
+      "family": "data-port",
+      "title": "Smart messaging to port 9204",
+      "tier": 1,
+      "pdu": "059151551000440891515510240004621150214365220C06050423F400000102030405",
+      "port": 9204,
+      "payload": "0102030405",
+      "expect": {
+        "class": "CL-SMART",
+        "subtype": "VCARD",
+        "severity": "Notice",
+        "action": "Hold",
+        "title": "Contact card"
+      },
+      "spec": "Nokia Smart Messaging, IANA port 9204",
+      "checkSpec": true,
+      "note": "Ports 9204 and 9205 are also in the port list of plan section 8.1. CL-04 decides which wins."
+    },
+    {
+      "id": "smart-vcal",
+      "family": "data-port",
+      "title": "Smart messaging to port 9205",
+      "tier": 1,
+      "pdu": "059151551000440891515510240004621150214365220C06050423F500000102030405",
+      "port": 9205,
+      "payload": "0102030405",
+      "expect": {
+        "class": "CL-SMART",
+        "subtype": "VCAL",
+        "severity": "Notice",
+        "action": "Hold",
+        "title": "Calendar entry"
+      },
+      "spec": "Nokia Smart Messaging, IANA port 9205",
+      "checkSpec": true,
+      "note": "Ports 9204 and 9205 are also in the port list of plan section 8.1. CL-04 decides which wins."
+    },
+    {
+      "id": "loc-supl-sms-7275",
+      "family": "data-port",
+      "title": "SUPL INIT over SMS to port 7275",
+      "tier": 1,
+      "pdu": "059151551000440891515510240004621150214365220B0605041C6B000001020304",
+      "port": 7275,
+      "payload": "01020304",
+      "expect": {
+        "class": "CL-LOC-SUPL",
+        "subtype": "SMS",
+        "severity": "High",
+        "action": "Block",
+        "title": "Location request (SUPL)"
+      },
+      "spec": "OMA SUPL, IANA port 7275",
+      "checkSpec": true,
+      "note": "Severity is with an unknown sender and no history, rule PAT-03."
+    },
+    {
+      "id": "silent-type0",
+      "family": "silent",
+      "title": "Silent SMS (Type 0)",
+      "tier": 2,
+      "pdu": "0591515510000408915155102440006211502143652204D4F29C0E",
+      "expect": {
+        "class": "CL-SILENT",
+        "subtype": "TYPE0",
+        "severity": "Suspicious",
+        "action": "Notify",
+        "title": "Silent SMS (Type 0)"
+      },
+      "spec": "3GPP TS 23.040 9.2.3.9"
+    },
+    {
+      "id": "silent-type0-port",
+      "family": "silent",
+      "title": "Silent SMS (Type 0) to a port",
+      "tier": 2,
+      "pdu": "059151551000440891515510244004621150214365220B0605043E81000001020304",
+      "expect": {
+        "class": "CL-SILENT",
+        "subtype": "TYPE0-PORT",
+        "severity": "High",
+        "action": "Notify",
+        "title": "Silent SMS (Type 0) to port 16001",
+        "extraSubtypes": [
+          "CL-DATA-PORT:UNKNOWN"
+        ]
+      },
+      "spec": "3GPP TS 23.040 9.2.3.9"
+    },
+    {
+      "id": "flash-class0",
+      "family": "flash",
+      "title": "Flash SMS (Class 0)",
+      "tier": 2,
+      "pdu": "059151551000040891515510240010621150214365220ED4F29C0E6A97E7F3F0B90C8A01",
+      "expect": {
+        "class": "CL-FLASH",
+        "subtype": "CLASS0",
+        "severity": "Notice",
+        "action": "Hold",
+        "title": "Flash SMS (Class 0)"
+      },
+      "spec": "3GPP TS 23.038 4"
+    },
+    {
+      "id": "flash-class0-empty",
+      "family": "flash",
+      "title": "Empty flash SMS (Class 0)",
+      "tier": 2,
+      "pdu": "0591515510000408915155102400106211502143652200",
+      "expect": {
+        "class": "CL-FLASH",
+        "subtype": "CLASS0-EMPTY",
+        "severity": "Suspicious",
+        "action": "Hold",
+        "title": "Empty flash SMS (Class 0)"
+      },
+      "spec": "3GPP TS 23.038 4"
+    },
+    {
+      "id": "replace-type1",
+      "family": "replace",
+      "title": "Replacement message (type 1)",
+      "tier": 2,
+      "pdu": "059151551000040891515510244100621150214365220ED4F29C0E6A97E7F3F0B90C8A01",
+      "expect": {
+        "class": "CL-REPLACE",
+        "subtype": "TYPE1",
+        "severity": "Suspicious",
+        "action": "Hold",
+        "title": "Replacement message (type 1)"
+      },
+      "spec": "3GPP TS 23.040 9.2.3.9",
+      "note": "Severity is with an unknown sender and no history, rule PAT-09."
+    },
+    {
+      "id": "replace-type2",
+      "family": "replace",
+      "title": "Replacement message (type 2)",
+      "tier": 2,
+      "pdu": "059151551000040891515510244200621150214365220ED4F29C0E6A97E7F3F0B90C9201",
+      "expect": {
+        "class": "CL-REPLACE",
+        "subtype": "TYPE2",
+        "severity": "Suspicious",
+        "action": "Hold",
+        "title": "Replacement message (type 2)"
+      },
+      "spec": "3GPP TS 23.040 9.2.3.9",
+      "note": "Severity is with an unknown sender and no history, rule PAT-09."
+    },
+    {
+      "id": "replace-type3",
+      "family": "replace",
+      "title": "Replacement message (type 3)",
+      "tier": 2,
+      "pdu": "059151551000040891515510244300621150214365220ED4F29C0E6A97E7F3F0B90C9A01",
+      "expect": {
+        "class": "CL-REPLACE",
+        "subtype": "TYPE3",
+        "severity": "Suspicious",
+        "action": "Hold",
+        "title": "Replacement message (type 3)"
+      },
+      "spec": "3GPP TS 23.040 9.2.3.9",
+      "note": "Severity is with an unknown sender and no history, rule PAT-09."
+    },
+    {
+      "id": "replace-type4",
+      "family": "replace",
+      "title": "Replacement message (type 4)",
+      "tier": 2,
+      "pdu": "059151551000040891515510244400621150214365220ED4F29C0E6A97E7F3F0B90CA201",
+      "expect": {
+        "class": "CL-REPLACE",
+        "subtype": "TYPE4",
+        "severity": "Suspicious",
+        "action": "Hold",
+        "title": "Replacement message (type 4)"
+      },
+      "spec": "3GPP TS 23.040 9.2.3.9",
+      "note": "Severity is with an unknown sender and no history, rule PAT-09."
+    },
+    {
+      "id": "replace-type5",
+      "family": "replace",
+      "title": "Replacement message (type 5)",
+      "tier": 2,
+      "pdu": "059151551000040891515510244500621150214365220ED4F29C0E6A97E7F3F0B90CAA01",
+      "expect": {
+        "class": "CL-REPLACE",
+        "subtype": "TYPE5",
+        "severity": "Suspicious",
+        "action": "Hold",
+        "title": "Replacement message (type 5)"
+      },
+      "spec": "3GPP TS 23.040 9.2.3.9",
+      "note": "Severity is with an unknown sender and no history, rule PAT-09."
+    },
+    {
+      "id": "replace-type6",
+      "family": "replace",
+      "title": "Replacement message (type 6)",
+      "tier": 2,
+      "pdu": "059151551000040891515510244600621150214365220ED4F29C0E6A97E7F3F0B90CB201",
+      "expect": {
+        "class": "CL-REPLACE",
+        "subtype": "TYPE6",
+        "severity": "Suspicious",
+        "action": "Hold",
+        "title": "Replacement message (type 6)"
+      },
+      "spec": "3GPP TS 23.040 9.2.3.9",
+      "note": "Severity is with an unknown sender and no history, rule PAT-09."
+    },
+    {
+      "id": "replace-type7",
+      "family": "replace",
+      "title": "Replacement message (type 7)",
+      "tier": 2,
+      "pdu": "059151551000040891515510244700621150214365220ED4F29C0E6A97E7F3F0B90CBA01",
+      "expect": {
+        "class": "CL-REPLACE",
+        "subtype": "TYPE7",
+        "severity": "Suspicious",
+        "action": "Hold",
+        "title": "Replacement message (type 7)"
+      },
+      "spec": "3GPP TS 23.040 9.2.3.9",
+      "note": "Severity is with an unknown sender and no history, rule PAT-09."
+    },
+    {
+      "id": "return-call",
+      "family": "pid",
+      "title": "Return call request",
+      "tier": 2,
+      "pdu": "059151551000040891515510245F006211502143652204D4F29C0E",
+      "expect": {
+        "class": "CL-RETURN-CALL",
+        "subtype": null,
+        "severity": "Notice",
+        "action": "Hold",
+        "title": "Return call request"
+      },
+      "spec": "3GPP TS 23.040 9.2.3.9"
+    },
+    {
+      "id": "me-download",
+      "family": "pid",
+      "title": "Data download to the phone",
+      "tier": 2,
+      "pdu": "059151551000040891515510247DF4621150214365220400000000",
+      "expect": {
+        "class": "CL-ME-DOWNLOAD",
+        "subtype": null,
+        "severity": "Suspicious",
+        "action": "Block",
+        "title": "Data download to the phone",
+        "extraSubtypes": [
+          "CL-FLASH:CLASS0"
+        ]
+      },
+      "spec": "3GPP TS 23.040 9.2.3.9"
+    },
+    {
+      "id": "me-deperso",
+      "family": "pid",
+      "title": "Phone unlock message",
+      "tier": 2,
+      "pdu": "059151551000040891515510247EF4621150214365220400000000",
+      "expect": {
+        "class": "CL-ME-DEPERSO",
+        "subtype": null,
+        "severity": "High",
+        "action": "Hold",
+        "title": "Phone unlock message (de-personalization)",
+        "extraSubtypes": [
+          "CL-FLASH:CLASS0"
+        ]
+      },
+      "spec": "3GPP TS 23.040 9.2.3.9"
+    },
+    {
+      "id": "sim-stored-class2",
+      "family": "sim-ota",
+      "title": "Saved to the SIM (class 2 text)",
+      "tier": 2,
+      "pdu": "059151551000040891515510240012621150214365220ED4F29C0E6A97E7F3F0B90C8A01",
+      "expect": {
+        "class": "CL-SIM-STORED",
+        "subtype": "CLASS2",
+        "severity": "Notice",
+        "action": "Allow",
+        "title": "Saved to the SIM"
+      },
+      "spec": "3GPP TS 23.038 4"
+    },
+    {
+      "id": "class3-text",
+      "family": "flash",
+      "title": "Message for a connected device (Class 3)",
+      "tier": 2,
+      "pdu": "059151551000040891515510240013621150214365220ED4F29C0E6A97E7F3F0B90C8A01",
+      "expect": {
+        "class": "CL-CLASS3",
+        "subtype": null,
+        "severity": "Notice",
+        "action": "Allow",
+        "title": "Message for a connected device (Class 3)"
+      },
+      "spec": "3GPP TS 23.038 4"
+    },
+    {
+      "id": "telematic-fax",
+      "family": "pid",
+      "title": "Telematic message: fax",
+      "tier": 2,
+      "pdu": "0591515510000408915155102422006211502143652204D4F29C0E",
+      "expect": {
+        "class": "CL-TELEMATIC",
+        "subtype": "FAX",
+        "severity": "Notice",
+        "action": "Hold",
+        "title": "Telematic message: fax"
+      },
+      "spec": "3GPP TS 23.040 9.2.3.9"
+    },
+    {
+      "id": "telematic-telex",
+      "family": "pid",
+      "title": "Telematic message: telex",
+      "tier": 2,
+      "pdu": "0591515510000408915155102421006211502143652204D4F29C0E",
+      "expect": {
+        "class": "CL-TELEMATIC",
+        "subtype": "TELEX",
+        "severity": "Notice",
+        "action": "Hold",
+        "title": "Telematic message: telex"
+      },
+      "spec": "3GPP TS 23.040 9.2.3.9"
+    },
+    {
+      "id": "telematic-paging",
+      "family": "pid",
+      "title": "Telematic message: paging",
+      "tier": 2,
+      "pdu": "0591515510000408915155102426006211502143652204D4F29C0E",
+      "expect": {
+        "class": "CL-TELEMATIC",
+        "subtype": "PAGING",
+        "severity": "Notice",
+        "action": "Hold",
+        "title": "Telematic message: paging"
+      },
+      "spec": "3GPP TS 23.040 9.2.3.9"
+    },
+    {
+      "id": "telematic-voice",
+      "family": "pid",
+      "title": "Telematic message: voice",
+      "tier": 2,
+      "pdu": "0591515510000408915155102424006211502143652204D4F29C0E",
+      "expect": {
+        "class": "CL-TELEMATIC",
+        "subtype": "VOICE",
+        "severity": "Notice",
+        "action": "Hold",
+        "title": "Telematic message: voice"
+      },
+      "spec": "3GPP TS 23.040 9.2.3.9"
+    },
+    {
+      "id": "telematic-ermes",
+      "family": "pid",
+      "title": "Telematic message: ERMES",
+      "tier": 2,
+      "pdu": "0591515510000408915155102425006211502143652204D4F29C0E",
+      "expect": {
+        "class": "CL-TELEMATIC",
+        "subtype": "ERMES",
+        "severity": "Notice",
+        "action": "Hold",
+        "title": "Telematic message: ERMES"
+      },
+      "spec": "3GPP TS 23.040 9.2.3.9"
+    },
+    {
+      "id": "telematic-x400",
+      "family": "pid",
+      "title": "Telematic message: X.400",
+      "tier": 2,
+      "pdu": "0591515510000408915155102431006211502143652204D4F29C0E",
+      "expect": {
+        "class": "CL-TELEMATIC",
+        "subtype": "X400",
+        "severity": "Notice",
+        "action": "Hold",
+        "title": "Telematic message: X.400"
+      },
+      "spec": "3GPP TS 23.040 9.2.3.9"
+    },
+    {
+      "id": "telematic-email",
+      "family": "pid",
+      "title": "Telematic message: email",
+      "tier": 2,
+      "pdu": "0591515510000408915155102432006211502143652204D4F29C0E",
+      "expect": {
+        "class": "CL-TELEMATIC",
+        "subtype": "EMAIL",
+        "severity": "Notice",
+        "action": "Hold",
+        "title": "Telematic message: email"
+      },
+      "spec": "3GPP TS 23.040 9.2.3.9"
+    },
+    {
+      "id": "telematic-other",
+      "family": "pid",
+      "title": "Telematic message: other",
+      "tier": 2,
+      "pdu": "0591515510000408915155102427006211502143652204D4F29C0E",
+      "expect": {
+        "class": "CL-TELEMATIC",
+        "subtype": "OTHER",
+        "severity": "Notice",
+        "action": "Hold",
+        "title": "Telematic message: other"
+      },
+      "spec": "3GPP TS 23.040 9.2.3.9",
+      "checkSpec": true
+    },
+    {
+      "id": "mwi-voicemail",
+      "family": "mwi",
+      "title": "Voicemail indicator",
+      "tier": 2,
+      "pdu": "0591515510000408915155102400D86211502143652200",
+      "expect": {
+        "class": "CL-MWI",
+        "subtype": "VOICEMAIL",
+        "severity": "Info",
+        "action": "Allow",
+        "title": "Voicemail indicator"
+      },
+      "spec": "3GPP TS 23.038 4"
+    },
+    {
+      "id": "mwi-fax",
+      "family": "mwi",
+      "title": "Fax waiting",
+      "tier": 2,
+      "pdu": "0591515510000408915155102400D96211502143652200",
+      "expect": {
+        "class": "CL-MWI",
+        "subtype": "FAX",
+        "severity": "Info",
+        "action": "Allow",
+        "title": "Fax waiting"
+      },
+      "spec": "3GPP TS 23.038 4"
+    },
+    {
+      "id": "mwi-email",
+      "family": "mwi",
+      "title": "Email waiting",
+      "tier": 2,
+      "pdu": "0591515510000408915155102400DA6211502143652200",
+      "expect": {
+        "class": "CL-MWI",
+        "subtype": "EMAIL",
+        "severity": "Info",
+        "action": "Allow",
+        "title": "Email waiting"
+      },
+      "spec": "3GPP TS 23.038 4"
+    },
+    {
+      "id": "mwi-other",
+      "family": "mwi",
+      "title": "Message waiting",
+      "tier": 2,
+      "pdu": "0591515510000408915155102400DB6211502143652200",
+      "expect": {
+        "class": "CL-MWI",
+        "subtype": "OTHER",
+        "severity": "Info",
+        "action": "Allow",
+        "title": "Message waiting"
+      },
+      "spec": "3GPP TS 23.038 4"
+    },
+    {
+      "id": "mwi-iei01-voicemail",
+      "family": "mwi",
+      "title": "Voicemail indicator in the header",
+      "tier": 2,
+      "pdu": "05915155100044089151551024000062115021436522050401028002",
+      "expect": {
+        "class": "CL-MWI",
+        "subtype": "VOICEMAIL",
+        "severity": "Info",
+        "action": "Allow",
+        "title": "Voicemail indicator"
+      },
+      "spec": "3GPP TS 23.040 9.2.3.24.2"
+    },
+    {
+      "id": "mwi-extended-iei23",
+      "family": "mwi",
+      "title": "Enhanced voicemail information",
+      "tier": 2,
+      "pdu": "059151551000440891515510240000621150214365220706230480010000",
+      "expect": {
+        "class": "CL-MWI",
+        "subtype": "EXTENDED",
+        "severity": "Info",
+        "action": "Allow",
+        "title": "Message waiting"
+      },
+      "spec": "3GPP TS 23.040 9.2.3.24.13",
+      "checkSpec": true,
+      "note": "The body of IEI 0x23 is a placeholder. CL-04 checks it against the spec."
+    },
+    {
+      "id": "mwi-discard-silent",
+      "family": "mwi",
+      "title": "Silent message-waiting signal",
+      "tier": 2,
+      "pdu": "0591515510000408915155102400C06211502143652200",
+      "expect": {
+        "class": "CL-MWI",
+        "subtype": "DISCARD-SILENT",
+        "severity": "Suspicious",
+        "action": "Block",
+        "title": "Silent message-waiting signal"
+      },
+      "spec": "3GPP TS 23.038 4"
+    },
+    {
+      "id": "status-delivered",
+      "family": "status",
+      "title": "Delivery report: delivered",
+      "tier": 2,
+      "pdu": "059151551000060108915155102462115021436522621150214365220000",
+      "expect": {
+        "class": "CL-STATUS",
+        "subtype": "DELIVERED",
+        "severity": "Info",
+        "action": "Allow",
+        "title": "Delivery report: delivered"
+      },
+      "spec": "3GPP TS 23.040 9.2.2.3, 9.2.3.15"
+    },
+    {
+      "id": "status-pending",
+      "family": "status",
+      "title": "Delivery report: pending",
+      "tier": 2,
+      "pdu": "059151551000060108915155102462115021436522621150214365222000",
+      "expect": {
+        "class": "CL-STATUS",
+        "subtype": "PENDING",
+        "severity": "Info",
+        "action": "Allow",
+        "title": "Delivery report: pending"
+      },
+      "spec": "3GPP TS 23.040 9.2.2.3, 9.2.3.15"
+    },
+    {
+      "id": "status-failed",
+      "family": "status",
+      "title": "Delivery report: failed",
+      "tier": 2,
+      "pdu": "059151551000060108915155102462115021436522621150214365224000",
+      "expect": {
+        "class": "CL-STATUS",
+        "subtype": "FAILED",
+        "severity": "Info",
+        "action": "Allow",
+        "title": "Delivery report: failed"
+      },
+      "spec": "3GPP TS 23.040 9.2.2.3, 9.2.3.15"
+    },
+    {
+      "id": "empty-message",
+      "family": "content",
+      "title": "Empty message",
+      "tier": 2,
+      "pdu": "0591515510000408915155102400006211502143652200",
+      "expect": {
+        "class": "CL-EMPTY",
+        "subtype": null,
+        "severity": "Suspicious",
+        "action": "Block",
+        "title": "Empty message"
+      },
+      "spec": "3GPP TS 23.040 9.2.3.16"
+    },
+    {
+      "id": "binary-no-port",
+      "family": "content",
+      "title": "Binary message without a port",
+      "tier": 2,
+      "pdu": "0591515510000408915155102400046211502143652204DEADBEEF",
+      "expect": {
+        "class": "CL-BINARY",
+        "subtype": null,
+        "severity": "Suspicious",
+        "action": "Hold",
+        "title": "Binary message without a port"
+      },
+      "spec": "3GPP TS 23.038 4"
+    },
+    {
+      "id": "compressed",
+      "family": "content",
+      "title": "Compressed message",
+      "tier": 2,
+      "pdu": "05915155100004089151551024002062115021436522050102030405",
+      "expect": {
+        "class": "CL-COMPRESSED",
+        "subtype": null,
+        "severity": "Notice",
+        "action": "Hold",
+        "title": "Compressed message"
+      },
+      "spec": "3GPP TS 23.038 4",
+      "note": "The data is dummy bytes. It is not a real compressed stream."
+    },
+    {
+      "id": "anomaly-addr-trunc",
+      "family": "malformed",
+      "title": "Anomaly AN-ADDR-TRUNC: address cut off",
+      "tier": 2,
+      "pdu": "059151551000040C915155",
+      "expect": {
+        "class": "CL-MALFORMED-SMS",
+        "subtype": "AN-ADDR-TRUNC",
+        "severity": "Suspicious",
+        "action": "Block",
+        "title": "Malformed SMS: address cut off",
+        "anomalies": [
+          "AN-ADDR-TRUNC"
+        ]
+      },
+      "spec": "3GPP TS 23.040 9.1.2.5"
+    },
+    {
+      "id": "anomaly-addr-len",
+      "family": "malformed",
+      "title": "Anomaly AN-ADDR-LEN: address too long",
+      "tier": 2,
+      "pdu": "05915155100004169151551024515510245155100000621150214365220ED4F29C0E6A97E7F3F0B90C8A01",
+      "expect": {
+        "class": "CL-MALFORMED-SMS",
+        "subtype": "AN-ADDR-LEN",
+        "severity": "Suspicious",
+        "action": "Block",
+        "title": "Malformed SMS: address too long",
+        "anomalies": [
+          "AN-ADDR-LEN"
+        ]
+      },
+      "spec": "3GPP TS 23.040 9.1.2.5"
+    },
+    {
+      "id": "anomaly-addr-toa",
+      "family": "malformed",
+      "title": "Anomaly AN-ADDR-TOA: unknown address type",
+      "tier": 2,
+      "pdu": "0591515510000408F1515510240000621150214365220ED4F29C0E6A97E7F3F0B90C8A01",
+      "expect": {
+        "class": "CL-NORMAL",
+        "subtype": null,
+        "severity": "Suspicious",
+        "action": "Allow",
+        "title": "Normal message",
+        "anomalies": [
+          "AN-ADDR-TOA"
+        ]
+      },
+      "spec": "3GPP TS 23.040 9.1.2.5"
+    },
+    {
+      "id": "anomaly-pdu-short",
+      "family": "malformed",
+      "title": "Anomaly AN-PDU-SHORT: message too short",
+      "tier": 2,
+      "pdu": "059151551000040891515510240000",
+      "expect": {
+        "class": "CL-MALFORMED-SMS",
+        "subtype": "AN-PDU-SHORT",
+        "severity": "Suspicious",
+        "action": "Block",
+        "title": "Malformed SMS: message too short",
+        "anomalies": [
+          "AN-PDU-SHORT"
+        ]
+      },
+      "spec": "3GPP TS 23.040 9.2.2.1"
+    },
+    {
+      "id": "anomaly-mti",
+      "family": "malformed",
+      "title": "Anomaly AN-MTI: unknown message type",
+      "tier": 2,
+      "pdu": "059151551000070891515510240000621150214365220ED4F29C0E6A97E7F3F0B90C8A01",
+      "expect": {
+        "class": "CL-UNREADABLE-SMS",
+        "subtype": "AN-MTI",
+        "severity": "Suspicious",
+        "action": "Hold",
+        "title": "Unreadable SMS",
+        "anomalies": [
+          "AN-MTI"
+        ]
+      },
+      "spec": "3GPP TS 23.040 9.2.3.1"
+    },
+    {
+      "id": "anomaly-pid-rsv",
+      "family": "malformed",
+      "title": "Anomaly AN-PID-RSV: unknown protocol identifier",
+      "tier": 2,
+      "pdu": "059151551000040891515510245000621150214365220ED4F29C0E6A97E7F3F0B90C8A01",
+      "expect": {
+        "class": "CL-NORMAL",
+        "subtype": null,
+        "severity": "Suspicious",
+        "action": "Allow",
+        "title": "Normal message",
+        "anomalies": [
+          "AN-PID-RSV"
+        ]
+      },
+      "spec": "3GPP TS 23.040 9.2.3.9"
+    },
+    {
+      "id": "anomaly-dcs-rsv",
+      "family": "malformed",
+      "title": "Anomaly AN-DCS-RSV: unknown coding scheme",
+      "tier": 2,
+      "pdu": "059151551000040891515510240080621150214365220ED4F29C0E6A97E7F3F0B90C8A01",
+      "expect": {
+        "class": "CL-NORMAL",
+        "subtype": null,
+        "severity": "Suspicious",
+        "action": "Allow",
+        "title": "Normal message",
+        "anomalies": [
+          "AN-DCS-RSV"
+        ]
+      },
+      "spec": "3GPP TS 23.038 4"
+    },
+    {
+      "id": "anomaly-dcs-rsv-alphabet",
+      "family": "malformed",
+      "title": "Anomaly AN-DCS-RSV: unknown coding scheme",
+      "tier": 2,
+      "pdu": "05915155100004089151551024000C621150214365220DD4F29C0E6A97E7F3F0B90C8A01",
+      "expect": {
+        "class": "CL-NORMAL",
+        "subtype": null,
+        "severity": "Suspicious",
+        "action": "Allow",
+        "title": "Normal message",
+        "anomalies": [
+          "AN-DCS-RSV"
+        ]
+      },
+      "spec": "3GPP TS 23.038 4"
+    },
+    {
+      "id": "anomaly-udl-long",
+      "family": "malformed",
+      "title": "Anomaly AN-UDL-LONG: length is more than the data",
+      "tier": 2,
+      "pdu": "0591515510000408915155102400006211502143652228D4F29C0E6A97E7F3F0B90C8A01",
+      "expect": {
+        "class": "CL-MALFORMED-SMS",
+        "subtype": "AN-UDL-LONG",
+        "severity": "Suspicious",
+        "action": "Block",
+        "title": "Malformed SMS: length is more than the data",
+        "anomalies": [
+          "AN-UDL-LONG"
+        ]
+      },
+      "spec": "3GPP TS 23.040 9.2.3.16"
+    },
+    {
+      "id": "anomaly-udl-short",
+      "family": "malformed",
+      "title": "Anomaly AN-UDL-SHORT: data is more than the length",
+      "tier": 2,
+      "pdu": "0591515510000408915155102400006211502143652205D4F29C0E6A97E7F3F0B90C8A01",
+      "expect": {
+        "class": "CL-NORMAL",
+        "subtype": null,
+        "severity": "Suspicious",
+        "action": "Allow",
+        "title": "Normal message",
+        "anomalies": [
+          "AN-UDL-SHORT"
+        ]
+      },
+      "spec": "3GPP TS 23.040 9.2.3.16"
+    },
+    {
+      "id": "anomaly-udh-len",
+      "family": "malformed",
+      "title": "Anomaly AN-UDH-LEN: header length is wrong",
+      "tier": 2,
+      "pdu": "05915155100044089151551024000462115021436522067F0102030405",
+      "expect": {
+        "class": "CL-MALFORMED-SMS",
+        "subtype": "AN-UDH-LEN",
+        "severity": "Suspicious",
+        "action": "Block",
+        "title": "Malformed SMS: header length is wrong",
+        "anomalies": [
+          "AN-UDH-LEN"
+        ],
+        "extraSubtypes": [
+          "CL-BINARY"
+        ]
+      },
+      "spec": "3GPP TS 23.040 9.2.3.24"
+    },
+    {
+      "id": "anomaly-ie-overrun",
+      "family": "malformed",
+      "title": "Anomaly AN-IE-OVERRUN: header element is too long",
+      "tier": 2,
+      "pdu": "05915155100044089151551024000462115021436522080305040BDEADBEEF",
+      "expect": {
+        "class": "CL-MALFORMED-SMS",
+        "subtype": "AN-IE-OVERRUN",
+        "severity": "Suspicious",
+        "action": "Block",
+        "title": "Malformed SMS: header element is too long",
+        "anomalies": [
+          "AN-IE-OVERRUN"
+        ],
+        "extraSubtypes": [
+          "CL-BINARY"
+        ]
+      },
+      "spec": "3GPP TS 23.040 9.2.3.24"
+    },
+    {
+      "id": "anomaly-ie-rsv",
+      "family": "malformed",
+      "title": "Anomaly AN-IE-RSV: unknown header element",
+      "tier": 2,
+      "pdu": "0591515510004408915155102400046211502143652206033001000102",
+      "expect": {
+        "class": "CL-BINARY",
+        "subtype": null,
+        "severity": "Suspicious",
+        "action": "Hold",
+        "title": "Binary message without a port",
+        "anomalies": [
+          "AN-IE-RSV"
+        ]
+      },
+      "spec": "3GPP TS 23.040 9.2.3.24"
+    },
+    {
+      "id": "anomaly-ie-dup",
+      "family": "malformed",
+      "title": "Anomaly AN-IE-DUP: repeated port element",
+      "tier": 2,
+      "pdu": "05915155100044089151551024000462115021436522110C05043E81000005043E82000001020304",
+      "expect": {
+        "class": "CL-DATA-PORT",
+        "subtype": "UNKNOWN",
+        "severity": "Suspicious",
+        "action": "Notify",
+        "title": "Data message to port 16002",
+        "anomalies": [
+          "AN-IE-DUP"
+        ]
+      },
+      "spec": "3GPP TS 23.040 9.2.3.24.4",
+      "note": "The last port element wins, as in the Android SmsHeader."
+    },
+    {
+      "id": "anomaly-concat-bad-total0",
+      "family": "malformed",
+      "title": "Anomaly AN-CONCAT-BAD: bad multipart numbers",
+      "tier": 2,
+      "pdu": "0591515510004408915155102400006211502143652215050003310001A8E5391DD42ECFE7E173191403",
+      "expect": {
+        "class": "CL-NORMAL",
+        "subtype": null,
+        "severity": "Suspicious",
+        "action": "Allow",
+        "title": "Normal message",
+        "anomalies": [
+          "AN-CONCAT-BAD"
+        ]
+      },
+      "spec": "3GPP TS 23.040 9.2.3.24.1"
+    },
+    {
+      "id": "anomaly-concat-bad-seq0",
+      "family": "malformed",
+      "title": "Anomaly AN-CONCAT-BAD: bad multipart numbers",
+      "tier": 2,
+      "pdu": "0591515510004408915155102400006211502143652215050003320200A8E5391DD42ECFE7E173191403",
+      "expect": {
+        "class": "CL-NORMAL",
+        "subtype": null,
+        "severity": "Suspicious",
+        "action": "Allow",
+        "title": "Normal message",
+        "anomalies": [
+          "AN-CONCAT-BAD"
+        ]
+      },
+      "spec": "3GPP TS 23.040 9.2.3.24.1"
+    },
+    {
+      "id": "anomaly-concat-bad-seq-gt-total",
+      "family": "malformed",
+      "title": "Anomaly AN-CONCAT-BAD: bad multipart numbers",
+      "tier": 2,
+      "pdu": "0591515510004408915155102400006211502143652215050003330203A8E5391DD42ECFE7E173191403",
+      "expect": {
+        "class": "CL-NORMAL",
+        "subtype": null,
+        "severity": "Suspicious",
+        "action": "Allow",
+        "title": "Normal message",
+        "anomalies": [
+          "AN-CONCAT-BAD"
+        ]
+      },
+      "spec": "3GPP TS 23.040 9.2.3.24.1"
+    },
+    {
+      "id": "anomaly-concat-dup",
+      "family": "malformed",
+      "title": "Anomaly AN-CONCAT-DUP: repeated multipart number",
+      "tier": 2,
+      "sequence": [
+        {
+          "ref": "multipart-incomplete",
+          "delaySeconds": 0
+        },
+        {
+          "ref": "multipart-incomplete",
+          "delaySeconds": 5
+        }
+      ],
+      "expect": {
+        "class": "CL-NORMAL",
+        "subtype": null,
+        "severity": "Suspicious",
+        "action": "Allow",
+        "title": "Normal message",
+        "anomalies": [
+          "AN-CONCAT-DUP"
+        ]
+      },
+      "spec": "3GPP TS 23.040 9.2.3.24.1",
+      "note": "The same part number arrives twice for one reference."
+    },
+    {
+      "id": "anomaly-wsp-type",
+      "family": "malformed",
+      "title": "Anomaly AN-WSP-TYPE: unknown WSP type",
+      "tier": 1,
+      "port": 2948,
+      "payload": "014003AEAF84",
+      "pdu": "059151551000440891515510240004621150214365220D0605040B8423F0014003AEAF84",
+      "expect": {
+        "class": "CL-WAP-UNREADABLE",
+        "subtype": "AN-WSP-TYPE",
+        "severity": "High",
+        "action": "Block",
+        "title": "Malformed WAP push: unknown WSP type",
+        "anomalies": [
+          "AN-WSP-TYPE"
+        ]
+      },
+      "spec": "WAP-230 (WSP)"
+    },
+    {
+      "id": "anomaly-wsp-hlen",
+      "family": "malformed",
+      "title": "Anomaly AN-WSP-HLEN: bad header length",
+      "tier": 1,
+      "port": 2948,
+      "payload": "010640AE",
+      "pdu": "059151551000440891515510240004621150214365220B0605040B8423F0010640AE",
+      "expect": {
+        "class": "CL-WAP-UNREADABLE",
+        "subtype": "AN-WSP-HLEN",
+        "severity": "High",
+        "action": "Block",
+        "title": "Malformed WAP push: WSP header length is wrong",
+        "anomalies": [
+          "AN-WSP-HLEN"
+        ]
+      },
+      "spec": "WAP-230 (WSP)"
+    },
+    {
+      "id": "anomaly-wsp-ctype",
+      "family": "malformed",
+      "title": "Anomaly AN-WSP-CTYPE: unreadable content type",
+      "tier": 1,
+      "port": 2948,
+      "payload": "01060305AF84",
+      "pdu": "059151551000440891515510240004621150214365220D0605040B8423F001060305AF84",
+      "expect": {
+        "class": "CL-WAP-UNREADABLE",
+        "subtype": "AN-WSP-CTYPE",
+        "severity": "High",
+        "action": "Block",
+        "title": "Malformed WAP push: content type is unreadable",
+        "anomalies": [
+          "AN-WSP-CTYPE"
+        ]
+      },
+      "spec": "WAP-230 (WSP)"
+    },
+    {
+      "id": "anomaly-wsp-appid",
+      "family": "malformed",
+      "title": "Anomaly AN-WSP-APPID: unreadable application ID",
+      "tier": 1,
+      "port": 2948,
+      "payload": "010603AEAF0502056A0045C60C036578616D706C652E746573742F6100010354657374206D6573736167652031000101",
+      "pdu": "05915155100044089151551024000462115021436522370605040B8423F0010603AEAF0502056A0045C60C036578616D706C652E746573742F6100010354657374206D6573736167652031000101",
+      "expect": {
+        "class": "CL-WAP-SISL",
+        "subtype": "SI",
+        "severity": "Suspicious",
+        "action": "Hold",
+        "title": "Web link push",
+        "anomalies": [
+          "AN-WSP-APPID"
+        ]
+      },
+      "spec": "WAP-230 (WSP)"
+    },
+    {
+      "id": "anomaly-wbxml-ver",
+      "family": "malformed",
+      "title": "Anomaly AN-WBXML-VER: unknown version",
+      "tier": 1,
+      "port": 2948,
+      "payload": "010603AEAF8409056A0045C60C036578616D706C652E746573742F6100010354657374206D6573736167652031000101",
+      "pdu": "05915155100044089151551024000462115021436522370605040B8423F0010603AEAF8409056A0045C60C036578616D706C652E746573742F6100010354657374206D6573736167652031000101",
+      "expect": {
+        "class": "CL-WAP-SISL",
+        "subtype": "SI",
+        "severity": "Suspicious",
+        "action": "Hold",
+        "title": "Web link push",
+        "anomalies": [
+          "AN-WBXML-VER"
+        ]
+      },
+      "spec": "WAP-230 (WSP)"
+    },
+    {
+      "id": "anomaly-wbxml-str",
+      "family": "malformed",
+      "title": "Anomaly AN-WBXML-STR: string table too long",
+      "tier": 1,
+      "port": 2948,
+      "payload": "010603AEAF8402056A5045C60C036578616D706C652E746573742F6100010354657374206D6573736167652031000101",
+      "pdu": "05915155100044089151551024000462115021436522370605040B8423F0010603AEAF8402056A5045C60C036578616D706C652E746573742F6100010354657374206D6573736167652031000101",
+      "expect": {
+        "class": "CL-WAP-SISL",
+        "subtype": "SI",
+        "severity": "Suspicious",
+        "action": "Hold",
+        "title": "Web link push",
+        "anomalies": [
+          "AN-WBXML-STR"
+        ]
+      },
+      "spec": "WAP-230 (WSP)"
+    },
+    {
+      "id": "anomaly-wbxml-tok",
+      "family": "malformed",
+      "title": "Anomaly AN-WBXML-TOK: bad token",
+      "tier": 1,
+      "port": 2948,
+      "payload": "010603AEAF8402056A003F01",
+      "pdu": "05915155100044089151551024000462115021436522130605040B8423F0010603AEAF8402056A003F01",
+      "expect": {
+        "class": "CL-WAP-SISL",
+        "subtype": "SI",
+        "severity": "Suspicious",
+        "action": "Hold",
+        "title": "Web link push",
+        "anomalies": [
+          "AN-WBXML-TOK"
+        ]
+      },
+      "spec": "WAP-230 (WSP)"
+    },
+    {
+      "id": "wap-sic-si",
+      "family": "wap",
+      "title": "WAP push: SI (binary)",
+      "tier": 1,
+      "port": 2948,
+      "payload": "010603AEAF8402056A0045C60C036578616D706C652E746573742F6100010354657374206D6573736167652031000101",
+      "pdu": "05915155100044089151551024000462115021436522370605040B8423F0010603AEAF8402056A0045C60C036578616D706C652E746573742F6100010354657374206D6573736167652031000101",
+      "expect": {
+        "class": "CL-WAP-SISL",
+        "subtype": "SI",
+        "severity": "Notice",
+        "action": "Hold",
+        "title": "Web link push"
+      },
+      "spec": "OMA WAP-167 (Service Indication)"
+    },
+    {
+      "id": "wap-sic-delete",
+      "family": "wap",
+      "title": "WAP push: SI with delete action",
+      "tier": 1,
+      "port": 2948,
+      "payload": "010603AEAF8402056A0045C60C036578616D706C652E746573742F610009010101",
+      "pdu": "05915155100044089151551024000462115021436522280605040B8423F0010603AEAF8402056A0045C60C036578616D706C652E746573742F610009010101",
+      "expect": {
+        "class": "CL-WAP-SISL",
+        "subtype": "SI-DELETE",
+        "severity": "Notice",
+        "action": "Hold",
+        "title": "Link deletion push"
+      },
+      "spec": "OMA WAP-167 (Service Indication)"
+    },
+    {
+      "id": "wap-si-text",
+      "family": "wap",
+      "title": "WAP push: SI (text)",
+      "tier": 1,
+      "port": 2948,
+      "payload": "010603ADAF843C3F786D6C2076657273696F6E3D22312E30223F3E3C73693E3C696E6469636174696F6E20687265663D22687474703A2F2F6578616D706C652E746573742F61223E54657374206D65737361676520313C2F696E6469636174696F6E3E3C2F73693E",
+      "pdu": "059151551000440891515510240004621150214365226F0605040B8423F0010603ADAF843C3F786D6C2076657273696F6E3D22312E30223F3E3C73693E3C696E6469636174696F6E20687265663D22687474703A2F2F6578616D706C652E746573742F61223E54657374206D65737361676520313C2F696E6469636174696F6E3E3C2F73693E",
+      "expect": {
+        "class": "CL-WAP-SISL",
+        "subtype": "SI",
+        "severity": "Notice",
+        "action": "Hold",
+        "title": "Web link push"
+      },
+      "spec": "OMA WAP-167"
+    },
+    {
+      "id": "wap-slc-autoopen",
+      "family": "wap",
+      "title": "WAP push: SL (binary), opens link",
+      "tier": 1,
+      "port": 2948,
+      "payload": "010603B0AF8402066A008509036578616D706C652E746573742F610001",
+      "pdu": "05915155100044089151551024000462115021436522240605040B8423F0010603B0AF8402066A008509036578616D706C652E746573742F610001",
+      "expect": {
+        "class": "CL-WAP-SISL",
+        "subtype": "SL",
+        "severity": "High",
+        "action": "Block",
+        "title": "Auto-open link push"
+      },
+      "spec": "OMA WAP-168 (Service Loading)"
+    },
+    {
+      "id": "wap-sl-text",
+      "family": "wap",
+      "title": "WAP push: SL (text)",
+      "tier": 1,
+      "port": 2948,
+      "payload": "010603AFAF843C3F786D6C2076657273696F6E3D22312E30223F3E3C736C20687265663D22687474703A2F2F6578616D706C652E746573742F61222F3E",
+      "pdu": "05915155100044089151551024000462115021436522440605040B8423F0010603AFAF843C3F786D6C2076657273696F6E3D22312E30223F3E3C736C20687265663D22687474703A2F2F6578616D706C652E746573742F61222F3E",
+      "expect": {
+        "class": "CL-WAP-SISL",
+        "subtype": "SL",
+        "severity": "High",
+        "action": "Block",
+        "title": "Auto-open link push"
+      },
+      "spec": "OMA WAP-168"
+    },
+    {
+      "id": "wap-cp-netwpin",
+      "family": "wap",
+      "title": "WAP push: settings, NETWPIN",
+      "tier": 1,
+      "port": 2948,
+      "payload": "01060603B69180AF8A020B6A0045C6550187070603546573742041504E00010101",
+      "pdu": "05915155100044089151551024000462115021436522280605040B8423F001060603B69180AF8A020B6A0045C6550187070603546573742041504E00010101",
+      "expect": {
+        "class": "CL-WAP-CP",
+        "subtype": "NETWPIN",
+        "severity": "Suspicious",
+        "action": "Block",
+        "title": "Settings push (APN or proxy), network PIN"
+      },
+      "spec": "OMA-WAP-TS-ProvCont (SEC parameter)"
+    },
+    {
+      "id": "wap-cp-userpin",
+      "family": "wap",
+      "title": "WAP push: settings, USERPIN",
+      "tier": 1,
+      "port": 2948,
+      "payload": "01060603B69181AF8A020B6A0045C6550187070603546573742041504E00010101",
+      "pdu": "05915155100044089151551024000462115021436522280605040B8423F001060603B69181AF8A020B6A0045C6550187070603546573742041504E00010101",
+      "expect": {
+        "class": "CL-WAP-CP",
+        "subtype": "USERPIN",
+        "severity": "High",
+        "action": "Block",
+        "title": "Settings push (APN or proxy), user PIN"
+      },
+      "spec": "OMA-WAP-TS-ProvCont (SEC parameter)",
+      "note": "Severity is with an unknown sender and no history, rule PAT-04."
+    },
+    {
+      "id": "wap-cp-usernetwpin",
+      "family": "wap",
+      "title": "WAP push: settings, USERNETWPIN",
+      "tier": 1,
+      "port": 2948,
+      "payload": "01060603B69182AF8A020B6A0045C6550187070603546573742041504E00010101",
+      "pdu": "05915155100044089151551024000462115021436522280605040B8423F001060603B69182AF8A020B6A0045C6550187070603546573742041504E00010101",
+      "expect": {
+        "class": "CL-WAP-CP",
+        "subtype": "USERNETWPIN",
+        "severity": "Suspicious",
+        "action": "Block",
+        "title": "Settings push (APN or proxy), user and network PIN"
+      },
+      "spec": "OMA-WAP-TS-ProvCont (SEC parameter)"
+    },
+    {
+      "id": "wap-cp-userpinmac",
+      "family": "wap",
+      "title": "WAP push: settings, USERPINMAC",
+      "tier": 1,
+      "port": 2948,
+      "payload": "0106311F2DB69183923030303030303030303030303030303030303030303030303030303030303030303030303030303000AF8A020B6A0045C6550187070603546573742041504E00010101",
+      "pdu": "05915155100044089151551024000462115021436522530605040B8423F00106311F2DB69183923030303030303030303030303030303030303030303030303030303030303030303030303030303000AF8A020B6A0045C6550187070603546573742041504E00010101",
+      "expect": {
+        "class": "CL-WAP-CP",
+        "subtype": "USERPINMAC",
+        "severity": "Suspicious",
+        "action": "Block",
+        "title": "Settings push (APN or proxy), user PIN with MAC"
+      },
+      "spec": "OMA-WAP-TS-ProvCont (SEC parameter)"
+    },
+    {
+      "id": "wap-cp-nosec",
+      "family": "wap",
+      "title": "WAP push: settings, no security",
+      "tier": 1,
+      "port": 2948,
+      "payload": "010603B6AF8A020B6A0045C6550187070603546573742041504E00010101",
+      "pdu": "05915155100044089151551024000462115021436522250605040B8423F0010603B6AF8A020B6A0045C6550187070603546573742041504E00010101",
+      "expect": {
+        "class": "CL-WAP-CP",
+        "subtype": "NOSEC",
+        "severity": "High",
+        "action": "Block",
+        "title": "Settings push (APN or proxy), no security"
+      },
+      "spec": "OMA-WAP-TS-ProvCont"
+    },
+    {
+      "id": "wap-dm-notify",
+      "family": "wap",
+      "title": "WAP push: device management notification",
+      "tier": 1,
+      "port": 2948,
+      "payload": "010603C4AF870102030405060708090A0B0C0D0E0F1011121314031AC00008091A0007B2369732BC30B6B83632973A32B9BA00032AB83230BA3280",
+      "pdu": "05915155100044089151551024000462115021436522420605040B8423F0010603C4AF870102030405060708090A0B0C0D0E0F1011121314031AC00008091A0007B2369732BC30B6B83632973A32B9BA00032AB83230BA3280",
+      "checkSpec": true,
+      "expect": {
+        "class": "CL-WAP-DM",
+        "subtype": "NOTIFY",
+        "severity": "Suspicious",
+        "action": "Block",
+        "title": "Device management request"
+      },
+      "spec": "OMA DM 1.2 Notification Initiated Session"
+    },
+    {
+      "id": "wap-dm-bootstrap",
+      "family": "wap",
+      "title": "WAP push: device management setup",
+      "tier": 1,
+      "port": 2948,
+      "payload": "010603C2AF87020C6A004501",
+      "pdu": "05915155100044089151551024000462115021436522130605040B8423F0010603C2AF87020C6A004501",
+      "checkSpec": true,
+      "expect": {
+        "class": "CL-WAP-DM",
+        "subtype": "BOOTSTRAP",
+        "severity": "Suspicious",
+        "action": "Block",
+        "title": "Device management setup"
+      },
+      "spec": "OMA DM 1.2 Bootstrap",
+      "note": "The WBXML body is minimal. CL-04 checks it."
+    },
+    {
+      "id": "wap-ds-notify",
+      "family": "wap",
+      "title": "WAP push: data sync notification",
+      "tier": 1,
+      "port": 2948,
+      "payload": "0106296170706C69636174696F6E2F766E642E73796E636D6C2E64732E6E6F74696669636174696F6E00AF87111111111111111111111111111111110C2000000012340564732E7465",
+      "pdu": "05915155100044089151551024000462115021436522500605040B8423F00106296170706C69636174696F6E2F766E642E73796E636D6C2E64732E6E6F74696669636174696F6E00AF87111111111111111111111111111111110C2000000012340564732E7465",
+      "checkSpec": true,
+      "expect": {
+        "class": "CL-WAP-DS",
+        "subtype": null,
+        "severity": "Notice",
+        "action": "Hold",
+        "title": "Data sync request"
+      },
+      "spec": "OMA DS 1.2 Notification",
+      "note": "The body is dummy bytes."
+    },
+    {
+      "id": "wap-supl-notify",
+      "family": "wap",
+      "title": "WAP push: SUPL INIT, NOTIFY",
+      "tier": 1,
+      "port": 2948,
+      "payload": "01060603020312AF8C0011020000400000004600001008201004",
+      "pdu": "05915155100044089151551024000462115021436522210605040B8423F001060603020312AF8C0011020000400000004600001008201004",
+      "checkSpec": true,
+      "expect": {
+        "class": "CL-WAP-SUPL",
+        "subtype": "NOTIFY",
+        "severity": "High",
+        "action": "Block",
+        "title": "Location request"
+      },
+      "spec": "OMA SUPL 2.0 ULP (SUPL INIT notification type)",
+      "note": "The body is a SUPL INIT in X.691 UPER (OMA ULP), the layout of the payload and decoder reader. CL-04 checks it. Severity is with an unknown sender and no history, rule PAT-03."
+    },
+    {
+      "id": "wap-supl-verify",
+      "family": "wap",
+      "title": "WAP push: SUPL INIT, VERIFY",
+      "tier": 1,
+      "port": 2948,
+      "payload": "01060603020312AF8C0011020000400000004600001008201008",
+      "pdu": "05915155100044089151551024000462115021436522210605040B8423F001060603020312AF8C0011020000400000004600001008201008",
+      "checkSpec": true,
+      "expect": {
+        "class": "CL-WAP-SUPL",
+        "subtype": "VERIFY",
+        "severity": "High",
+        "action": "Block",
+        "title": "Location request (asks you)"
+      },
+      "spec": "OMA SUPL 2.0 ULP (SUPL INIT notification type)",
+      "note": "The body is a SUPL INIT in X.691 UPER (OMA ULP), the layout of the payload and decoder reader. CL-04 checks it. Severity is with an unknown sender and no history, rule PAT-03."
+    },
+    {
+      "id": "wap-supl-silent",
+      "family": "wap",
+      "title": "WAP push: SUPL INIT, SILENT",
+      "tier": 1,
+      "port": 2948,
+      "payload": "01060603020312AF8C0011020000400000004600001008201000",
+      "pdu": "05915155100044089151551024000462115021436522210605040B8423F001060603020312AF8C0011020000400000004600001008201000",
+      "checkSpec": true,
+      "expect": {
+        "class": "CL-WAP-SUPL",
+        "subtype": "SILENT",
+        "severity": "High",
+        "action": "Block",
+        "title": "Silent location request"
+      },
+      "spec": "OMA SUPL 2.0 ULP (SUPL INIT notification type)",
+      "note": "The body is a SUPL INIT in X.691 UPER (OMA ULP), the layout of the payload and decoder reader. CL-04 checks it."
+    },
+    {
+      "id": "wap-mms-notify",
+      "family": "wap",
+      "title": "WAP push: MMS notification",
+      "tier": 1,
+      "port": 2948,
+      "payload": "010603BEAF828C82985431008D908A808E020FA088048102A8C083687474703A2F2F6578616D706C652E746573742F6D3100",
+      "pdu": "05915155100044089151551024000462115021436522390605040B8423F0010603BEAF828C82985431008D908A808E020FA088048102A8C083687474703A2F2F6578616D706C652E746573742F6D3100",
+      "expect": {
+        "class": "CL-WAP-MMS",
+        "subtype": "NOTIFY",
+        "severity": "Info",
+        "action": "Allow",
+        "title": "MMS notification"
+      },
+      "spec": "OMA-TS-MMS_ENC (PDU type)"
+    },
+    {
+      "id": "wap-mms-delivery-report",
+      "family": "wap",
+      "title": "WAP push: MMS delivery report",
+      "tier": 1,
+      "port": 2948,
+      "payload": "010603BEAF828C868D908B5431009731353535303134322F545950453D504C4D4E0085045F5E10009580",
+      "pdu": "05915155100044089151551024000462115021436522310605040B8423F0010603BEAF828C868D908B5431009731353535303134322F545950453D504C4D4E0085045F5E10009580",
+      "expect": {
+        "class": "CL-WAP-MMS",
+        "subtype": "DELIVERY-REPORT",
+        "severity": "Info",
+        "action": "Allow",
+        "title": "MMS delivery report"
+      },
+      "spec": "OMA-TS-MMS_ENC (PDU type)"
+    },
+    {
+      "id": "wap-mms-read-report",
+      "family": "wap",
+      "title": "WAP push: MMS read report",
+      "tier": 1,
+      "port": 2948,
+      "payload": "010603BEAF828C888D908B5431009731353535303134322F545950453D504C4D4E0085045F5E10009B80",
+      "pdu": "05915155100044089151551024000462115021436522310605040B8423F0010603BEAF828C888D908B5431009731353535303134322F545950453D504C4D4E0085045F5E10009B80",
+      "expect": {
+        "class": "CL-WAP-MMS",
+        "subtype": "READ-REPORT",
+        "severity": "Info",
+        "action": "Allow",
+        "title": "MMS read report"
+      },
+      "spec": "OMA-TS-MMS_ENC (PDU type)"
+    },
+    {
+      "id": "wap-coc",
+      "family": "wap",
+      "title": "WAP push: cache control (binary)",
+      "tier": 1,
+      "port": 2948,
+      "payload": "010603B2AF8402076A0045860503666F6F2E776D6C00018705032F626172000101",
+      "pdu": "05915155100044089151551024000462115021436522280605040B8423F0010603B2AF8402076A0045860503666F6F2E776D6C00018705032F626172000101",
+      "expect": {
+        "class": "CL-WAP-CO",
+        "subtype": null,
+        "severity": "Notice",
+        "action": "Hold",
+        "title": "Cache control push"
+      },
+      "spec": "WAP-175 (Cache Operation)"
+    },
+    {
+      "id": "wap-co-text",
+      "family": "wap",
+      "title": "WAP push: cache control (text)",
+      "tier": 1,
+      "port": 2948,
+      "payload": "010603B1AF843C3F786D6C2076657273696F6E3D22312E30223F3E3C636F3E3C696E76616C69646174652D6F626A656374207572693D22687474703A2F2F6578616D706C652E746573742F61222F3E3C2F636F3E",
+      "pdu": "059151551000440891515510240004621150214365225B0605040B8423F0010603B1AF843C3F786D6C2076657273696F6E3D22312E30223F3E3C636F3E3C696E76616C69646174652D6F626A656374207572693D22687474703A2F2F6578616D706C652E746573742F61222F3E3C2F636F3E",
+      "expect": {
+        "class": "CL-WAP-CO",
+        "subtype": null,
+        "severity": "Notice",
+        "action": "Hold",
+        "title": "Cache control push"
+      },
+      "spec": "WAP-175"
+    },
+    {
+      "id": "wap-emn",
+      "family": "wap",
+      "title": "WAP push: email notification",
+      "tier": 1,
+      "port": 2948,
+      "payload": "0106060302030AAF84020A6A008508036578616D706C652E746573740001",
+      "pdu": "05915155100044089151551024000462115021436522250605040B8423F00106060302030AAF84020A6A008508036578616D706C652E746573740001",
+      "checkSpec": true,
+      "expect": {
+        "class": "CL-WAP-EMN",
+        "subtype": null,
+        "severity": "Info",
+        "action": "Allow",
+        "title": "Email notification"
+      },
+      "spec": "OMA Email Notification 1.0"
+    },
+    {
+      "id": "wap-drm-rights-wbxml",
+      "family": "wap",
+      "title": "WAP push: DRM licence (binary)",
+      "tier": 1,
+      "port": 2948,
+      "payload": "010603CBAF84020E6A004501",
+      "pdu": "05915155100044089151551024000462115021436522130605040B8423F0010603CBAF84020E6A004501",
+      "checkSpec": true,
+      "expect": {
+        "class": "CL-WAP-DRM",
+        "subtype": null,
+        "severity": "Notice",
+        "action": "Allow",
+        "title": "DRM licence"
+      },
+      "spec": "OMA DRM 1.0 Rights Expression"
+    },
+    {
+      "id": "wap-drm-rights-xml",
+      "family": "wap",
+      "title": "WAP push: DRM licence (text)",
+      "tier": 1,
+      "port": 2948,
+      "payload": "010603CAAF843C6F2D65783A72696768747320786D6C6E733A6F2D65783D22687474703A2F2F6F64726C2E6E65742F312E312F4F44524C2D4558223E3C2F6F2D65783A7269676874733E",
+      "pdu": "05915155100044089151551024000462115021436522510605040B8423F0010603CAAF843C6F2D65783A72696768747320786D6C6E733A6F2D65783D22687474703A2F2F6F64726C2E6E65742F312E312F4F44524C2D4558223E3C2F6F2D65783A7269676874733E",
+      "checkSpec": true,
+      "expect": {
+        "class": "CL-WAP-DRM",
+        "subtype": null,
+        "severity": "Notice",
+        "action": "Allow",
+        "title": "DRM licence"
+      },
+      "spec": "OMA DRM 1.0 Rights Expression"
+    },
+    {
+      "id": "wap-vcard",
+      "family": "wap",
+      "title": "WAP push: contact card",
+      "tier": 1,
+      "port": 2948,
+      "payload": "01060387AF84424547494E3A56434152440D0A56455253494F4E3A322E310D0A464E3A5465737420557365720D0A454E443A5643415244",
+      "pdu": "059151551000440891515510240004621150214365223E0605040B8423F001060387AF84424547494E3A56434152440D0A56455253494F4E3A322E310D0A464E3A5465737420557365720D0A454E443A5643415244",
+      "expect": {
+        "class": "CL-WAP-VCARD",
+        "subtype": "VCARD",
+        "severity": "Notice",
+        "action": "Hold",
+        "title": "Contact card push"
+      },
+      "spec": "WAP-230 content type 0x07"
+    },
+    {
+      "id": "wap-vcal",
+      "family": "wap",
+      "title": "WAP push: calendar entry",
+      "tier": 1,
+      "port": 2948,
+      "payload": "01060386AF84424547494E3A5643414C454E4441520D0A56455253494F4E3A312E300D0A424547494E3A564556454E540D0A53554D4D4152593A54657374206576656E740D0A454E443A564556454E540D0A454E443A5643414C454E444152",
+      "pdu": "05915155100044089151551024000462115021436522660605040B8423F001060386AF84424547494E3A5643414C454E4441520D0A56455253494F4E3A312E300D0A424547494E3A564556454E540D0A53554D4D4152593A54657374206576656E740D0A454E443A564556454E540D0A454E443A5643414C454E444152",
+      "expect": {
+        "class": "CL-WAP-VCARD",
+        "subtype": "VCAL",
+        "severity": "Notice",
+        "action": "Hold",
+        "title": "Calendar push"
+      },
+      "spec": "WAP-230 content type 0x06"
+    },
+    {
+      "id": "wap-imps",
+      "family": "wap",
+      "title": "WAP push: chat service wake-up",
+      "tier": 1,
+      "port": 2948,
+      "payload": "010603C6AF840102030405",
+      "pdu": "05915155100044089151551024000462115021436522120605040B8423F0010603C6AF840102030405",
+      "checkSpec": true,
+      "expect": {
+        "class": "CL-WAP-IMPS",
+        "subtype": null,
+        "severity": "Notice",
+        "action": "Hold",
+        "title": "Chat service wake-up"
+      },
+      "spec": "OMA IMPS CIR",
+      "note": "The body is dummy bytes."
+    },
+    {
+      "id": "wap-wml",
+      "family": "wap",
+      "title": "WAP push: WML (text)",
+      "tier": 1,
+      "port": 2948,
+      "payload": "01060388AF843C3F786D6C2076657273696F6E3D22312E30223F3E3C776D6C3E3C636172642069643D2263223E3C703E54657374206D65737361676520313C2F703E3C2F636172643E3C2F776D6C3E",
+      "pdu": "05915155100044089151551024000462115021436522560605040B8423F001060388AF843C3F786D6C2076657273696F6E3D22312E30223F3E3C776D6C3E3C636172642069643D2263223E3C703E54657374206D65737361676520313C2F703E3C2F636172643E3C2F776D6C3E",
+      "expect": {
+        "class": "CL-WAP-OTHER",
+        "subtype": "text/vnd.wap.wml",
+        "severity": "Suspicious",
+        "action": "Hold",
+        "title": "Push message (text/vnd.wap.wml)"
+      },
+      "spec": "WAP-191 (WML)"
+    },
+    {
+      "id": "wap-wmlc",
+      "family": "wap",
+      "title": "WAP push: WML (binary)",
+      "tier": 1,
+      "port": 2948,
+      "payload": "01060394AF8401046A007F6760035465737400010101",
+      "pdu": "059151551000440891515510240004621150214365221D0605040B8423F001060394AF8401046A007F6760035465737400010101",
+      "expect": {
+        "class": "CL-WAP-OTHER",
+        "subtype": "application/vnd.wap.wmlc",
+        "severity": "Suspicious",
+        "action": "Hold",
+        "title": "Push message (application/vnd.wap.wmlc)"
+      },
+      "spec": "WAP-191 (WML)"
+    },
+    {
+      "id": "wap-other-png",
+      "family": "wap",
+      "title": "WAP push: PNG image",
+      "tier": 1,
+      "port": 2948,
+      "payload": "010603A0AF8489504E470D0A1A0A",
+      "pdu": "05915155100044089151551024000462115021436522150605040B8423F0010603A0AF8489504E470D0A1A0A",
+      "expect": {
+        "class": "CL-WAP-OTHER",
+        "subtype": "image/png",
+        "severity": "Suspicious",
+        "action": "Hold",
+        "title": "Push message (image/png)"
+      },
+      "spec": "WAP-230 content type 0x20"
+    },
+    {
+      "id": "sim-ota-rfm",
+      "family": "sim-ota",
+      "title": "SIM OTA: SIM-OTA-RFM",
+      "tier": 2,
+      "pdu": "059151551000440891515510247FF6621150214365221F027000001A1502000000B00000000000000100000000000000000000000000",
+      "expect": {
+        "class": "CL-SIM-DD",
+        "subtype": "SIM-OTA-RFM",
+        "severity": "Suspicious",
+        "action": "Block",
+        "title": "SIM update from the network: changes files on the SIM"
+      },
+      "spec": "3GPP TS 31.115, ETSI TS 102 225, ETSI TS 102 226 (TAR)",
+      "checkSpec": true,
+      "note": "Dummy counter and dummy secured data. No real keys. CL-08 checked the TAR value."
+    },
+    {
+      "id": "sim-ota-ram",
+      "family": "sim-ota",
+      "title": "SIM OTA: SIM-OTA-RAM",
+      "tier": 2,
+      "pdu": "059151551000440891515510247FF6621150214365221F027000001A1502000000000000000000000100000000000000000000000000",
+      "expect": {
+        "class": "CL-SIM-DD",
+        "subtype": "SIM-OTA-RAM",
+        "severity": "Suspicious",
+        "action": "Block",
+        "title": "SIM update from the network: installs or deletes SIM apps"
+      },
+      "spec": "3GPP TS 31.115, ETSI TS 102 225, ETSI TS 102 226 (TAR)",
+      "checkSpec": true,
+      "note": "Dummy counter and dummy secured data. No real keys. CL-08 checked the TAR value."
+    },
+    {
+      "id": "sim-ota-sat",
+      "family": "sim-ota",
+      "title": "SIM OTA: SIM-OTA-SAT",
+      "tier": 2,
+      "pdu": "059151551000440891515510247FF6621150214365221702700000120D0000000050534800000000010000000000",
+      "expect": {
+        "class": "CL-SIM-DD",
+        "subtype": "SIM-OTA-SAT",
+        "severity": "High",
+        "action": "Block",
+        "title": "SIM update from the network: sends a command to the SIM browser (S@T)",
+        "extraSubtypes": [
+          "SIM-OTA-NOSEC"
+        ]
+      },
+      "spec": "3GPP TS 31.115, ETSI TS 102 225, ETSI TS 102 226 (TAR)",
+      "checkSpec": true,
+      "note": "Dummy counter and dummy secured data. No real keys. CL-08 checked the TAR value. S@T and WIB win over NOSEC and RFM, because they are the attack paths."
+    },
+    {
+      "id": "sim-ota-wib",
+      "family": "sim-ota",
+      "title": "SIM OTA: SIM-OTA-WIB",
+      "tier": 2,
+      "pdu": "059151551000440891515510247FF6621150214365221702700000120D0000000000000100000000010000000000",
+      "expect": {
+        "class": "CL-SIM-DD",
+        "subtype": "SIM-OTA-WIB",
+        "severity": "High",
+        "action": "Block",
+        "title": "SIM update from the network: sends a command to the SIM browser (WIB)",
+        "extraSubtypes": [
+          "SIM-OTA-NOSEC"
+        ]
+      },
+      "spec": "3GPP TS 31.115, ETSI TS 102 225, ETSI TS 102 226 (TAR)",
+      "checkSpec": true,
+      "note": "Dummy counter and dummy secured data. No real keys. CL-08 checked the TAR value. S@T and WIB win over NOSEC and RFM, because they are the attack paths."
+    },
+    {
+      "id": "sim-ota-nosec",
+      "family": "sim-ota",
+      "title": "SIM OTA: SIM-OTA-NOSEC",
+      "tier": 2,
+      "pdu": "059151551000440891515510247FF6621150214365221702700000120D0000000044556600000000010000000000",
+      "expect": {
+        "class": "CL-SIM-DD",
+        "subtype": "SIM-OTA-NOSEC",
+        "severity": "High",
+        "action": "Block",
+        "title": "SIM update from the network: has no security protection"
+      },
+      "spec": "3GPP TS 31.115, ETSI TS 102 225, ETSI TS 102 226 (TAR)",
+      "checkSpec": true,
+      "note": "Dummy counter and dummy secured data. No real keys. CL-08 checked the TAR value."
+    },
+    {
+      "id": "sim-ota-other",
+      "family": "sim-ota",
+      "title": "SIM OTA: SIM-OTA-OTHER",
+      "tier": 2,
+      "pdu": "059151551000440891515510247FF6621150214365221F027000001A1502000000445566000000000100000000000000000000000000",
+      "expect": {
+        "class": "CL-SIM-DD",
+        "subtype": "SIM-OTA-OTHER",
+        "severity": "Suspicious",
+        "action": "Block",
+        "title": "SIM update from the network: sends data to a SIM app"
+      },
+      "spec": "3GPP TS 31.115, ETSI TS 102 225, ETSI TS 102 226 (TAR)",
+      "checkSpec": true,
+      "note": "Dummy counter and dummy secured data. No real keys. CL-08 checked the TAR value."
+    },
+    {
+      "id": "sim-ota-class2-iei70",
+      "family": "sim-ota",
+      "title": "SIM OTA in a class 2 message, PID 0",
+      "tier": 2,
+      "pdu": "0591515510004408915155102400F6621150214365221F027000001A1502000000B00000000000000100000000000000000000000000",
+      "expect": {
+        "class": "CL-SIM-DD",
+        "subtype": "SIM-OTA-RFM",
+        "severity": "Suspicious",
+        "action": "Block",
+        "title": "SIM update from the network: changes files on the SIM"
+      },
+      "spec": "3GPP TS 31.115, ETSI TS 102 225, ETSI TS 102 226 (TAR)",
+      "checkSpec": true
+    },
+    {
+      "id": "anomaly-ota-hdr",
+      "family": "malformed",
+      "title": "Anomaly AN-OTA-HDR: SIM command header is wrong",
+      "tier": 2,
+      "pdu": "059151551000440891515510247FF6621150214365220B027000001A1502000000B0",
+      "expect": {
+        "class": "CL-SIM-DD",
+        "subtype": "SIM-OTA-OTHER",
+        "severity": "Suspicious",
+        "action": "Block",
+        "title": "SIM update from the network: sends data to a SIM app",
+        "anomalies": [
+          "AN-OTA-HDR"
+        ]
+      },
+      "spec": "3GPP TS 31.115, ETSI TS 102 225, ETSI TS 102 226 (TAR)"
+    },
+    {
+      "id": "cb-cmas-presidential",
+      "family": "cb",
+      "title": "Emergency alert: presidential",
+      "tier": 2,
+      "method": "cb-pdu",
+      "pdu": "101211120F11D4F29C0E6A97E7F3F0B90C8A351A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D100",
+      "expect": {
+        "class": "CL-CB",
+        "subtype": "PRESIDENTIAL",
+        "severity": "Info",
+        "action": "Allow",
+        "title": "Emergency alert: presidential"
+      },
+      "spec": "3GPP TS 23.041 9.4.1.2",
+      "note": "A cell broadcast page (88 bytes), not an SMS-DELIVER. Inject it as a GSM CB page."
+    },
+    {
+      "id": "cb-cmas-extreme",
+      "family": "cb",
+      "title": "Emergency alert: extreme",
+      "tier": 2,
+      "method": "cb-pdu",
+      "pdu": "101311130F11D4F29C0E6A97E7F3F0B90C8A351A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D100",
+      "expect": {
+        "class": "CL-CB",
+        "subtype": "EXTREME",
+        "severity": "Info",
+        "action": "Allow",
+        "title": "Emergency alert: extreme"
+      },
+      "spec": "3GPP TS 23.041 9.4.1.2",
+      "note": "A cell broadcast page (88 bytes), not an SMS-DELIVER. Inject it as a GSM CB page."
+    },
+    {
+      "id": "cb-cmas-severe",
+      "family": "cb",
+      "title": "Emergency alert: severe",
+      "tier": 2,
+      "method": "cb-pdu",
+      "pdu": "101511150F11D4F29C0E6A97E7F3F0B90C8A351A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D100",
+      "expect": {
+        "class": "CL-CB",
+        "subtype": "SEVERE",
+        "severity": "Info",
+        "action": "Allow",
+        "title": "Emergency alert: severe"
+      },
+      "spec": "3GPP TS 23.041 9.4.1.2",
+      "note": "A cell broadcast page (88 bytes), not an SMS-DELIVER. Inject it as a GSM CB page."
+    },
+    {
+      "id": "cb-cmas-amber",
+      "family": "cb",
+      "title": "Emergency alert: amber",
+      "tier": 2,
+      "method": "cb-pdu",
+      "pdu": "101B111B0F11D4F29C0E6A97E7F3F0B90C8A351A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D100",
+      "expect": {
+        "class": "CL-CB",
+        "subtype": "AMBER",
+        "severity": "Info",
+        "action": "Allow",
+        "title": "Emergency alert: amber"
+      },
+      "spec": "3GPP TS 23.041 9.4.1.2",
+      "note": "A cell broadcast page (88 bytes), not an SMS-DELIVER. Inject it as a GSM CB page."
+    },
+    {
+      "id": "cb-cmas-test",
+      "family": "cb",
+      "title": "Emergency alert: test",
+      "tier": 2,
+      "method": "cb-pdu",
+      "pdu": "101C111C0F11D4F29C0E6A97E7F3F0B90C8A351A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D100",
+      "expect": {
+        "class": "CL-CB",
+        "subtype": "TEST",
+        "severity": "Info",
+        "action": "Allow",
+        "title": "Emergency alert: test"
+      },
+      "spec": "3GPP TS 23.041 9.4.1.2",
+      "note": "A cell broadcast page (88 bytes), not an SMS-DELIVER. Inject it as a GSM CB page."
+    },
+    {
+      "id": "cb-cmas-exercise",
+      "family": "cb",
+      "title": "Emergency alert: exercise",
+      "tier": 2,
+      "method": "cb-pdu",
+      "pdu": "101D111D0F11D4F29C0E6A97E7F3F0B90C8A351A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D100",
+      "expect": {
+        "class": "CL-CB",
+        "subtype": "EXERCISE",
+        "severity": "Info",
+        "action": "Allow",
+        "title": "Emergency alert: exercise"
+      },
+      "spec": "3GPP TS 23.041 9.4.1.2",
+      "note": "A cell broadcast page (88 bytes), not an SMS-DELIVER. Inject it as a GSM CB page."
+    },
+    {
+      "id": "cb-etws-eq",
+      "family": "cb",
+      "title": "Earthquake warning",
+      "tier": 2,
+      "method": "cb-pdu",
+      "pdu": "100011000F11D4F29C0E6A97E7F3F0B90C8A351A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D100",
+      "expect": {
+        "class": "CL-CB",
+        "subtype": "ETWS-EQ",
+        "severity": "Info",
+        "action": "Allow",
+        "title": "Earthquake warning"
+      },
+      "spec": "3GPP TS 23.041 9.4.1.2",
+      "note": "A cell broadcast page (88 bytes), not an SMS-DELIVER. Inject it as a GSM CB page."
+    },
+    {
+      "id": "cb-etws-tsunami",
+      "family": "cb",
+      "title": "Tsunami warning",
+      "tier": 2,
+      "method": "cb-pdu",
+      "pdu": "100111010F11D4F29C0E6A97E7F3F0B90C8A351A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D100",
+      "expect": {
+        "class": "CL-CB",
+        "subtype": "ETWS-TSUNAMI",
+        "severity": "Info",
+        "action": "Allow",
+        "title": "Tsunami warning"
+      },
+      "spec": "3GPP TS 23.041 9.4.1.2",
+      "note": "A cell broadcast page (88 bytes), not an SMS-DELIVER. Inject it as a GSM CB page."
+    },
+    {
+      "id": "cb-etws-both",
+      "family": "cb",
+      "title": "Earthquake and tsunami warning",
+      "tier": 2,
+      "method": "cb-pdu",
+      "pdu": "100211020F11D4F29C0E6A97E7F3F0B90C8A351A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D100",
+      "expect": {
+        "class": "CL-CB",
+        "subtype": "ETWS-BOTH",
+        "severity": "Info",
+        "action": "Allow",
+        "title": "Earthquake and tsunami warning"
+      },
+      "spec": "3GPP TS 23.041 9.4.1.2",
+      "checkSpec": true,
+      "note": "A cell broadcast page (88 bytes), not an SMS-DELIVER. Inject it as a GSM CB page."
+    },
+    {
+      "id": "cb-etws-test",
+      "family": "cb",
+      "title": "Test warning",
+      "tier": 2,
+      "method": "cb-pdu",
+      "pdu": "100311030F11D4F29C0E6A97E7F3F0B90C8A351A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D100",
+      "expect": {
+        "class": "CL-CB",
+        "subtype": "ETWS-TEST",
+        "severity": "Info",
+        "action": "Allow",
+        "title": "Test warning"
+      },
+      "spec": "3GPP TS 23.041 9.4.1.2",
+      "note": "A cell broadcast page (88 bytes), not an SMS-DELIVER. Inject it as a GSM CB page."
+    },
+    {
+      "id": "cb-area-info",
+      "family": "cb",
+      "title": "Area information (channel 50)",
+      "tier": 2,
+      "method": "cb-pdu",
+      "pdu": "103200320F11D4F29C0E6A97E7F3F0B90C8A351A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D100",
+      "expect": {
+        "class": "CL-CB",
+        "subtype": "AREA-INFO",
+        "severity": "Info",
+        "action": "Allow",
+        "title": "Area information (channel 50)"
+      },
+      "spec": "3GPP TS 23.041 9.4.1.2",
+      "note": "A cell broadcast page (88 bytes), not an SMS-DELIVER. Inject it as a GSM CB page."
+    },
+    {
+      "id": "cb-channel-221",
+      "family": "cb",
+      "title": "Cell broadcast (channel 221)",
+      "tier": 2,
+      "method": "cb-pdu",
+      "pdu": "10DD00DD0F11D4F29C0E6A97E7F3F0B90C8A351A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D100",
+      "expect": {
+        "class": "CL-CB",
+        "subtype": "CHANNEL",
+        "severity": "Notice",
+        "action": "Allow",
+        "title": "Cell broadcast (channel 221)"
+      },
+      "spec": "3GPP TS 23.041 9.4.1.2",
+      "note": "A cell broadcast page (88 bytes), not an SMS-DELIVER. Inject it as a GSM CB page."
+    },
+    {
+      "id": "cb-sim-download",
+      "family": "cb",
+      "title": "Cell broadcast for the SIM",
+      "tier": 2,
+      "method": "cb-pdu",
+      "pdu": "100010000F11D4F29C0E6A97E7F3F0B90C8A351A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D168341A8D46A3D100",
+      "expect": {
+        "class": "CL-CB-SIM",
+        "subtype": null,
+        "severity": "Suspicious",
+        "action": "Block",
+        "title": "Cell broadcast for the SIM"
+      },
+      "spec": "3GPP TS 23.041 9.4.1.2",
+      "checkSpec": true,
+      "note": "The message identifier range for CB data download to the SIM is a guess. CL-09 checks it. A cell broadcast page (88 bytes), not an SMS-DELIVER."
+    },
+    {
+      "id": "injected-by-app",
+      "family": "injected",
+      "title": "Message added by an app",
+      "tier": 2,
+      "method": "inject-provider",
+      "text": "Test message 1",
+      "expect": {
+        "class": "CL-INJECTED",
+        "subtype": "com.example.sender",
+        "severity": "High",
+        "action": "Hold",
+        "title": "Message added by an app (Example Sender)"
+      },
+      "spec": "Android Telephony provider",
+      "note": "An app writes a row into the SMS inbox. The tester needs root or the default SMS role. No received PDU exists."
+    },
+    {
+      "id": "mo-sim-send",
+      "family": "mo",
+      "title": "The SIM sent a message",
+      "tier": 2,
+      "method": "stk-send",
+      "expect": {
+        "class": "CL-MO-STK",
+        "subtype": "SEND-SMS",
+        "severity": "High",
+        "action": "Notify",
+        "title": "The SIM sent a message"
+      },
+      "spec": "3GPP TS 31.111 (SEND SHORT MESSAGE)",
+      "note": "Needs a SIM applet that sends an SMS. Without an applet, test this class with a JVM test."
+    },
+    {
+      "id": "mo-app-text",
+      "family": "mo",
+      "title": "Message sent by an app",
+      "tier": 1,
+      "method": "app-send",
+      "text": "Test message 1",
+      "expect": {
+        "class": "CL-MO-VISIBLE",
+        "subtype": "com.example.sender",
+        "severity": "Suspicious",
+        "action": "Allow",
+        "title": "Message sent by an app (Example Sender)"
+      },
+      "spec": "Android SmsManager",
+      "note": "The tester sends this message without the messaging app. The target number is another phone."
+    },
+    {
+      "id": "mo-app-data",
+      "family": "mo",
+      "title": "Data message sent by an app",
+      "tier": 1,
+      "method": "app-send",
+      "port": 16001,
+      "payload": "01020304",
+      "expect": {
+        "class": "CL-MO-DATA",
+        "subtype": "16001",
+        "severity": "Suspicious",
+        "action": "Allow",
+        "title": "Data message sent"
+      },
+      "spec": "Android SmsManager",
+      "note": "Outgoing data message to port 16001."
+    },
+    {
+      "id": "consumer-vvm",
+      "family": "consumer",
+      "title": "Voicemail app control",
+      "tier": 2,
+      "method": "consumer-observed",
+      "expect": {
+        "class": "CL-VVM",
+        "subtype": null,
+        "severity": "Info",
+        "action": "Allow",
+        "title": "Voicemail app control"
+      },
+      "spec": "Existing classes",
+      "note": "The phone software that uses the message decides this class. No single PDU gives it. Severity, action and title are the values that exist today. CL-06 checks them."
+    },
+    {
+      "id": "consumer-missed-call",
+      "family": "consumer",
+      "title": "Missed-call notice",
+      "tier": 2,
+      "method": "consumer-observed",
+      "expect": {
+        "class": "CL-MISSED-CALL",
+        "subtype": null,
+        "severity": "Info",
+        "action": "Allow",
+        "title": "Missed-call notice"
+      },
+      "spec": "Existing classes",
+      "note": "The phone software that uses the message decides this class. No single PDU gives it. Severity, action and title are the values that exist today. CL-06 checks them."
+    },
+    {
+      "id": "consumer-carrier",
+      "family": "consumer",
+      "title": "Carrier app message",
+      "tier": 2,
+      "method": "consumer-observed",
+      "expect": {
+        "class": "CL-CARRIER",
+        "subtype": null,
+        "severity": "Info",
+        "action": "Allow",
+        "title": "Carrier app message"
+      },
+      "spec": "Existing classes",
+      "note": "The phone software that uses the message decides this class. No single PDU gives it. Severity, action and title are the values that exist today. CL-06 checks them."
+    },
+    {
+      "id": "consumer-rcs-prov",
+      "family": "consumer",
+      "title": "Chat (RCS) setup",
+      "tier": 2,
+      "method": "consumer-observed",
+      "expect": {
+        "class": "CL-RCS-PROV",
+        "subtype": null,
+        "severity": "Info",
+        "action": "Allow",
+        "title": "Chat (RCS) setup"
+      },
+      "spec": "Existing classes",
+      "note": "The phone software that uses the message decides this class. No single PDU gives it. Severity, action and title are the values that exist today. CL-06 checks them."
+    },
+    {
+      "id": "consumer-app-token",
+      "family": "consumer",
+      "title": "App-only message",
+      "tier": 2,
+      "method": "consumer-observed",
+      "expect": {
+        "class": "CL-APP-TOKEN",
+        "subtype": null,
+        "severity": "Notice",
+        "action": "Allow",
+        "title": "App-only message"
+      },
+      "spec": "Existing classes",
+      "note": "The phone software that uses the message decides this class. No single PDU gives it. Severity, action and title are the values that exist today. CL-06 checks them."
+    },
+    {
+      "id": "consumer-oem",
+      "family": "consumer",
+      "title": "Handled by the phone maker",
+      "tier": 2,
+      "method": "consumer-observed",
+      "expect": {
+        "class": "CL-OEM",
+        "subtype": null,
+        "severity": "Notice",
+        "action": "Allow",
+        "title": "Handled by the phone maker"
+      },
+      "spec": "Existing classes",
+      "note": "The phone software that uses the message decides this class. No single PDU gives it. Severity, action and title are the values that exist today. CL-06 checks them."
+    },
+    {
+      "id": "pattern-silent-burst",
+      "family": "pattern",
+      "title": "Pattern: silent SMS burst",
+      "tier": 2,
+      "sequence": [
+        {
+          "ref": "silent-type0",
+          "delaySeconds": 0
+        },
+        {
+          "ref": "silent-type0",
+          "delaySeconds": 300
+        },
+        {
+          "ref": "silent-type0",
+          "delaySeconds": 300
+        }
+      ],
+      "expect": {
+        "class": "CL-SILENT",
+        "subtype": "TYPE0",
+        "severity": "High",
+        "action": "Notify",
+        "title": "Silent SMS (Type 0)",
+        "reason": "Repeated silent SMS can show where a phone is."
+      },
+      "spec": "Plan section 8.6",
+      "note": "Send the sequence in order. Wait delaySeconds before each message. The expected result is for the last message."
+    },
+    {
+      "id": "pattern-silent-unknown-sender",
+      "family": "pattern",
+      "title": "Pattern: silent SMS from an unknown sender",
+      "tier": 2,
+      "sequence": [
+        {
+          "ref": "silent-type0",
+          "delaySeconds": 0
+        }
+      ],
+      "precondition": "senderNotInKnownSenders",
+      "expect": {
+        "class": "CL-SILENT",
+        "subtype": "TYPE0",
+        "severity": "Suspicious",
+        "action": "Notify",
+        "title": "Silent SMS (Type 0)",
+        "reason": "The sender is not in Known senders."
+      },
+      "spec": "Plan section 8.6",
+      "note": "Send the sequence in order. Wait delaySeconds before each message. The expected result is for the last message."
+    },
+    {
+      "id": "pattern-supl-unknown-sender",
+      "family": "pattern",
+      "title": "Pattern: location request from an unknown sender",
+      "tier": 2,
+      "sequence": [
+        {
+          "ref": "wap-supl-notify",
+          "delaySeconds": 0
+        }
+      ],
+      "precondition": "senderNotKnownCarrier",
+      "expect": {
+        "class": "CL-WAP-SUPL",
+        "subtype": "NOTIFY",
+        "severity": "High",
+        "action": "Block",
+        "title": "Location request",
+        "reason": "The sender is not a known carrier number."
+      },
+      "spec": "Plan section 8.6",
+      "note": "Send the sequence in order. Wait delaySeconds before each message. The expected result is for the last message."
+    },
+    {
+      "id": "pattern-cp-nosec-unknown-sender",
+      "family": "pattern",
+      "title": "Pattern: settings push without PIN (NOSEC)",
+      "tier": 2,
+      "sequence": [
+        {
+          "ref": "wap-cp-nosec",
+          "delaySeconds": 0
+        }
+      ],
+      "precondition": "senderNotInKnownSenders",
+      "expect": {
+        "class": "CL-WAP-CP",
+        "subtype": "NOSEC",
+        "severity": "High",
+        "action": "Block",
+        "title": "Settings push (APN or proxy), no security",
+        "reason": "A settings push without a network PIN came from an unknown sender."
+      },
+      "spec": "Plan section 8.6",
+      "note": "Send the sequence in order. Wait delaySeconds before each message. The expected result is for the last message."
+    },
+    {
+      "id": "pattern-cp-userpin-unknown-sender",
+      "family": "pattern",
+      "title": "Pattern: settings push with user PIN only",
+      "tier": 2,
+      "sequence": [
+        {
+          "ref": "wap-cp-userpin",
+          "delaySeconds": 0
+        }
+      ],
+      "precondition": "senderNotInKnownSenders",
+      "expect": {
+        "class": "CL-WAP-CP",
+        "subtype": "USERPIN",
+        "severity": "High",
+        "action": "Block",
+        "title": "Settings push (APN or proxy), user PIN",
+        "reason": "A settings push without a network PIN came from an unknown sender."
+      },
+      "spec": "Plan section 8.6",
+      "note": "Send the sequence in order. Wait delaySeconds before each message. The expected result is for the last message."
+    },
+    {
+      "id": "pattern-sim-browser-sat",
+      "family": "pattern",
+      "title": "Pattern: SIM browser command (S@T)",
+      "tier": 2,
+      "sequence": [
+        {
+          "ref": "sim-ota-sat",
+          "delaySeconds": 0
+        }
+      ],
+      "expect": {
+        "class": "CL-SIM-DD",
+        "subtype": "SIM-OTA-SAT",
+        "severity": "High",
+        "action": "Block",
+        "title": "SIM update from the network: sends a command to the SIM browser (S@T)",
+        "reason": "A message sent a command to the S@T browser on the SIM."
+      },
+      "spec": "Plan section 8.6",
+      "note": "Send the sequence in order. Wait delaySeconds before each message. The expected result is for the last message."
+    },
+    {
+      "id": "pattern-sim-browser-wib",
+      "family": "pattern",
+      "title": "Pattern: SIM browser command (WIB)",
+      "tier": 2,
+      "sequence": [
+        {
+          "ref": "sim-ota-wib",
+          "delaySeconds": 0
+        }
+      ],
+      "expect": {
+        "class": "CL-SIM-DD",
+        "subtype": "SIM-OTA-WIB",
+        "severity": "High",
+        "action": "Block",
+        "title": "SIM update from the network: sends a command to the SIM browser (WIB)",
+        "reason": "A message sent a command to the WIB browser on the SIM."
+      },
+      "spec": "Plan section 8.6",
+      "note": "Send the sequence in order. Wait delaySeconds before each message. The expected result is for the last message."
+    },
+    {
+      "id": "pattern-sim-sends-after-update",
+      "family": "pattern",
+      "title": "Pattern: the SIM sends a message after a SIM update",
+      "tier": 2,
+      "sequence": [
+        {
+          "ref": "sim-ota-rfm",
+          "delaySeconds": 0
+        },
+        {
+          "ref": "mo-sim-send",
+          "delaySeconds": 120
+        }
+      ],
+      "expect": {
+        "class": "CL-MO-STK",
+        "subtype": "SEND-SMS",
+        "severity": "High",
+        "action": "Notify",
+        "title": "The SIM sent a message",
+        "reason": "The SIM sent a message after it received an update. This is the Simjacker pattern."
+      },
+      "spec": "Plan section 8.6",
+      "note": "Send the sequence in order. Wait delaySeconds before each message. The expected result is for the last message."
+    },
+    {
+      "id": "pattern-unknown-port-repeat",
+      "family": "pattern",
+      "title": "Pattern: repeated messages to an unknown port",
+      "tier": 2,
+      "sequence": [
+        {
+          "ref": "data-port-16001",
+          "delaySeconds": 0
+        },
+        {
+          "ref": "data-port-16001",
+          "delaySeconds": 3600
+        },
+        {
+          "ref": "data-port-16001",
+          "delaySeconds": 3600
+        }
+      ],
+      "expect": {
+        "class": "CL-DATA-PORT",
+        "subtype": "UNKNOWN",
+        "severity": "Suspicious",
+        "action": "Notify",
+        "title": "Data message to port 16001",
+        "reason": "The same sender sent 3 messages to an unknown port in 24 hours."
+      },
+      "spec": "Plan section 8.6",
+      "note": "Send the sequence in order. Wait delaySeconds before each message. The expected result is for the last message."
+    },
+    {
+      "id": "pattern-malformed-burst",
+      "family": "pattern",
+      "title": "Pattern: malformed burst",
+      "tier": 2,
+      "sequence": [
+        {
+          "ref": "anomaly-addr-trunc",
+          "delaySeconds": 0
+        },
+        {
+          "ref": "anomaly-addr-trunc",
+          "delaySeconds": 120
+        }
+      ],
+      "expect": {
+        "class": "CL-MALFORMED-SMS",
+        "subtype": "AN-ADDR-TRUNC",
+        "severity": "High",
+        "action": "Block",
+        "title": "Malformed SMS: address cut off",
+        "reason": "The same phone received 2 malformed messages in 10 minutes."
+      },
+      "spec": "Plan section 8.6",
+      "note": "Send the sequence in order. Wait delaySeconds before each message. The expected result is for the last message."
+    },
+    {
+      "id": "pattern-replace-no-first",
+      "family": "pattern",
+      "title": "Pattern: replacement without a first message",
+      "tier": 2,
+      "sequence": [
+        {
+          "ref": "replace-type1",
+          "delaySeconds": 0
+        }
+      ],
+      "precondition": "noEarlierMessageOfType",
+      "expect": {
+        "class": "CL-REPLACE",
+        "subtype": "TYPE1",
+        "severity": "Suspicious",
+        "action": "Hold",
+        "title": "Replacement message (type 1)",
+        "reason": "No earlier message of this type came from this sender."
+      },
+      "spec": "Plan section 8.6",
+      "note": "Send the sequence in order. Wait delaySeconds before each message. The expected result is for the last message."
+    }
+  ]
+}

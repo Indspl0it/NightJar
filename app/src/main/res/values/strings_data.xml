@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Filter chip that shows or hides delivery reports in the message list. -->
+    <string name="nj_data_chip_delivery_reports">Delivery reports</string>
+</resources>

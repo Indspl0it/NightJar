@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Protection status (health_x_*). Copy standard: docs/copy-standard.md. -->
+<resources>
+    <!-- Protection status: the state badge of a check. -->
+    <string name="health_x_state_ok">OK</string>
+    <!-- Status card badge when all checks are OK. -->
+    <string name="health_x_badge_ok">All checks OK</string>
+    <!-- Status card badge. %1$d = number of checks that are not OK, for example 2. -->
+    <plurals name="health_x_badge_issues">
+        <item quantity="one">%1$d check needs attention</item>
+        <item quantity="other">%1$d checks need attention</item>
+    </plurals>
+
+    <!-- Section title above the build and version rows. -->
+    <string name="health_x_details">Details</string>
+
+    <!-- Check titles and values. -->
+    <string name="health_x_check_events">Module events</string>
+    <string name="health_x_events_ok">No lost events</string>
+    <!-- Value of the framework row on Health: Vector or LSPosed is on the phone. -->
+    <string name="health_x_framework_found">Found</string>
+    <string name="health_x_check_storage">Database size</string>
+
+    <!-- "How to fix" help texts. -->
+    <string name="health_x_fix_hooks">One or more hooks are not active on this build. Open the logs to see the state of each hook.</string>
+    <string name="health_x_fix_events">The module could not give these events to the app. These messages may be missing from Messages.</string>
+    <string name="health_x_fix_root_unknown">NightJar cannot check root access. Open your root manager and allow NightJar. Then select Refresh.</string>
+
+    <!-- Module version check. The help text is msg_upd_01. -->
+    <string name="health_x_check_module_version">Module version</string>
+    <string name="health_x_module_version_ok">Matches the app</string>
+    <string name="health_x_module_version_newer">Newer than the app</string>
+
+    <!-- Rules check: the rules snapshot that the module in the phone service uses. -->
+    <string name="health_x_check_rules">Rules in the phone service</string>
+    <string name="health_x_rules_ok">In use</string>
+    <!-- %1$s = the name of the error type that the module reported, for example "JSONException". Never message text. -->
+    <string name="health_x_rules_error">NightJar cannot use the rules: %1$s</string>
+    <string name="health_x_rules_behind">The phone service uses older rules</string>
+    <string name="health_x_fix_rules_error">The phone service did not accept the last rules. It uses the rules that it had before. Select Refresh. If the problem stays, share diagnostics.</string>
+    <string name="health_x_fix_rules_behind">The phone service did not get the latest rules. Select Refresh. If the rules stay old, reboot the phone.</string>
+    <string name="health_x_fix_rules_skipped">The phone service cannot use some of your rules, so it does not apply them. It applies all other rules. If you updated NightJar, reboot the phone.</string>
+
+    <!-- Restart card on Health. The title and the button text are watchdog_* in strings_settings.xml. -->
+    <string name="health_x_phone_restart_body">NightJar does not record new messages until the module loads again. To load it, restart the phone service. Calls disconnect.</string>
+
+    <string name="onb_x_reboot_failed">NightJar cannot reboot the phone: %1$s. Try again. Or select Later and use the power menu to reboot the phone.</string>
+    <!-- M2: a check run stopped with an error. -->
+    <string name="setup_check_error">NightJar cannot complete the checks. Select Check again.</string>
+    <!-- M1: the root check found no root shell. NightJar cannot tell "denied" from "no root manager". -->
+    <string name="setup_root_no_access">NightJar does not have root access. Open your root manager and allow NightJar. Then select Check again.</string>
+    <!-- 1 Welcome. -->
+    <string name="onb_welcome_title">Curious to see hidden messages and want to block or quarantine them?</string>
+    <string name="onb_welcome_body">Some SMS skip your inbox. They check that the phone is on, change network settings or ask where you are. NightJar shows you each one.</string>
+    <string name="onb_point_silent">Silent SMS</string>
+    <string name="onb_point_silent_body">Pings that confirm your phone is on and on the network.</string>
+    <string name="onb_point_settings">Settings pushes</string>
+    <string name="onb_point_settings_body">APN and proxy changes that can send your traffic elsewhere.</string>
+    <string name="onb_point_location">Location and SIM</string>
+    <string name="onb_point_location_body">SUPL location requests and SIM data download.</string>
+    <string name="onb_privacy">NightJar has no internet permission. Your data stays here.</string>
+    <!-- 2 Setup: title and the line below it. -->
+    <string name="onb_setup_title">Set up NightJar</string>
+    <string name="onb_setup_body">NightJar checks each step for you.</string>
+    <!-- 2 Setup: the root card before the first check. It replaces the dialog "Root access needed".
+         onb_root_more keeps the facts of that dialog that onb_root_reason does not have. -->
+    <string name="onb_root_reason">NightJar uses root to find Vector or LSPosed and to restart the phone service. It never uses root to read your messages.</string>
+    <string name="onb_root_more">NightJar also uses root to reboot the phone. It does not use root for other tasks. Your root manager asks you one time.</string>
+    <!-- 3 Ready: the body when the Recommended preset is on after onboarding. %1$s = the SIM names, for example
+         "SIM 1 and SIM 2" or "your SIMs". Without Recommended the body is setup_ready_body. -->
+    <string name="onb_ready_body_recommended">NightJar monitors %1$s. The Recommended preset is on.</string>
+    <!-- Launch screen: description of the round app logo. -->
+    <string name="setup_logo_description">NightJar logo</string>
+    <!-- 2 Setup: rows. The root and framework row titles are onb_root and onb_framework. -->
+    <string name="setup_module_off">Turn on the module</string>
+    <string name="setup_module_on">Module turned on</string>
+    <string name="setup_reboot">Reboot the phone</string>
+    <!-- Second line of the framework row: Vector or LSPosed is on the phone. -->
+    <string name="setup_found">Found</string>
+    <string name="setup_reboot_keeps">NightJar keeps your messages and settings</string>
+    <!-- 2 Setup: the steps of the module row. -->
+    <string name="setup_module_step_1">Open LSPosed.</string>
+    <string name="setup_module_step_2">Turn on NightJar.</string>
+    <string name="setup_module_step_3">Select Phone Services as the scope.</string>
+    <!-- 2 Setup: TalkBack text for the state of a row. -->
+    <string name="setup_state_ok">Done</string>
+    <string name="setup_state_needs_you">Do this step</string>
+    <string name="setup_state_next">Next step</string>
+    <string name="setup_state_waiting">Not started</string>
+    <!-- 2 Setup: buttons. "Grant root", "Reboot phone" and "Continue" are onb_grant_root, onb_install_and_reboot and onb_continue. -->
+    <string name="setup_open_lsposed">Open LSPosed</string>
+    <string name="setup_check_again">Check again</string>
+    <string name="setup_later">Later</string>
+    <!-- 3 Ready. %1$s = the SIM names, for example "SIM 1 and SIM 2" or "your SIMs". -->
+    <string name="setup_ready_title">NightJar is active</string>
+    <string name="setup_ready_body">NightJar monitors %1$s.</string>
+    <string name="setup_notifications">Notifications</string>
+    <string name="setup_notifications_body">Suspicious messages only</string>
+    <string name="setup_researcher">Researcher mode</string>
+    <string name="setup_researcher_body">Raw PDUs and decoder details</string>
+</resources>

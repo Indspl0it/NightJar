@@ -1,0 +1,25 @@
+{
+  "eventId": "3e9d5b72-6c1a-4f8e-b0d4-7a2c9e1f5b03",
+  "revision": 1,
+  "sessionId": "s-0001",
+  "direction": "IN",
+  "transport": "CS",
+  "source": 0,
+  "subId": 1,
+  "slot": 0,
+  "format": "3gpp",
+  "receivedAtWall": 1762330933000,
+  "receivedAtElapsedNs": 98767000000,
+  "ackResult": 5,
+  "finalClass": "CL-NORMAL",
+  "verdict": { "action": "ALLOW" },
+  "fate": "FT-REJECTED",
+  "trace": [
+    { "stage": "handler.dispatchMessage", "tNs": 1, "detail": "source=0 result=5" },
+    { "stage": "fate", "tNs": 2, "detail": "FT-REJECTED" }
+  ],
+  "flags": { "selfTest": false, "replay": false, "debug": false },
+  "env": { "roaming": false, "emergencyCallActive": false, "userUnlocked": true, "bootCount": 12 },
+  "payloadVersion": "0.1.0",
+  "buildFingerprint": "google/akita/akita:17/CP3A.261005.005/16271449"
+}

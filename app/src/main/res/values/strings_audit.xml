@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Audit history. -->
+<resources>
+    <!-- ============================== Audit history Audit ============================== -->
+    <string name="audit_title">Audit history</string>
+    <string name="audit_empty">No audit records yet.</string>
+    <string name="audit_filter_all">All</string>
+    <string name="audit_actor_user">You</string>
+    <string name="audit_actor_preset">Preset</string>
+    <string name="audit_actor_system">System</string>
+    <string name="audit_target">Target: %1$s</string>
+    <string name="audit_action_rule_create">Rule created</string>
+    <string name="audit_action_rule_update">Rule changed</string>
+    <string name="audit_action_rule_delete">Rule deleted</string>
+    <string name="audit_action_rule_reorder">Rules reordered</string>
+    <string name="audit_action_preset_change">Preset changed</string>
+    <string name="audit_action_class_action_change">Type action changed</string>
+    <string name="audit_action_safe_mode_on">Safe mode on</string>
+    <string name="audit_action_safe_mode_off">Safe mode off</string>
+    <string name="audit_action_release">Message released</string>
+    <string name="audit_action_block_held">Held message blocked</string>
+    <string name="audit_action_delete_messages">Messages deleted</string>
+    <string name="audit_action_delete_all">All data deleted</string>
+    <string name="audit_action_export">Exported</string>
+    <string name="audit_action_module_install">Module installed</string>
+    <string name="audit_action_module_update">Module updated</string>
+    <string name="audit_action_module_remove">Module uninstalled</string>
+    <string name="audit_action_firewall_enable">Blocking turned on</string>
+    <string name="audit_action_firewall_disable">Blocking turned off</string>
+    <string name="audit_action_outgoing_block">Sending blocked for an app</string>
+    <string name="audit_action_outgoing_unblock">Sending allowed for an app</string>
+    <string name="audit_action_known_sender_add">Sender marked as known</string>
+    <string name="audit_action_known_sender_remove">Known sender deleted</string>
+    <string name="audit_action_trust_app_add">App trusted</string>
+    <string name="audit_action_trust_app_remove">App trust deleted</string>
+    <string name="audit_action_settings_change">Setting changed</string>
+    <string name="audit_action_self_test_run">Self-test ran</string>
+    <string name="audit_action_phone_restart">Phone service restarted</string>
+</resources>
