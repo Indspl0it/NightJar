@@ -84,6 +84,14 @@ Other phones can work. Phone makers change the phone service a little, so on an 
 4. Reboot the phone.
 5. Open NightJar. The setup screens check each step.
 
+Every release is signed with the same key. Before you install, check the APK's certificate with an app such as AppVerifier, or with `apksigner verify --print-certs` on a computer:
+
+```text
+SHA-256: BA:4C:89:90:1C:27:D3:FB:D6:B1:24:84:2E:B8:0C:BA:A3:E8:D3:AB:E5:F2:A3:B0:69:25:AC:47:8F:1B:13:8A
+```
+
+If it doesn't match, don't install the APK. GitHub releases, the LSPosed module repository and F-Droid all ship the APK with this signature, so you can update from any of them.
+
 To update, install the new APK over the old one and reboot. Your rules, settings and history stay.
 
 If calls or messages stop working, turn off the module in Vector or LSPosed and reboot. If the phone can't start, use your root manager's safe mode to turn off Xposed modules. Then [report the problem](https://indspl0it.github.io/NightJar/help/troubleshooting/).

@@ -1,6 +1,6 @@
 ---
 title: Release
-description: How to make a signed NightJar release.
+description: The NightJar release key, how to make a signed release, and how the release reaches GitHub, the LSPosed module repository and F-Droid.
 ---
 
 ## Version
@@ -13,6 +13,23 @@ versionCode=5
 ```
 
 Increase `versionCode` by one for each release. `versionName` follows [Semantic Versioning](https://semver.org/).
+
+## Release key
+
+One key signs every release, on every channel:
+
+| Field | Value |
+|---|---|
+| Alias | `nightjar` |
+| Type | RSA 4096, PKCS12 keystore |
+| Certificate | `CN=NightJar`, valid until 2056 |
+| SHA-256 | `BA:4C:89:90:1C:27:D3:FB:D6:B1:24:84:2E:B8:0C:BA:A3:E8:D3:AB:E5:F2:A3:B0:69:25:AC:47:8F:1B:13:8A` |
+
+The maintainer keeps the keystore offline and signs on their own computer. The key is never in the repository or in
+CI. CI builds and tests the release without signing it.
+
+If the key is lost, no installed copy can be updated, because Android only installs an update signed with the same
+key. Keep two offline backups of the keystore and keep its password in a password manager.
 
 ## Signing material
 
@@ -46,28 +63,64 @@ The warning never shows a value, and a release build never uses the debug key.
 ## Procedure
 
 1. Update `version.properties`.
-2. Add a section for the new version to `CHANGELOG.md`.
+2. Add a section for the new version to `CHANGELOG.md`, and a short version of it, at most 500 characters, to
+   `fastlane/metadata/android/en-US/changelogs/<versionCode>.txt`. F-Droid shows that file.
 3. Run all quality checks:
 
    ```sh
    ./gradlew verify
    ```
 
-4. Set the signing variables, and then build the release APK:
+4. Commit, make an annotated tag, for example `v0.5.0`, and push `main` and the tag.
+5. Build the release from a clean clone of the tag, with the signing variables set:
 
    ```sh
+   git clone --branch v0.5.0 https://github.com/Indspl0it/NightJar.git nightjar-v0.5.0
+   cd nightjar-v0.5.0
    ./gradlew :app:assembleRelease
    ```
 
-5. Find the signed APK in `app/build/outputs/apk/release/`.
-6. Check the signature and the certificate:
+6. Check the signature. The `Signer #1 certificate SHA-256 digest` must be `ba4c89901c27d3fbd6b124842eb80cbaa3e8d3abe5f2a3b06925ac478f1b138a`:
 
    ```sh
    apksigner verify --print-certs app/build/outputs/apk/release/NightJar-0.5.0-release.apk
    ```
 
-7. Make an annotated tag, for example `v0.5.0`, and push the tag.
-8. Make a GitHub release for the tag. Attach the APK, and copy the changelog section into the release notes.
+7. Compare the signed APK with the unsigned APK that the **Release check** workflow built for the tag. Download the
+   `nightjar-release-unsigned` artifact from the workflow run, then compare with
+   [apksigcopier](https://github.com/obfusk/apksigcopier), the tool F-Droid uses:
+
+   ```sh
+   pip install apksigcopier
+   apksigcopier compare app/build/outputs/apk/release/NightJar-0.5.0-release.apk --unsigned NightJar-0.5.0-release-unsigned.apk
+   ```
+
+   The command exits with 0 when the two APKs match. If they differ, F-Droid's build won't match
+   either. Find the cause before you publish.
+
+8. Rename the APK to `NightJar-0.5.0.apk` and write its checksum:
+
+   ```sh
+   sha256sum NightJar-0.5.0.apk > SHA256SUMS
+   ```
+
+9. Make a GitHub release for the tag. Attach `NightJar-0.5.0.apk` and `SHA256SUMS`, and copy the changelog section
+   into the release notes.
+10. Publish the same APK as a release in the LSPosed module repository, `Xposed-Modules-Repo/dev.nightjar`.
+11. F-Droid finds the new tag by itself. It builds the tag, checks that its APK matches the one on GitHub, and then
+    publishes the GitHub APK with its signature.
+
+## Reproducible build
+
+F-Droid builds each tag from source and compares the result with the signed APK on GitHub, without the signature. It
+publishes the version only when the two match, so the release must come out the same on any computer:
+
+- Build from a clean clone of the tag, as in the procedure. Local changes, other branches and old build output change
+  the APK.
+- Use JDK 21. Gradle downloads the same Gradle, Android Gradle plugin, Kotlin and library versions on every
+  computer, because the wrapper and the version catalog pin them.
+- The release APK leaves out the dependency metadata block of the Android Gradle plugin. F-Droid rejects APKs that
+  carry it.
 
 ## Checks on the release APK
 
