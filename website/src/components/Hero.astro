@@ -47,6 +47,7 @@ const pct = (v: number, of: number) => `${((v / of) * 100).toFixed(2)}%`;
 		role="img"
 		aria-label="A radar around the NightJar logo. Three silent SMS raise a notification, a SUPL location request, a SIM data download and a malformed WAP push are blocked, and a settings push is held."
 	>
+		<div class="nj-plane">
 		<svg class="nj-rings" viewBox="0 0 770 640" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
 			<circle class="nj-r0" cx="500" cy="330" r="500"></circle>
 			<circle class="nj-r1" cx="500" cy="330" r="380"></circle>
@@ -86,6 +87,7 @@ const pct = (v: number, of: number) => `${((v / of) * 100).toFixed(2)}%`;
 				</>
 			))
 		}
+		</div>
 	</div>
 </div>
 
@@ -220,7 +222,37 @@ const pct = (v: number, of: number) => `${((v / of) * 100).toFixed(2)}%`;
 		width: 100%;
 		aspect-ratio: 770 / 640;
 		overflow: hidden;
+	}
+
+	/* The radar drawing, 770 x 640 units. All its parts are placed in % of this box. */
+	.nj-plane {
+		position: absolute;
+		inset: 0;
 		container-type: inline-size;
+	}
+
+	/* Phone width: the radar can't shrink with its labels, so the scene runs to the screen edges and crops the
+	   drawing around the centre (x 230 to 770 of 770 units). The layer names need the full width, so they hide. */
+	@media (max-width: 49.99rem) {
+		.nj-hero {
+			overflow: visible;
+		}
+
+		.nj-scene {
+			width: calc(100% + 2 * var(--sl-content-pad-x, 1rem));
+			margin-inline: calc(-1 * var(--sl-content-pad-x, 1rem));
+			aspect-ratio: 540 / 640;
+		}
+
+		.nj-plane {
+			inset: 0 auto auto -42.59%;
+			width: 142.59%;
+			height: 100%;
+		}
+
+		.nj-ring-label {
+			display: none;
+		}
 	}
 
 	.nj-rings {
