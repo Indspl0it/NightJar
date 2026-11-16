@@ -6,7 +6,7 @@ description: The changes in each NightJar release.
 The format follows [Keep a Changelog](https://keepachangelog.com/). The project uses
 [Semantic Versioning](https://semver.org/). The file `CHANGELOG.md` in the repository is the source.
 
-## 0.5.0 (2026-11-16)
+## 0.5.1 (2026-11-16)
 
 First public release, licensed under the GNU General Public License, version 3 or later (GPL-3.0-or-later). The
 release APK is signed with the NightJar release key. To check it, see [Install](/NightJar/install/#check-the-download).
@@ -33,4 +33,10 @@ release APK is signed with the NightJar release key. To check it, see [Install](
 - Masking of message text and phone numbers in logs, exports and diagnostics.
 - The app provider accepts calls only from the phone process. The control binder accepts calls only from the app.
 
-[Release 0.5.0 on GitHub](https://github.com/Indspl0it/NightJar/releases/tag/v0.5.0)
+[Release 0.5.1 on GitHub](https://github.com/Indspl0it/NightJar/releases/tag/v0.5.1)
+
+## 0.5.0 (2026-11-16)
+
+Tagged, but not released. On a cold start, the app could read its settings a moment before they were loaded. It
+could then open without the app lock, and push the default settings, with safe mode off, to the module. 0.5.1 fixes
+this.

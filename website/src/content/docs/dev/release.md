@@ -8,8 +8,8 @@ description: The NightJar release key, how to make a signed release, and how the
 `version.properties` holds one version for the app, the module and the payload:
 
 ```properties
-versionName=0.5.0
-versionCode=5
+versionName=0.5.1
+versionCode=6
 ```
 
 Increase `versionCode` by one for each release. `versionName` follows [Semantic Versioning](https://semver.org/).
@@ -58,7 +58,7 @@ The warning never shows a value, and a release build never uses the debug key.
 
 - R8 shrinks and optimizes the code (`isMinifyEnabled`) and removes unused resources (`isShrinkResources`).
 - The APK contains native libraries for `arm64-v8a` only and resources for English only.
-- The APK file name is `NightJar-<versionName>`, for example `NightJar-0.5.0`.
+- The APK file name is `NightJar-<versionName>`, for example `NightJar-0.5.1`.
 
 ## Procedure
 
@@ -71,12 +71,12 @@ The warning never shows a value, and a release build never uses the debug key.
    ./gradlew verify
    ```
 
-4. Commit, make an annotated tag, for example `v0.5.0`, and push `main` and the tag.
+4. Commit, make an annotated tag, for example `v0.5.1`, and push `main` and the tag.
 5. Build the unsigned release from a clean clone of the tag:
 
    ```sh
-   git clone --branch v0.5.0 https://github.com/Indspl0it/NightJar.git nightjar-v0.5.0
-   cd nightjar-v0.5.0
+   git clone --branch v0.5.1 https://github.com/Indspl0it/NightJar.git nightjar-v0.5.1
+   cd nightjar-v0.5.1
    ./gradlew :app:assembleRelease
    ```
 
@@ -84,7 +84,7 @@ The warning never shows a value, and a release build never uses the debug key.
    `nightjar-release-unsigned` artifact from the workflow run. Both files must have the same SHA-256:
 
    ```sh
-   sha256sum app/build/outputs/apk/release/NightJar-0.5.0-release-unsigned.apk NightJar-0.5.0-release-unsigned.apk
+   sha256sum app/build/outputs/apk/release/NightJar-0.5.1-release-unsigned.apk NightJar-0.5.1-release-unsigned.apk
    ```
 
    If they differ, F-Droid's build won't match either. Find the cause before you continue.
@@ -92,8 +92,10 @@ The warning never shows a value, and a release build never uses the debug key.
 7. Sign the APK with the release key, on your own computer:
 
    ```sh
-   apksigner sign --ks nightjar-release.jks --ks-key-alias nightjar      --v1-signing-enabled false --alignment-preserved true      --out NightJar-0.5.0-release.apk app/build/outputs/apk/release/NightJar-0.5.0-release-unsigned.apk
-   apksigner verify --print-certs NightJar-0.5.0-release.apk
+   apksigner sign --ks nightjar-release.jks --ks-key-alias nightjar \
+     --v1-signing-enabled false --alignment-preserved true \
+     --out NightJar-0.5.1-release.apk app/build/outputs/apk/release/NightJar-0.5.1-release-unsigned.apk
+   apksigner verify --print-certs NightJar-0.5.1-release.apk
    ```
 
    The line with `certificate SHA-256 digest` must show
@@ -105,16 +107,16 @@ The warning never shows a value, and a release build never uses the debug key.
    zip layout, and the signature no longer fits F-Droid's build. Check it with:
 
    ```sh
-   apksigcopier compare NightJar-0.5.0-release.apk --unsigned NightJar-0.5.0-release-unsigned.apk
+   apksigcopier compare NightJar-0.5.1-release.apk --unsigned NightJar-0.5.1-release-unsigned.apk
    ```
 
 8. Write the checksum:
 
    ```sh
-   sha256sum NightJar-0.5.0-release.apk > SHA256SUMS
+   sha256sum NightJar-0.5.1-release.apk > SHA256SUMS
    ```
 
-9. Make a GitHub release for the tag. Attach `NightJar-0.5.0-release.apk` and `SHA256SUMS`, and copy the changelog section
+9. Make a GitHub release for the tag. Attach `NightJar-0.5.1-release.apk` and `SHA256SUMS`, and copy the changelog section
    into the release notes.
 10. Publish the same APK as a release in the LSPosed module repository, `Xposed-Modules-Repo/dev.nightjar`.
 11. F-Droid finds the new tag by itself. It builds the tag, checks that its APK matches the one on GitHub, and then

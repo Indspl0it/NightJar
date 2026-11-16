@@ -54,7 +54,7 @@ and the configuration cache. The application ID is `njAppId=dev.nightjar`, and t
 On Windows, use `gradlew.bat`.
 
 The APKs are in `app/build/outputs/apk/debug/` and `app/build/outputs/apk/release/`. Their file names start with
-`NightJar-` and the version name from `version.properties`, for example `NightJar-0.5.0`.
+`NightJar-` and the version name from `version.properties`, for example `NightJar-0.5.1`.
 
 ## Quality checks
 

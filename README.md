@@ -21,7 +21,7 @@ Your phone receives SMS that never show up in your messaging app. The network, y
 
 NightJar runs inside Android's phone service, the system process that receives SMS from the modem. It checks each message before Android acts on it, blocks the types that attacks use, holds suspicious ones for you to review, and keeps a record of every message with a plain explanation of what it was.
 
-> **Early release (0.5.0).** Install NightJar on a phone you can recover, and read the [blocking cautions](https://indspl0it.github.io/NightJar/safety/blocking-cautions/) before you pick a stricter preset.
+> **Early release (0.5.1).** Install NightJar on a phone you can recover, and read the [blocking cautions](https://indspl0it.github.io/NightJar/safety/blocking-cautions/) before you pick a stricter preset.
 
 ## What it protects you from
 
