@@ -1,5 +1,6 @@
 package dev.nightjar.payload.firewall;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,5 +34,29 @@ public final class FilterChain {
         out.add(filter);
         if (existing != null) out.addAll(existing);
         return out;
+    }
+
+    /**
+     * The value of the first field {@code name} in the class hierarchy of {@code owner}: the list, an empty list when
+     * the field holds null, or {@code null} when the field is absent, unreadable or not a list. A {@code null} result
+     * means "do not install": a new chain built without the stock filters would drop them.
+     */
+    public static List<?> read(Object owner, String name) {
+        if (owner == null || name == null) return null;
+        Class<?> k = owner.getClass();
+        while (k != null) {
+            try {
+                Field f = k.getDeclaredField(name);
+                f.setAccessible(true);
+                Object value = f.get(owner);
+                if (value == null) return List.of();
+                return value instanceof List<?> list ? list : null;
+            } catch (NoSuchFieldException e) {
+                k = k.getSuperclass();
+            } catch (Throwable t) {
+                return null;
+            }
+        }
+        return null;
     }
 }

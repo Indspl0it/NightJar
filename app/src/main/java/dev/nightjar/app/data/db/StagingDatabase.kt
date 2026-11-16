@@ -48,6 +48,12 @@ interface StagedEventDao {
     @Query("DELETE FROM staged_event WHERE eventId IN (:ids)")
     suspend fun delete(ids: List<String>): Int
 
+    @Query("DELETE FROM staged_event WHERE eventId = :eventId AND json = :json")
+    suspend fun deleteIfUnchanged(
+        eventId: String,
+        json: String,
+    ): Int
+
     @Query("DELETE FROM staged_event")
     suspend fun deleteAll(): Int
 
@@ -131,6 +137,13 @@ class StagingStore(
     suspend fun peek(limit: Int = 100): List<StagedEventEntity> = dao.oldest(limit)
 
     suspend fun remove(eventIds: List<String>): Int = if (eventIds.isEmpty()) 0 else dao.delete(eventIds)
+
+    /**
+     * Deletes the drained rows that did not change since [peek]. A newer revision staged during the drain stays for
+     * the next drain, so it is not lost.
+     */
+    suspend fun removeDrained(rows: List<StagedEventEntity>): Int =
+        if (rows.isEmpty()) 0 else mutex.withLock { rows.sumOf { dao.deleteIfUnchanged(it.eventId, it.json) } }
 
     suspend fun clear(): Int = dao.deleteAll()
 

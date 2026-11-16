@@ -1,8 +1,5 @@
 package dev.nightjar.build
 
-import java.io.File
-import java.util.zip.ZipFile
-import javax.xml.parsers.DocumentBuilderFactory
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.file.ConfigurableFileCollection
@@ -16,6 +13,9 @@ import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 import org.gradle.work.DisableCachingByDefault
 import org.w3c.dom.Element
+import java.io.File
+import java.util.zip.ZipFile
+import javax.xml.parsers.DocumentBuilderFactory
 
 /**
  * Xposed metadata check: the release APK carries the legacy Xposed module metadata that Vector/LSPosed read.
@@ -27,11 +27,19 @@ import org.w3c.dom.Element
  */
 @DisableCachingByDefault(because = "verification")
 abstract class CheckXposedMetadataTask : DefaultTask() {
-    @get:InputFile @get:PathSensitive(PathSensitivity.NONE) abstract val manifest: RegularFileProperty
+    @get:InputFile
+    @get:PathSensitive(PathSensitivity.NONE)
+    abstract val manifest: RegularFileProperty
 
     /** Source `values` XML files that define the scope string-array. */
-    @get:InputFiles @get:PathSensitive(PathSensitivity.NONE) abstract val valueFiles: ConfigurableFileCollection
-    @get:InputFiles @get:PathSensitive(PathSensitivity.NONE) abstract val apkDir: ConfigurableFileCollection
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.NONE)
+    abstract val valueFiles: ConfigurableFileCollection
+
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.NONE)
+    abstract val apkDir: ConfigurableFileCollection
+
     @get:Input abstract val requiredScope: Property<String>
 
     @TaskAction
@@ -50,9 +58,15 @@ abstract class CheckXposedMetadataTask : DefaultTask() {
 
         /** Checks the merged manifest. Returns the scope array name, or null when it has a problem. */
         fun checkManifest(manifest: File, scope: String, valueFiles: Collection<File>, problems: MutableList<String>): String? {
-            val doc = DocumentBuilderFactory.newInstance().apply { isNamespaceAware = true }.newDocumentBuilder().parse(manifest)
+            val doc =
+                DocumentBuilderFactory
+                    .newInstance()
+                    .apply { isNamespaceAware = true }
+                    .newDocumentBuilder()
+                    .parse(manifest)
             val meta = doc.getElementsByTagName("meta-data")
             val entries = (0 until meta.length).map { meta.item(it) as Element }.associateBy { it.getAttributeNS(ANDROID_NS, "name") }
+
             fun value(e: Element?) = e?.getAttributeNS(ANDROID_NS, "value").orEmpty()
             if (value(entries["xposedmodule"]) != "true") problems += "manifest meta-data xposedmodule must be true"
             if (value(entries["xposedminversion"]).toIntOrNull() == null) problems += "manifest meta-data xposedminversion must be a number"
@@ -85,7 +99,10 @@ abstract class CheckXposedMetadataTask : DefaultTask() {
         private fun stringArray(file: File, name: String): List<String>? {
             val doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file)
             val arrays = doc.getElementsByTagName("string-array")
-            val array = (0 until arrays.length).map { arrays.item(it) as Element }.firstOrNull { it.getAttribute("name") == name } ?: return null
+            val array =
+                (0 until arrays.length)
+                    .map { arrays.item(it) as Element }
+                    .firstOrNull { it.getAttribute("name") == name } ?: return null
             val items = array.getElementsByTagName("item")
             return (0 until items.length).map { items.item(it).textContent.trim() }
         }
@@ -97,11 +114,19 @@ abstract class CheckXposedMetadataTask : DefaultTask() {
                 if (entryFile == null) {
                     problems += "${apk.name}: assets/xposed_init is missing"
                 } else {
-                    val classes = zip.getInputStream(entryFile).bufferedReader().readLines().map { it.trim() }.filter { it.isNotEmpty() && !it.startsWith("#") }
+                    val classes =
+                        zip
+                            .getInputStream(entryFile)
+                            .bufferedReader()
+                            .readLines()
+                            .map { it.trim() }
+                            .filter { it.isNotEmpty() && !it.startsWith("#") }
                     if (classes.isEmpty()) problems += "${apk.name}: assets/xposed_init names no class"
                     val defined = DexTypes.definedClassesInApk(apk, scratchDir)
                     classes.forEach { c ->
-                        if ("L${c.replace('.', '/')};" !in defined) problems += "${apk.name}: xposed_init class $c is not in the dex (R8 removed it?)"
+                        if ("L${c.replace('.', '/')};" !in defined) {
+                            problems += "${apk.name}: xposed_init class $c is not in the dex (R8 removed it?)"
+                        }
                     }
                 }
                 val arsc = zip.getEntry("resources.arsc")

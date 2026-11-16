@@ -33,6 +33,8 @@ public final class Decision {
     Verdict clampedFrom;
     ClampReason clampReason;
     int regexAborts;
+    /** Sender-pattern steps used for this message so far (see {@link SafeRegex#MESSAGE_STEP_BUDGET}). */
+    int regexSteps;
     boolean textEvaluated;
 
     /** Resets to ALLOW / DEFAULT with no rule and no clamp. */
@@ -45,6 +47,7 @@ public final class Decision {
         clampedFrom = null;
         clampReason = null;
         regexAborts = 0;
+        regexSteps = 0;
         textEvaluated = false;
         return this;
     }

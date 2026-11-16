@@ -1,10 +1,10 @@
 package dev.nightjar.build
 
+import org.gradle.api.GradleException
 import java.io.File
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.util.zip.ZipFile
-import org.gradle.api.GradleException
 
 /**
  * Minimal dex reader: referenced type descriptors and defined class descriptors.

@@ -2,6 +2,8 @@ package dev.nightjar.rules;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import dev.nightjar.contract.ClassId;
@@ -9,6 +11,7 @@ import dev.nightjar.contract.Direction;
 import dev.nightjar.contract.Schemas;
 import dev.nightjar.contract.Verdict;
 import java.lang.management.ManagementFactory;
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -411,6 +414,53 @@ class RuleEngineTest {
         e.evaluate(input(ClassId.WAP_CP).originator("aaaa"), Guards.NOMINAL, d);
         assertEquals(Verdict.BLOCK, d.action());
         assertEquals(0, d.regexAborts());
+    }
+
+    @Test
+    void FW_07_allSenderPatternsOfOneMessageShareOneStepBudget() {
+        String sender = run('a', 200) + "X";
+        assertEquals(SafeRegex.NO_MATCH, compile("(a+)+$").find(sender));
+        int perRule = SafeRegex.lastSteps();
+        assertTrue(perRule > 0 && perRule < SafeRegex.STEP_BUDGET, "each slow rule stays under its own limit");
+
+        // Enough slow rules to use the message budget, then a rule that matches the sender.
+        int slow = SafeRegex.MESSAGE_STEP_BUDGET / perRule + 2;
+        List<Rule> rules = new java.util.ArrayList<>();
+        for (int i = 0; i < slow; i++) {
+            rules.add(rule(100 + i, i, Verdict.BLOCK,
+                    Conditions.builder().classes(ClassId.WAP_CP).originator(StringMatch.regex("(a+)+$")).build()));
+        }
+        rules.add(rule(99, slow, Verdict.BLOCK,
+                Conditions.builder().classes(ClassId.WAP_CP).originator(StringMatch.regex("X$")).build()));
+        Decision d = new Decision();
+        RuleEngine.compile(config(Map.of(), rules)).evaluate(input(ClassId.WAP_CP).originator(sender),
+                Guards.NOMINAL, d);
+        assertEquals(Verdict.ALLOW, d.action(), "after the budget the last pattern counts as no match");
+        assertTrue(d.regexAborts() >= 1);
+
+        // Below the budget the same last rule decides.
+        List<Rule> few = new java.util.ArrayList<>(rules.subList(0, 3));
+        few.add(rules.get(rules.size() - 1));
+        RuleEngine.compile(config(Map.of(), few)).evaluate(input(ClassId.WAP_CP).originator(sender),
+                Guards.NOMINAL, d);
+        assertEquals(Verdict.BLOCK, d.action());
+        assertEquals(0, d.regexAborts());
+    }
+
+    @Test
+    void FW_07_nestedEmptyRepeatsAreRejectedQuickly() {
+        // Empty groups emit no instruction, so MAX_PROGRAM does not stop them: 1000^4 node visits without the limit.
+        String pattern = "((((){1000}){1000}){1000}){1000}";
+        assertTimeoutPreemptively(Duration.ofSeconds(10), () -> {
+            assertThrows(SafeRegex.SyntaxException.class, () -> SafeRegex.compile(pattern));
+            RuleEngine e = RuleEngine.compile(config(Map.of(), List.of(rule(16, 0, Verdict.BLOCK,
+                    Conditions.builder().classes(ClassId.WAP_CP).originator(StringMatch.regex(pattern)).build()))));
+            assertEquals(1, e.skippedRules());
+        });
+        // Deep nesting that emits a full program still compiles.
+        SafeRegex deep = compile("((((((((((a)))))))))){1000}");
+        assertEquals(SafeRegex.NO_MATCH, deep.find("b"));
+        assertEquals(SafeRegex.MATCH, compile("((((((((((a)))))))))){3}").find("xaaa"));
     }
 
     private static String run(char c, int n) {

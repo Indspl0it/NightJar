@@ -1,6 +1,5 @@
 package dev.nightjar.build
 
-import javax.xml.parsers.DocumentBuilderFactory
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.file.ConfigurableFileCollection
@@ -16,13 +15,17 @@ import org.gradle.api.tasks.TaskAction
 import org.gradle.work.DisableCachingByDefault
 import org.w3c.dom.Document
 import org.w3c.dom.Element
+import javax.xml.parsers.DocumentBuilderFactory
 
 // Build checks for the payload dex, the manifest, log masking and the release APK size.
 
 /** Payload dex check: payload.dex references only framework packages, defines only dev.nightjar classes, ≤ 300 KB. */
 @DisableCachingByDefault(because = "verification")
 abstract class CheckPayloadDexTask : DefaultTask() {
-    @get:InputFile @get:PathSensitive(PathSensitivity.NONE) abstract val dex: RegularFileProperty
+    @get:InputFile
+    @get:PathSensitive(PathSensitivity.NONE)
+    abstract val dex: RegularFileProperty
+
     @get:Input abstract val maxBytes: Property<Long>
 
     @TaskAction
@@ -31,10 +34,24 @@ abstract class CheckPayloadDexTask : DefaultTask() {
         val problems = mutableListOf<String>()
         if (f.length() > maxBytes.get()) problems += "${f.name} is ${f.length()} bytes (max ${maxBytes.get()})"
         val d = DexTypes(f)
-        val allowed = listOf("Ljava/", "Ljavax/", "Landroid/", "Lcom/android/internal/", "Lorg/json/", "Ldalvik/", "Ldev/nightjar/", "Lorg/xmlpull/")
-        d.types.map { it.trimStart('[') }.filter { it.startsWith("L") }.filterNot { t -> allowed.any { t.startsWith(it) } }
+        val allowed =
+            listOf(
+                "Ljava/",
+                "Ljavax/",
+                "Landroid/",
+                "Lcom/android/internal/",
+                "Lorg/json/",
+                "Ldalvik/",
+                "Ldev/nightjar/",
+                "Lorg/xmlpull/",
+            )
+        d.types
+            .map { it.trimStart('[') }
+            .filter { it.startsWith("L") }
+            .filterNot { t -> allowed.any { t.startsWith(it) } }
             .forEach { problems += "references non-framework type $it" }
-        d.definedClasses.filterNot { it.startsWith("Ldev/nightjar/") }
+        d.definedClasses
+            .filterNot { it.startsWith("Ldev/nightjar/") }
             .forEach { problems += "defines class outside dev.nightjar (stub leaked?): $it" }
         if (problems.isNotEmpty()) throw GradleException("Payload dex check failed for ${f.name}:\n  " + problems.joinToString("\n  "))
         logger.lifecycle("Payload dex check ok: ${f.name} ${f.length()} bytes, ${d.definedClasses.size} classes")
@@ -44,7 +61,10 @@ abstract class CheckPayloadDexTask : DefaultTask() {
 /** Manifest check: merged manifest has no INTERNET, only allowed permissions, local backup only, direct-boot-aware providers. */
 @DisableCachingByDefault(because = "verification")
 abstract class CheckManifestTask : DefaultTask() {
-    @get:InputFile @get:PathSensitive(PathSensitivity.NONE) abstract val manifest: RegularFileProperty
+    @get:InputFile
+    @get:PathSensitive(PathSensitivity.NONE)
+    abstract val manifest: RegularFileProperty
+
     @get:Input abstract val allowedPermissions: ListProperty<String>
 
     /**
@@ -52,12 +72,18 @@ abstract class CheckManifestTask : DefaultTask() {
      * ACCESS_NETWORK_STATE). Any other permission is a finding.
      */
     @get:Input abstract val libraryPermissions: ListProperty<String>
+
     @get:Input abstract val applicationId: Property<String>
 
     @TaskAction
     fun check() {
         val ns = "http://schemas.android.com/apk/res/android"
-        val doc = DocumentBuilderFactory.newInstance().apply { isNamespaceAware = true }.newDocumentBuilder().parse(manifest.get().asFile)
+        val doc =
+            DocumentBuilderFactory
+                .newInstance()
+                .apply { isNamespaceAware = true }
+                .newDocumentBuilder()
+                .parse(manifest.get().asFile)
         val problems = mutableListOf<String>()
         val perms = declaredPermissions(doc)
         // androidx.core adds this signature-level permission scoped to our own package.
@@ -74,7 +100,9 @@ abstract class CheckManifestTask : DefaultTask() {
         for (i in 0 until providers.length) {
             val p = providers.item(i) as Element
             val name = p.getAttributeNS(ns, "name")
-            if (name.startsWith("dev.nightjar") && p.getAttributeNS(ns, "directBootAware") != "true") problems += "provider $name must be directBootAware"
+            if (name.startsWith("dev.nightjar") && p.getAttributeNS(ns, "directBootAware") != "true") {
+                problems += "provider $name must be directBootAware"
+            }
         }
         if (problems.isNotEmpty()) throw GradleException("Manifest check failed:\n  " + problems.joinToString("\n  "))
         logger.lifecycle("Manifest check ok: permissions $perms")
@@ -105,7 +133,9 @@ private fun declaredPermissions(doc: Document): List<String> {
  */
 @DisableCachingByDefault(because = "verification")
 abstract class CheckLogMaskingTask : DefaultTask() {
-    @get:InputFiles @get:PathSensitive(PathSensitivity.RELATIVE) abstract val sources: ConfigurableFileCollection
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    abstract val sources: ConfigurableFileCollection
 
     @TaskAction
     fun check() {
@@ -122,7 +152,8 @@ abstract class CheckLogMaskingTask : DefaultTask() {
         private val CALL = Regex("""(\b(?:PLog|ALog|Log|XposedBridge|log|logger)\.[a-zA-Z]+|(?<![\w.])log)\s*\(""")
         private val RISKY =
             Regex(
-                """\b(text|body|pdu|pdus|number|originator|address|destination|getOriginatingAddress|getDisplayOriginatingAddress|getMessageBody|getDisplayMessageBody)\b""",
+                """\b(text|body|pdu|pdus|number|originator|address|destination|getOriginatingAddress""" +
+                    """|getDisplayOriginatingAddress|getMessageBody|getDisplayMessageBody)\b""",
             )
 
         /** A double-quoted string literal on one line. */
@@ -176,6 +207,7 @@ abstract class CheckLogMaskingTask : DefaultTask() {
 @DisableCachingByDefault(because = "verification")
 abstract class CheckApkSizeTask : DefaultTask() {
     @get:InputFiles abstract val apkDir: ConfigurableFileCollection
+
     @get:Input abstract val maxBytes: Property<Long>
 
     @TaskAction

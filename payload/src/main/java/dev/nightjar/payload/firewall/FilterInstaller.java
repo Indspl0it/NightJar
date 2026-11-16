@@ -2,7 +2,6 @@ package dev.nightjar.payload.firewall;
 
 import com.android.internal.telephony.InboundSmsHandler;
 import dev.nightjar.payload.log.PLog;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +34,12 @@ public final class FilterInstaller {
         if (handler == null || filter == null) return false;
         try {
             List<InboundSmsHandler.SmsFilter> current = currentFilters(handler);
+            if (current == null) {
+                // Fail open: without the stock chain a new chain would drop the carrier, visual voicemail and other
+                // filters of this build. Capture continues without a head filter; the firewall tier then degrades.
+                if (log != null) log.w(TAG, "head filter not installed: the filter chain cannot be read");
+                return false;
+            }
             if (FilterChain.startsWith(current, filter.getClass())) {
                 filter.markInstalled(handler.getClass().getName());
                 return false;
@@ -53,25 +58,9 @@ public final class FilterInstaller {
         }
     }
 
-    /** Reads {@code mSmsFilters}; an empty list when the field is absent or unreadable. */
+    /** Reads {@code mSmsFilters}; {@code null} when the field is absent or unreadable. */
     @SuppressWarnings("unchecked")
     static List<InboundSmsHandler.SmsFilter> currentFilters(InboundSmsHandler handler) {
-        Class<?> k = handler.getClass();
-        while (k != null) {
-            try {
-                Field f = k.getDeclaredField(FIELD);
-                f.setAccessible(true);
-                Object value = f.get(handler);
-                if (value instanceof List<?> list) {
-                    return (List<InboundSmsHandler.SmsFilter>) list;
-                }
-                return List.of();
-            } catch (NoSuchFieldException e) {
-                k = k.getSuperclass();
-            } catch (Throwable t) {
-                return List.of();
-            }
-        }
-        return List.of();
+        return (List<InboundSmsHandler.SmsFilter>) FilterChain.read(handler, FIELD);
     }
 }

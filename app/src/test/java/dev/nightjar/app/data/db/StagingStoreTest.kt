@@ -80,6 +80,17 @@ class StagingStoreTest {
         }
 
     @Test
+    fun `a revision staged during the drain is not deleted with the drained row`() =
+        runBlocking {
+            store.stage("a", "{\"revision\":1}", 1)
+            store.stage("b", "{}", 2)
+            val drained = store.peek()
+            store.stage("a", "{\"revision\":2}", 3)
+            assertEquals(1, store.removeDrained(drained))
+            assertEquals("{\"revision\":2}", store.peek().single().json)
+        }
+
+    @Test
     fun `clear empties the staging table`() =
         runBlocking {
             store.stage("a", "{}", 1)

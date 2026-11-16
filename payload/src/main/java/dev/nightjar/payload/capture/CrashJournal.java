@@ -184,9 +184,16 @@ public final class CrashJournal {
      * True for a plain person-to-person SMS-DELIVER (3GPP TS 23.040): TP-MTI 00, TP-UDHI 0, TP-PID 0x00, and
      * TP-DCS in the general data coding group without a message class and not compressed (0x00 to 0x0F, TS 23.038
      * §4). A PDU this check cannot read is not plain, so it is journaled.
+     *
+     * <p>An IMS PDU is read in both framings, as {@code Correlator.parseFacts} does: the framework parses it with
+     * {@code SmsMessage.createFromPdu}, which reads an SMSC prefix, but some builds hand over the bare TPDU.
      */
     static boolean plainPersonToPerson(byte[] pdu, Transport transport) {
-        byte[] tpdu = transport == Transport.IMS ? pdu : Hashes.stripSmsc(pdu);
+        if (transport != Transport.IMS) return plainTpdu(Hashes.stripSmsc(pdu));
+        return plainTpdu(pdu) || plainTpdu(Hashes.stripSmsc(pdu));
+    }
+
+    private static boolean plainTpdu(byte[] tpdu) {
         if (tpdu == null || tpdu.length < 4) return false;
         int first = tpdu[0] & 0xFF;
         if ((first & 0x03) != 0 || (first & 0x40) != 0) return false;

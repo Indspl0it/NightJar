@@ -39,6 +39,9 @@ class CrashJournalTest {
         byte[] plain = Pdu.deliver().build();
         assertTrue(CrashJournal.plainPersonToPerson(plain, Transport.CS));
         assertTrue(CrashJournal.plainPersonToPerson(Hashes.stripSmsc(plain), Transport.IMS));
+        // The framework parses an IMS PDU with its SMSC prefix (SmsMessage.createFromPdu): its body must not be
+        // written either.
+        assertTrue(CrashJournal.plainPersonToPerson(plain, Transport.IMS), "IMS with SMSC prefix");
         assertTrue(CrashJournal.plainPersonToPerson(Pdu.deliver().dcs(0x08).build(), Transport.CS));
     }
 

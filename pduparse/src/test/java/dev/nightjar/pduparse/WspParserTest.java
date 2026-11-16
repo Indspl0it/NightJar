@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import dev.nightjar.contract.AnomalyCode;
+import dev.nightjar.contract.ClassId;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
@@ -87,6 +88,19 @@ class WspParserTest {
         assertFalse(cut.valid());
         assertEquals("short", cut.error());
         assertNull(WbxmlScanner.scanPushBody(WspParser.parse(hex("010503B6AF8A")), hex("010503B6AF8A"), 0));
+    }
+
+    @Test
+    void fiveOctetHeadersLengthThatIsNegativeAsIntIsUnreadable() {
+        // CVE-2026-58882: the framework casts HeadersLen to int and throws NegativeArraySizeException.
+        // 88 80 80 80 00 is 2^31 and 8F FF FF FF 7F is 2^32 - 1: both are negative as an int.
+        for (String hlen : List.of("8880808000", "8FFFFFFF7F")) {
+            WspFacts f = WspParser.parse(hex("0106" + hlen + "B6AF8A0102030405"));
+            assertFalse(f.valid(), hlen);
+            assertEquals("headerLength", f.error(), hlen);
+            assertEquals(List.of(AnomalyCode.WSP_HLEN), f.anomalies(), hlen);
+            assertEquals(ClassId.WAP_UNREADABLE, Anomalies.forcing(f.anomalyMask()).forcedClass(), hlen);
+        }
     }
 
     @Test

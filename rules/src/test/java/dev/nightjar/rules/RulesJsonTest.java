@@ -185,6 +185,20 @@ class RulesJsonTest {
     }
 
     @Test
+    void FW_07_slotThatIsNotAWholeIntIsUnsupported() throws Exception {
+        // Cast to int, these would be slot 0 and make the rule match messages of the first SIM.
+        for (String slot : List.of("0.5", "4294967296", "\"0\"", "1e300")) {
+            Rule rule = RulesJson.parse(doc("{\"id\":1,\"action\":\"BLOCK\",\"when\":{\"classes\":[\"CL-WAP-CP\"],"
+                    + "\"slot\":" + slot + "}}")).rules().get(0);
+            assertEquals("slot", rule.unsupported(), slot);
+        }
+        Rule second = RulesJson.parse(doc("{\"id\":1,\"action\":\"BLOCK\",\"when\":{\"classes\":[\"CL-WAP-CP\"],"
+                + "\"slot\":1}}")).rules().get(0);
+        assertEquals(null, second.unsupported());
+        assertEquals(Integer.valueOf(1), second.when().slot());
+    }
+
+    @Test
     void FW_07_emptyOrNormalisedEmptyValueIsUnsupported() throws Exception {
         // "00" and "+" normalise to empty, a prefix of every number.
         for (String m : List.of("\"originator\":{\"op\":\"PREFIX\",\"value\":\"00\"}",

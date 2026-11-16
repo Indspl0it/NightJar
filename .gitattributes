@@ -1,4 +1,4 @@
-* text=auto
+* text=auto eol=lf
 
 # Source files keep LF on every checkout.
 *.java       text eol=lf

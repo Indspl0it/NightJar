@@ -46,8 +46,14 @@ fun shouldLock(
 ): Boolean =
     when {
         !appLock -> false
+
         backgroundedAt == null -> true
+
         timeout == LockTimeout.IMMEDIATELY -> true
+
+        // A wall clock that moved back cannot prove that the grace period is still running: lock.
+        now < backgroundedAt -> true
+
         else -> now - backgroundedAt >= timeout.millis
     }
 

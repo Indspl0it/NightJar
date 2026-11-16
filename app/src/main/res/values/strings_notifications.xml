@@ -9,13 +9,13 @@
     <string name="notif_channel_hidden">Hidden messages</string>
     <string name="notif_channel_hidden_desc">NightJar notifies you quietly about unusual hidden messages.</string>
     <string name="notif_channel_firewall">Blocking activity</string>
-    <string name="notif_channel_firewall_desc">NightJar shows summaries of the messages that it held or blocked.</string>
+    <string name="notif_channel_firewall_desc">NightJar tells you when it cannot release a held message.</string>
     <string name="notif_channel_broadcast">Broadcast copies</string>
     <string name="notif_channel_broadcast_desc">NightJar shows a copy of each cell broadcast that the phone receives.</string>
     <string name="notif_channel_status">Protection status</string>
     <string name="notif_channel_status_desc">NightJar tells you when protection does not work.</string>
     <string name="notif_channel_digest">Digest</string>
-    <string name="notif_channel_digest_desc">NightJar shows a daily or weekly summary.</string>
+    <string name="notif_channel_digest_desc">NightJar shows a weekly summary.</string>
     <string name="notif_from">From {who}</string>
     <string name="notif_to">To {who}</string>
     <string name="notif_some_app">An app</string>

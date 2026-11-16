@@ -819,7 +819,6 @@
     <string name="home_chart_hint">Select a day to filter</string>
     <string name="home_module_active">Module active</string>
     <string name="home_more">More actions</string>
-    <string name="home_tile_suspicious">Suspicious</string>
     <string name="home_week_range">%1$s to %2$s</string>
     <string name="msg_badge_reviewed">Reviewed</string>
     <string name="msg_delivery_delivered">delivered</string>
@@ -860,5 +859,5 @@
     <string name="selftest_optional_body">The self-test sends harmless test messages to this phone. It checks that NightJar recognises each message type. NightJar protects the phone without it, and you can skip it.</string>
     <string name="selftest_optional_title">Optional self-test</string>
     <string name="settings_notify_digest">Digest</string>
-    <string name="settings_notify_firewall">Blocking summaries</string>
+    <string name="settings_notify_firewall">Blocking activity</string>
 </resources>

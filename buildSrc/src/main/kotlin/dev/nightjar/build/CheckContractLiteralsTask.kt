@@ -22,15 +22,18 @@ import org.gradle.work.DisableCachingByDefault
 @DisableCachingByDefault(because = "verification")
 abstract class CheckContractLiteralsTask : DefaultTask() {
     /** The contract files whose `= "value"` constants are protected. */
-    @get:InputFiles @get:PathSensitive(PathSensitivity.RELATIVE)
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val contractFiles: ConfigurableFileCollection
 
     /** The contract enum files whose wire names are protected. */
-    @get:InputFiles @get:PathSensitive(PathSensitivity.RELATIVE)
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val wireEnumFiles: ConfigurableFileCollection
 
     /** Source roots to scan. */
-    @get:InputFiles @get:PathSensitive(PathSensitivity.RELATIVE)
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.RELATIVE)
     abstract val sources: ConfigurableFileCollection
 
     @TaskAction

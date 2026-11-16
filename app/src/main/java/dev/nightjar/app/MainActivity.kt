@@ -64,7 +64,14 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        pendingMessage.value = intent?.let(::messageIdOf)
+        // After a recreation (font scale, locale, process death) the navigation state is restored, so the old intent
+        // must not push the message again over the screen the user had open. Only a link not yet consumed comes back.
+        pendingMessage.value =
+            if (savedInstanceState == null) {
+                intent?.let(::messageIdOf)
+            } else {
+                savedInstanceState.getLong(KEY_PENDING_MESSAGE, NO_MESSAGE).takeIf { it != NO_MESSAGE }
+            }
         setContent {
             NightjarContent()
             // Continues the system splash screen until the lock decision and the settings are read.
@@ -75,6 +82,11 @@ class MainActivity : ComponentActivity() {
                 },
             )
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        pendingMessage.value?.let { outState.putLong(KEY_PENDING_MESSAGE, it) }
     }
 
     override fun onStart() {
@@ -168,5 +180,10 @@ class MainActivity : ComponentActivity() {
         val data = intent.data ?: return null
         if (data.scheme != "nightjar" || data.host != "message") return null
         return data.lastPathSegment?.toLongOrNull()
+    }
+
+    private companion object {
+        const val KEY_PENDING_MESSAGE = "nightjar.pendingMessage"
+        const val NO_MESSAGE = Long.MIN_VALUE
     }
 }

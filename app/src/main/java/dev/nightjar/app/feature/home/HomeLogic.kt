@@ -31,8 +31,14 @@ fun heroSeverity(report: ProtectionReport): Severity =
 /** "Needs attention" shows at most three rows (03). */
 const val ATTENTION_LIMIT: Int = 3
 
-/** True when an attention row shows the Suspicious tone and tag: Suspicious and High both count. */
+/** True when an attention row shows a severity tone and tag: Suspicious and High both count. */
 fun isSuspiciousRow(row: MessageListItem): Boolean = row.severity >= Severity.SUSPICIOUS
+
+/**
+ * The severity that an attention row shows in its tag and tone: Suspicious or High, as stored. A High row says "High",
+ * not "Suspicious", the same as the Messages list. Null for a lower severity (the row then shows only "On hold").
+ */
+fun attentionTagSeverity(row: MessageListItem): Severity? = row.severity.takeIf { isSuspiciousRow(row) }
 
 /** Filter behind the "Needs attention" rows and "View all": held or Suspicious messages that are not reviewed. */
 val ATTENTION_FILTER: FilterSpec = FilterSpec(attentionOnly = true)

@@ -92,8 +92,9 @@ class SilentPingDetector(
                     "minutes" to spanMinutes.toString(),
                     "senders" to senders.size.toString(),
                 ),
-            // Only the new member: the store adds members with INSERT OR IGNORE, so earlier ones are already there.
-            eventIds = listOf(event.eventId),
+            // A continuing burst adds only the new member: the store adds members with INSERT OR IGNORE, so earlier ones
+            // are already there. A new burst links the earlier pings of the window too, so its members match its count.
+            eventIds = if (continues) listOf(event.eventId) else listOf(event.eventId) + prior.map { it.eventId },
             firstAtWallMs = firstAt,
             lastAtWallMs = now,
             count = count,

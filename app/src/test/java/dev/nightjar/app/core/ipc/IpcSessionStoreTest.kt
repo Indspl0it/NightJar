@@ -119,6 +119,24 @@ class IpcSessionStoreTest {
     }
 
     @Test
+    fun `a failed call on a replaced binder does not end its successor`() {
+        val registry = SessionRegistry(clock)
+        val store = IpcSessionStore(registry, clock)
+        val first = FakeBinder()
+
+        begin(store, first)
+        val second = FakeBinder()
+        begin(store, second)
+
+        store.clearIfControl(first)
+        assertNotNull(store.session)
+
+        store.clearIfControl(second)
+        assertNull(store.session)
+        assertNull(registry.handshake.value)
+    }
+
+    @Test
     fun `enabling the firewall keeps the profile the payload reported`() {
         val registry = SessionRegistry(clock)
         val store = IpcSessionStore(registry, clock)

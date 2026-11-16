@@ -177,6 +177,9 @@ class SilentPingDetectorTest {
             val draft = detector(history, config).evaluate(TestEvents.inbound(ClassId.SILENT, at = at, eventId = "e3")).single()
             assertEquals(3, draft.count)
             assertTrue(draft.mergeKey != "burst-old", "a new burst must not extend a stale detection")
+            // Every ping of the new burst is a member, not only the one that crossed the threshold.
+            assertEquals(setOf("e1", "e2", "e3"), draft.eventIds.toSet())
+            assertEquals(draft.count, draft.eventIds.size)
         }
 
     @Test

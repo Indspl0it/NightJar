@@ -44,6 +44,12 @@ class AppLockLogicTest {
     }
 
     @Test
+    fun `a clock that moved backwards locks also with a grace period`() {
+        // Setting the clock back must not keep the grace period open.
+        assertTrue(shouldLock(appLock = true, timeout = LockTimeout.FIVE_MIN, backgroundedAt = now, now = now - 1_000))
+    }
+
+    @Test
     fun `a lock surface that is already showing is not opened by a quick return`() {
         // Home pressed on the lock screen, app reopened inside the grace period: the decision alone says "unlocked".
         assertFalse(shouldLock(appLock = true, timeout = LockTimeout.FIVE_MIN, backgroundedAt = now, now = now + 1_000))

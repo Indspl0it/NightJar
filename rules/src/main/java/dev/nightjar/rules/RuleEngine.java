@@ -311,7 +311,11 @@ public final class RuleEngine {
                         if (!Numbers.startsWithFold(in.origNorm, in.origNormLen, originValue)) return false;
                         break;
                     case REGEX:
-                        int r = originRegex.find(in.originator);
+                        // One budget for all sender patterns of the message: when it is used up, the rest count as
+                        // no match, the same as a pattern that reaches its own step limit.
+                        int left = SafeRegex.MESSAGE_STEP_BUDGET - out.regexSteps;
+                        int r = left > 0 ? originRegex.find(in.originator, left) : SafeRegex.ABORTED;
+                        if (left > 0) out.regexSteps += SafeRegex.lastSteps();
                         if (r == SafeRegex.ABORTED) out.regexAborts++;
                         if (r != SafeRegex.MATCH) return false;
                         break;

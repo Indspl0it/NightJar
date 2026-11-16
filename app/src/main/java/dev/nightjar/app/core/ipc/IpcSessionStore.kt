@@ -170,6 +170,19 @@ class IpcSessionStore
             sessions.onSessionLost()
         }
 
+        /**
+         * Clears only when [binder] is still the control binder of the live session: a call that failed on an old binder
+         * must not end the session of a newer hello.
+         */
+        fun clearIfControl(binder: android.os.IBinder) {
+            val live = current.get() ?: return
+            if (live.control !== binder) return
+            if (current.compareAndSet(live, null)) {
+                unlink(binder)
+                sessions.onSessionLost()
+            }
+        }
+
         /** Clears only when [sessionId] is still the live session: a late death callback must not kill its successor. */
         private fun clearIfCurrent(sessionId: String) {
             val live = current.get() ?: return

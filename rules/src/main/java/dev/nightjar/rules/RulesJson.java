@@ -200,7 +200,9 @@ public final class RulesJson {
         }
         if (w.has("slot")) {
             Object v = w.opt("slot");
-            if (v instanceof Number) b.slot(((Number) v).intValue());
+            // Like a port: 0.5 or 4294967296 cast to int would be slot 0 and match more than the document says.
+            Integer slot = wholeInt(v);
+            if (slot != null) b.slot(slot);
             else p.add("slot");
         }
         if (w.has("textContains")) {
@@ -251,6 +253,14 @@ public final class RulesJson {
         if (!(v instanceof Number)) return null;
         double d = ((Number) v).doubleValue();
         if (d != Math.rint(d) || d < 0 || d > 65535) return null;
+        return (int) d;
+    }
+
+    /** A whole number in the int range, else {@code null}. */
+    private static Integer wholeInt(Object v) {
+        if (!(v instanceof Number)) return null;
+        double d = ((Number) v).doubleValue();
+        if (d != Math.rint(d) || d < Integer.MIN_VALUE || d > Integer.MAX_VALUE) return null;
         return (int) d;
     }
 

@@ -65,6 +65,9 @@ public final class Replayer {
             wapKeys[i] = Releaser.payloadKeys(pdus[i]);
             if (wapKeys[i] != null) tokens.registerReplay(wapKeys[i][0], wapKeys[i][1], eventId);
         }
+        // A multipart push reaches HK-14 as one payload joined from every part.
+        String joinedKey = Releaser.reassembledPayloadKey(pdus);
+        if (joinedKey != null) tokens.registerReplay(joinedKey, null, eventId);
 
         int firstFailure = Control.ReleaseResult.HANDLED;
         for (int i = 0; i < pdus.length; i++) {
@@ -83,6 +86,7 @@ public final class Replayer {
                         tokens.discard(keys[k][0], keys[k][1]);
                         if (wapKeys[k] != null) tokens.discard(wapKeys[k][0], wapKeys[k][1]);
                     }
+                    if (joinedKey != null) tokens.discard(joinedKey, null);
                 }
                 warn("replay part " + (i + 1) + "/" + pdus.length + " failed with result " + result);
                 break;

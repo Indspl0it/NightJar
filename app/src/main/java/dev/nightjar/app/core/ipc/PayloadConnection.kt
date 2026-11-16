@@ -78,7 +78,7 @@ class PayloadConnection
                 }
             } catch (_: android.os.DeadObjectException) {
                 // The binder is gone; ControlResult.Dead is the typed outcome and the cause adds nothing the UI can use.
-                sessions.clear()
+                sessions.clearIfControl(binder)
                 ControlResult.Dead
             } catch (e: SecurityException) {
                 ControlResult.Failed("rejected by payload: ${e.message}")
@@ -106,7 +106,7 @@ class PayloadConnection
                 ControlResult.Ok(Unit)
             } catch (_: android.os.DeadObjectException) {
                 // The binder is gone; ControlResult.Dead is the typed outcome and the cause adds nothing the UI can use.
-                sessions.clear()
+                sessions.clearIfControl(binder)
                 ControlResult.Dead
             } catch (e: SecurityException) {
                 ControlResult.Failed("rejected by payload: ${e.message}")
@@ -129,7 +129,7 @@ class PayloadConnection
         /** A session whose binder died is reported as [ControlResult.Dead] (and cleared); no session is NoSession. */
         private fun <T> noBinderResult(): ControlResult<T> {
             val session = sessions.session ?: return ControlResult.NoSession
-            if (session.control != null) sessions.clear()
+            session.control?.let(sessions::clearIfControl)
             return if (session.control != null) ControlResult.Dead else ControlResult.NoSession
         }
 

@@ -8,7 +8,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import dev.nightjar.contract.ClassId;
 import dev.nightjar.contract.Control;
+import dev.nightjar.payload.capture.InjectionTokens;
 import dev.nightjar.payload.env.Clock;
+import dev.nightjar.payload.testing.Pdu;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -296,6 +298,47 @@ class ReleaserTest {
                 releaser.release("evt-w", ClassId.WAP_CP, new byte[][] {push}, "3gpp", 0));
         assertNull(tokens.consume(wap[0]), "no RELEASE token may stay on the WAP payload");
         if (wap[1] != null) assertNull(tokens.consume(wap[1]));
+    }
+
+    /** One part of a two-part WAP push (8-bit data, concatenation and port 2948 IEs). */
+    private static byte[] wapPart(int seq, byte[] body) {
+        return Pdu.deliver().dcs(0x04).udh(7, 2, seq, 2948).ud(body).build();
+    }
+
+    @Test
+    void QUA_02_aMultipartPushIsReleasedUnderTheKeyOfTheJoinedPayload() {
+        // HK-14 receives the user data of both parts joined, without headers: the key of one part never matches it,
+        // so the released push was held again.
+        byte[] a = {0x01, 0x06, 0x03, (byte) 0xB6, (byte) 0x81, (byte) 0xEA};
+        byte[] b = {0x10, 0x20, 0x30};
+        byte[] joined = {0x01, 0x06, 0x03, (byte) 0xB6, (byte) 0x81, (byte) 0xEA, 0x10, 0x20, 0x30};
+        String joinedKey = dev.nightjar.contract.Hashes.tpduKey(joined);
+        byte[] p1 = wapPart(1, a);
+        byte[] p2 = wapPart(2, b);
+        // Parts in any order give the joined payload in sequence order.
+        assertEquals(joinedKey, Releaser.reassembledPayloadKey(new byte[][] {p1, p2}));
+        assertEquals(joinedKey, Releaser.reassembledPayloadKey(new byte[][] {p2, p1}));
+        assertNull(Releaser.reassembledPayloadKey(new byte[][] {p1}), "one part: the part keys cover it");
+        assertNull(Releaser.reassembledPayloadKey(new byte[][] {part(1), part(2)}), "not a WAP push");
+
+        TokenRegistry tokens = new TokenRegistry(new FakeClock());
+        Releaser releaser = new Releaser(tokens, new FakeInjector(), null);
+        assertEquals(Control.ReleaseResult.HANDLED,
+                releaser.release("evt-mp", ClassId.WAP_CP, new byte[][] {p1, p2}, "3gpp", 0));
+        assertEquals(InjectionTokens.Kind.RELEASE, tokens.peek(joinedKey, null));
+    }
+
+    @Test
+    void QUA_04_aFailedMultipartReleaseDropsTheJoinedKey() {
+        byte[] p1 = wapPart(1, new byte[] {0x01, 0x06, 0x03});
+        byte[] p2 = wapPart(2, new byte[] {0x10, 0x20});
+        String joinedKey = Releaser.reassembledPayloadKey(new byte[][] {p1, p2});
+        assertNotNull(joinedKey);
+        TokenRegistry tokens = new TokenRegistry(new FakeClock());
+        FakeInjector injector = new FakeInjector();
+        injector.defaultResult = Control.ReleaseResult.GENERIC_FAILURE;
+        new Releaser(tokens, injector, null).release("evt-mp", ClassId.WAP_CP, new byte[][] {p1, p2}, "3gpp", 0);
+        assertNull(tokens.peek(joinedKey, null));
     }
 
     /** subId -1 is the default SMS subscription; with no default the release is rejected before a token. */

@@ -102,7 +102,7 @@ class StagingService
             while (true) {
                 val batch = s.peek(DRAIN_BATCH)
                 if (batch.isEmpty()) break
-                val accepted = ArrayList<String>(batch.size)
+                val accepted = ArrayList<StagedEventEntity>(batch.size)
                 for (row in batch) {
                     val ok =
                         try {
@@ -113,9 +113,10 @@ class StagingService
                             log.w(TAG, "staged event not ingested, kept for the next drain", e)
                             false
                         }
-                    if (ok) accepted += row.eventId
+                    if (ok) accepted += row
                 }
-                if (accepted.isNotEmpty()) s.remove(accepted)
+                // Only rows that did not change: a newer revision staged during the drain stays for the next drain.
+                if (accepted.isNotEmpty()) s.removeDrained(accepted)
                 drained += accepted.size
                 // Nothing was accepted: stop rather than spin on a permanent failure; the next unlock retries.
                 if (accepted.isEmpty()) break

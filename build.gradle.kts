@@ -35,7 +35,8 @@ spotless {
         target(
             fileTree(".") {
                 include("**/src/**/*.kt")
-                exclude("**/build/**", "buildSrc/.gradle/**")
+                // Module output folders only: "**/build/**" would also skip buildSrc's dev/nightjar/build package.
+                exclude("build/**", "*/build/**", "buildSrc/.gradle/**")
             },
         )
         ktlint(libs.versions.ktlint.get())

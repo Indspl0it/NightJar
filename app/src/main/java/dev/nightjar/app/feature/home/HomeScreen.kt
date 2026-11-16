@@ -106,6 +106,7 @@ import dev.nightjar.app.ui.theme.NjRoles
 import dev.nightjar.app.ui.theme.NjShape
 import dev.nightjar.app.ui.theme.NjSpacing
 import dev.nightjar.app.ui.theme.NjTheme
+import dev.nightjar.app.ui.theme.SeverityTokens
 import dev.nightjar.contract.ClassId
 import dev.nightjar.contract.Fate
 import java.time.LocalDate
@@ -723,8 +724,9 @@ private fun AttentionCard(
     val actions = attentionActions(row)
     val locale = LocalConfiguration.current.locales[0]
     val zone = remember { ZoneId.systemDefault() }
-    val suspiciousRow = isSuspiciousRow(row)
-    val tone = if (suspiciousRow) roles.sus else roles.amb
+    // A High row says "High", not "Suspicious" (same label as the Messages list). The tone stays as designed.
+    val tagSeverity = attentionTagSeverity(row)
+    val tone = if (tagSeverity != null) roles.sus else roles.amb
     // The sender is masked when the row is drawn, not when the message is stored.
     val sender = formatNumber(row.originator, NumberDisplay.forSetting(maskNumbers))
     val blocked = stringResource(R.string.home_stat_blocked)
@@ -734,9 +736,9 @@ private fun AttentionCard(
             simLine(row, strings).takeIf { it.isNotBlank() },
             blocked.takeIf { row.fate == Fate.BLOCKED },
         ).joinToString(" · ")
-    val suspicious = stringResource(R.string.home_tile_suspicious)
+    val severityTag = tagSeverity?.let { SeverityTokens.label(it) }
     val onHold = stringResource(R.string.home_chip_quarantined)
-    val tagParts = listOfNotNull(suspicious.takeIf { suspiciousRow }, onHold.takeIf { row.isQuarantined })
+    val tagParts = listOfNotNull(severityTag, onHold.takeIf { row.isQuarantined })
     val tags =
         when (tagParts.size) {
             2 -> stringResource(R.string.home_x_tag_separator, tagParts[0], tagParts[1])

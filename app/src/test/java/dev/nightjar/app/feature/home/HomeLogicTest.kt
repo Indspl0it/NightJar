@@ -79,6 +79,13 @@ class HomeLogicTest {
     }
 
     @Test
+    fun `attention tag keeps High as High, not Suspicious`() {
+        assertEquals(Severity.HIGH, attentionTagSeverity(row(ClassId.SILENT, severity = Severity.HIGH)))
+        assertEquals(Severity.SUSPICIOUS, attentionTagSeverity(row(ClassId.SILENT, severity = Severity.SUSPICIOUS)))
+        assertNull(attentionTagSeverity(row(ClassId.SILENT, quarantined = true, severity = Severity.NOTABLE)))
+    }
+
+    @Test
     fun `today of the window is the last day`() {
         val days =
             listOf(

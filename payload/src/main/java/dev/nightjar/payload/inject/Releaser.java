@@ -64,6 +64,9 @@ public final class Releaser {
             wapKeys[i] = payloadKeys(pdus[i]);
             if (wapKeys[i] != null) tokens.registerRelease(wapKeys[i][0], wapKeys[i][1], eventId, classWire);
         }
+        // A multipart push reaches HK-14 as one payload joined from every part: it needs a key of its own.
+        String joinedKey = reassembledPayloadKey(pdus);
+        if (joinedKey != null) tokens.registerRelease(joinedKey, null, eventId, classWire);
 
         int firstFailure = Control.ReleaseResult.HANDLED;
         for (int i = 0; i < pdus.length; i++) {
@@ -84,6 +87,7 @@ public final class Releaser {
                         tokens.discard(keys[k][0], keys[k][1]);
                         if (wapKeys[k] != null) tokens.discard(wapKeys[k][0], wapKeys[k][1]);
                     }
+                    if (joinedKey != null) tokens.discard(joinedKey, null);
                 }
                 warn("Release", "part " + (i + 1) + "/" + pdus.length + " failed with result " + result);
                 break;
@@ -137,6 +141,55 @@ public final class Releaser {
             }
             if (body.length == 0) return new String[] {withHeader, null};
             return new String[] {dev.nightjar.contract.Hashes.tpduKey(body), withHeader};
+        } catch (Throwable t) {
+            return null;
+        }
+    }
+
+    /**
+     * Key of the payload that HK-14 receives for a multipart WAP push, or {@code null} for one part or a message that
+     * is not a port-2948 push.
+     *
+     * <p>The framework joins the user data of every part, without the user-data headers, in sequence order, and hands
+     * that one payload to {@code dispatchWapPdu} ({@code InboundSmsHandler.processMessagePart}). The keys of the single
+     * parts ({@link #payloadKeys}) never match it, so without this key a released or replayed multipart push is held
+     * again at HK-14.
+     */
+    public static String reassembledPayloadKey(byte[][] pdus) {
+        if (pdus == null || pdus.length < 2) return null;
+        try {
+            int n = pdus.length;
+            byte[][] bodies = new byte[n][];
+            byte[][] bySeq = new byte[n][];
+            boolean seqUsable = true;
+            boolean wap = false;
+            for (int i = 0; i < n; i++) {
+                dev.nightjar.payload.capture.PduFacts facts =
+                        dev.nightjar.payload.capture.PduFacts.parseRadio(pdus[i]);
+                if (facts == null || !facts.valid()) return null;
+                if (facts.destPort() == 2948) wap = true;
+                byte[] userData = facts.userData();
+                if (userData == null) return null;
+                byte[] body = userData;
+                if (facts.udhi() && userData.length > 0) {
+                    int skip = 1 + (userData[0] & 0xFF);
+                    body = skip >= userData.length
+                            ? new byte[0] : java.util.Arrays.copyOfRange(userData, skip, userData.length);
+                }
+                bodies[i] = body;
+                int seq = facts.concatSeq();
+                if (seq < 1 || seq > n || bySeq[seq - 1] != null) {
+                    seqUsable = false;
+                } else {
+                    bySeq[seq - 1] = body;
+                }
+            }
+            if (!wap) return null;
+            byte[][] ordered = seqUsable ? bySeq : bodies;
+            java.io.ByteArrayOutputStream joined = new java.io.ByteArrayOutputStream();
+            for (byte[] body : ordered) joined.write(body, 0, body.length);
+            byte[] payload = joined.toByteArray();
+            return payload.length == 0 ? null : dev.nightjar.contract.Hashes.tpduKey(payload);
         } catch (Throwable t) {
             return null;
         }

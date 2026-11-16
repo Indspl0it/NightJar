@@ -28,8 +28,22 @@ final class SafeRegex {
     /** Maximum compiled program size (bounds {@code {n,m}} expansion). */
     static final int MAX_PROGRAM = 2000;
 
+    /**
+     * Maximum number of AST node visits while the program is emitted. A repeated group that emits no instruction
+     * ({@code (){1000}}) does not count against {@link #MAX_PROGRAM}, so nested ones ({@code ((){1000}){1000}...})
+     * would otherwise take hours to compile. A pattern of 200 characters whose groups emit instructions stays far
+     * below this limit (at most about 200 000 visits: nesting depth times {@link #MAX_PROGRAM}).
+     */
+    static final int MAX_EMIT_VISITS = 1_000_000;
+
     /** VM step budget per match; above it the match aborts (≈ well under 1 ms on a phone). */
     static final int STEP_BUDGET = 50_000;
+
+    /**
+     * VM step budget for all sender patterns of one message together. Each pattern also keeps {@link #STEP_BUDGET}, so
+     * a very large rule set cannot slow one message down by more than this (≈ 10 to 20 ms on a phone).
+     */
+    static final int MESSAGE_STEP_BUDGET = 1_000_000;
 
     static final int MATCH = 1;
     static final int NO_MATCH = 0;
@@ -97,6 +111,7 @@ final class SafeRegex {
         int cSize;
         int nSize;
         int steps;
+        int limit;
 
         Vm(int n) {
             cDense = new int[n];
@@ -107,8 +122,22 @@ final class SafeRegex {
         }
     }
 
+    /** The steps of the last {@link #find} call on this thread (it can exceed the budget by one). */
+    static int lastSteps() {
+        Vm v = SCRATCH.get();
+        return v == null ? 0 : v.steps;
+    }
+
     /** Returns {@link #MATCH}, {@link #NO_MATCH} or {@link #ABORTED} (budget exceeded, treat as no match). */
     int find(CharSequence s) {
+        return find(s, STEP_BUDGET);
+    }
+
+    /**
+     * As {@link #find(CharSequence)}, but stops after {@code budget} steps (at most {@link #STEP_BUDGET}).
+     * {@link #lastSteps()} then returns the steps this call used.
+     */
+    int find(CharSequence s, int budget) {
         Vm v = SCRATCH.get();
         if (v == null || v.cDense.length < op.length) {
             // A sparse set needs no clearing, so one scratch can serve programs of any size up to its own.
@@ -121,6 +150,7 @@ final class SafeRegex {
         v.nxtS = v.nSparse;
         v.cSize = 0;
         v.steps = 0;
+        v.limit = Math.min(budget, STEP_BUDGET);
         int n = s.length();
         for (int i = 0; ; i++) {
             // Unanchored search: start a new thread at every position.
@@ -128,7 +158,7 @@ final class SafeRegex {
             v.nSize = 0;
             char c = i < n ? Numbers.fold(s.charAt(i)) : 0;
             for (int k = 0; k < v.cSize; k++) {
-                if (++v.steps > STEP_BUDGET) return ABORTED;
+                if (++v.steps > v.limit) return ABORTED;
                 int pc = v.curD[k];
                 switch (op[pc]) {
                     case OP_MATCH:
@@ -166,7 +196,7 @@ final class SafeRegex {
         int sp = 0;
         st[sp++] = start;
         while (sp > 0) {
-            if (++v.steps > STEP_BUDGET) return false;
+            if (++v.steps > v.limit) return false;
             int pc = st[--sp];
             int si = sparse[pc];
             if (si < size && dense[si] == pc) continue;
@@ -502,6 +532,7 @@ final class SafeRegex {
         int[] x = new int[32];
         int[] y = new int[32];
         int size;
+        int visits;
         final List<char[]> ranges = new ArrayList<>();
         final List<Boolean> negs = new ArrayList<>();
 
@@ -519,6 +550,7 @@ final class SafeRegex {
         }
 
         void emit(Node n) throws SyntaxException {
+            if (++visits > MAX_EMIT_VISITS) throw new SyntaxException("pattern too complex", false);
             if (n instanceof Lit) {
                 add(OP_CHAR, ((Lit) n).c, 0);
             } else if (n instanceof Any) {
