@@ -3,6 +3,13 @@
 All notable changes to NightJar are listed here. The format follows [Keep a Changelog](https://keepachangelog.com/)
 and the project uses [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Changed
+
+- NightJar is now licensed under the GNU General Public License, version 3 or later (GPL-3.0-or-later), not
+  Apache-2.0.
+
 ## [0.5.0] - 2026-11-15
 
 First public release.

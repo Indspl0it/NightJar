@@ -3,14 +3,18 @@ title: License
 description: The NightJar license and the third-party components in the APK.
 ---
 
-NightJar is licensed under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0). The full
-text is in the file `LICENSE` in the repository.
+NightJar is licensed under the [GNU General Public License, version 3](https://www.gnu.org/licenses/gpl-3.0.html), or
+(at your option) any later version (GPL-3.0-or-later). The full text is in the file `LICENSE` in the repository.
+
+You can use, study, change and share NightJar. If you distribute NightJar or a modified version, you must give the
+people who get it the source code under the same license.
 
 Copyright 2026 The NightJar authors.
 
 ## Third-party components
 
-The APK contains these components. The file `NOTICE` in the repository is the source.
+The APK contains these components. Each keeps its own license, and all of them are compatible with the GPL version
+3. The file `NOTICE` in the repository is the source.
 
 | Component | License | Source |
 |---|---|---|

@@ -41,6 +41,11 @@ needed. Read this file before you open a pull request.
 - **Decoder**: add a golden fixture (`hex` and `expected.json`) and a truncation or mutation case. No Android
   dependencies.
 
+## License of contributions
+
+NightJar is licensed under GPL-3.0-or-later. When you send a change, you agree that it is licensed under the same
+license.
+
 ## Commits
 
 - Keep each commit to one topic. Write the reason for the change in the commit body.

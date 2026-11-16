@@ -76,4 +76,5 @@ The documentation is at **https://indspl0it.github.io/NightJar/**.
 
 ## Licence
 
-Apache License 2.0. See [LICENSE](LICENSE). Third-party notices are in [NOTICE](NOTICE).
+GNU General Public License, version 3 or later (GPL-3.0-or-later). See [LICENSE](LICENSE). Third-party notices are
+in [NOTICE](NOTICE).

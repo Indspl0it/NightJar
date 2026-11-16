@@ -1,7 +1,11 @@
 NightJar
 Copyright 2026 The NightJar authors
 
-This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+NightJar is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
+later version (GPL-3.0-or-later). See LICENSE.
+
+The third-party components below keep their own licenses. All of them are compatible with the GPL version 3.
 
 Third-party components bundled in the APK:
 - AndroidX (including Jetpack Compose, Room, WorkManager, DataStore, Paging, Navigation) (Apache-2.0) - https://developer.android.com/jetpack/androidx
