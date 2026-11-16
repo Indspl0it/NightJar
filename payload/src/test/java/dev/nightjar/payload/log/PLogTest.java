@@ -31,8 +31,9 @@ class PLogTest {
         PLog log = new PLog(clock, sink);
         log.i("hook", "hooks installed", "live", 12);
         String line = log.lines(0).get(0).message();
-        assertTrue(line.matches("\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}[+-]\\d{2}:\\d{2}  I  hook  hooks installed live=12"),
-                line);
+        // The offset is "Z" when the zone is UTC (as on CI runners), else +hh:mm or -hh:mm.
+        String ts = "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}(Z|[+-]\\d{2}:\\d{2})";
+        assertTrue(line.matches(ts + "  I  hook  hooks installed live=12"), line);
     }
 
     @Test
