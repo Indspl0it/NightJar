@@ -1,0 +1,98 @@
+---
+title: Export
+description: Export recorded messages as JSON, PDU hex or CSV, with number masking and optional message text.
+---
+
+import { Image } from 'astro:assets';
+import exportScreen from '../../../assets/screens/export.png';
+
+Export saves recorded messages to a file, for your own analysis or for a report.
+
+<div class="nj-screens">
+	<figure>
+		<Image class="nj-screen" src={exportScreen} alt="The Export screen with scope, format and options." />
+		<figcaption>Export</figcaption>
+	</figure>
+</div>
+
+You can open Export from three places:
+
+- Settings > Data and storage > **Export**.
+- **Export** in Messages. If you selected messages, the scope starts at Selection. If a filter is active, it starts
+  at Current filter.
+- **Export** in a message detail. The scope is that one message.
+
+## Scope
+
+Each scope shows how many messages it covers, for example "Everything (1284)".
+
+| Scope | Messages |
+|---|---|
+| Selection | The messages you selected in Messages |
+| Current filter | The messages that match the filter in Messages |
+| Everything | All recorded messages |
+
+Selection and Current filter are available only when you open Export from Messages with a selection or a filter.
+If a scope covers no messages, **Export…** and **Share…** are off.
+
+## Format
+
+| Format | File | Content |
+|---|---|---|
+| JSON | `.json` | One record for each message: type, subtype, severity, sender, SIM slot, port, result, the rule that matched, the PDUs and the trace of hooks that saw it |
+| PDU hex | `.txt` | A comment line for each message (ID, time, type, severity, sender), then the hex of each PDU part on its own line |
+| CSV | `.csv` | One row for each message with the main fields. No PDUs. |
+
+The file name has the form `nightjar-export-20261116-091500.json`, with the time in UTC.
+
+The JSON and PDU hex files start with the schema version (`nightjarExport: 2`). A CSV file has no version line.
+Its header row names each column, and the `text` column is last when you include message text.
+
+In a CSV file, NightJar puts an apostrophe in front of a cell that starts with `=`, `+`, `-`, `@`, a tab or a
+carriage return, so a spreadsheet doesn't run a sender-chosen value as a formula. A plain phone number such as `+919000000210` keeps its `+`.
+
+## Options
+
+| Option | Default | Result |
+|---|---|---|
+| Mask phone numbers | The value of Settings > Privacy and security > **Mask numbers in lists** | NightJar masks the sender, the SMS center number and phone numbers inside the text and the trace. |
+| Include message text | Off | The file contains the message text, and anyone with the file can read it. |
+| Include decoded tree | Off | Adds the decoded fields of each PDU to the JSON file. |
+
+**Include decoded tree** is available only for JSON, with **Include message text** on and **Mask phone numbers**
+off, because the decoded tree can contain the sender and the text. If you turn on masking, NightJar turns off the
+decoded tree.
+
+### How masking works
+
+| Value | Masked |
+|---|---|
+| International number, `+919000000210` | `+91•••••210` |
+| National number, `09000000210` | `•••••210` |
+| Short code of up to 6 digits, `57575` | `57575` |
+| Sender ID of up to 11 characters with at most 3 digits, `AX-BANK123` | `AX-BANK123` |
+| Longer sender ID, `ACC123456789` | `•••••789` |
+
+The mask always has five dots, so it doesn't show the length of the number.
+
+### PDUs and privacy
+
+A PDU contains the sender, the SMS center number and the message text. If you mask numbers or leave out the message
+text, NightJar replaces each PDU with the length of its hex, for example `«140 chars»`. In a PDU hex file that length goes on a
+comment line, so a tool that reads the hex lines doesn't take it for data. To export full PDUs, turn on
+**Include message text** and turn off **Mask phone numbers**.
+
+## Save or share
+
+- **Export…** opens the Android file picker, and NightJar writes the file to the folder you choose.
+- **Share…** sends the file to an app you choose.
+
+If the export includes message text, NightJar shows "Export includes message text. Anyone with the file can read the
+message text." Select **Export** to continue.
+
+While the export runs, the screen shows "Exporting 120 of 1284". Select **Cancel export** to stop it. NightJar
+deletes a partly written share file. Before each share, NightJar also deletes the files of earlier shares from its
+cache.
+
+If the export fails, NightJar shows "NightJar cannot complete the export. Try again." Each completed export appears in
+the audit history as "Exported", with the number of messages.

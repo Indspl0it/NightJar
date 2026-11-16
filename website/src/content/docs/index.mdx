@@ -1,0 +1,97 @@
+---
+title: NightJar
+description: NightJar is a security and privacy app for rooted Android phones. It blocks SMS attacks that track your location, take over your SIM card or exploit bugs in Android.
+template: splash
+hero:
+  tagline: Block SMS attacks that track your location, take over your SIM card or crash Android, and see every hidden message your phone receives.
+  image:
+    file: ../../assets/screens/home.png
+    alt: The NightJar Home screen with the protection state and the hidden messages of this week.
+  actions:
+    - text: Get started
+      link: /NightJar/intro/
+      icon: right-arrow
+    - text: Download
+      link: https://github.com/Indspl0it/NightJar/releases/latest
+      icon: external
+      variant: minimal
+---
+
+import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+import { Image } from 'astro:assets';
+import messages from '../../assets/screens/messages.png';
+import detail from '../../assets/screens/detail.png';
+import protection from '../../assets/screens/protection.png';
+import status from '../../assets/screens/protection-status.png';
+
+## Messages you don't see
+
+Some SMS never reach your inbox. The network, your carrier, a SIM app or an attacker can send them, and NightJar
+records each one.
+
+<CardGrid>
+	<Card title="Silent SMS" icon="phone">
+		Type 0 messages show nothing on screen. A sender can use them to check that a phone is on and to find where it
+		is.
+	</Card>
+	<Card title="Settings pushes" icon="setting">
+		WAP push messages that change the APN or proxy of your phone. An unexpected one can route your data through
+		another server.
+	</Card>
+	<Card title="Location and SIM" icon="warning">
+		SUPL location requests and SIM data download messages. The Simjacker and WIBattack attacks used the SIM path.
+	</Card>
+	<Card title="Malformed messages" icon="error">
+		SMS and WAP push messages with a broken header, which attackers use to crash the phone service, as in
+		CVE-2026-58882. The Recommended preset blocks them.
+	</Card>
+</CardGrid>
+
+## What NightJar does
+
+<CardGrid>
+	<Card title="Record" icon="notes">
+		Each hidden message is stored with its type, sender, port and what Android did with it.
+	</Card>
+	<Card title="Explain" icon="information">
+		Each message has a short explanation, the decoded PDU fields and the path it took through the phone service.
+	</Card>
+	<Card title="Hold or block" icon="padlock">
+		Choose Allow, Hold or Block for each message type, or pick a preset that sets all types at once. Custom rules
+		add exceptions.
+	</Card>
+	<Card title="Notify" icon="comment">
+		Get a notification for suspicious messages, such as a burst of silent SMS or a settings push from an unknown
+		sender.
+	</Card>
+</CardGrid>
+
+## Screens
+
+<div class="nj-screens">
+	<figure>
+		<Image class="nj-screen" src={messages} alt="The Messages list with hidden message types and their results." />
+		<figcaption>Messages</figcaption>
+	</figure>
+	<figure>
+		<Image class="nj-screen" src={detail} alt="The detail of one held message with its explanation and actions." />
+		<figcaption>Message detail</figcaption>
+	</figure>
+	<figure>
+		<Image class="nj-screen" src={protection} alt="The Protection screen with the preset and one action for each type." />
+		<figcaption>Protection</figcaption>
+	</figure>
+	<figure>
+		<Image class="nj-screen" src={status} alt="The Protection status screen with hooks, versions and checks." />
+		<figcaption>Protection status</figcaption>
+	</figure>
+</div>
+
+## Start here
+
+<CardGrid>
+	<LinkCard title="What NightJar is" href="/NightJar/intro/" description="The SMS attacks NightJar protects you from." />
+	<LinkCard title="Requirements" href="/NightJar/requirements/" description="Android version, root and Xposed framework." />
+	<LinkCard title="Install" href="/NightJar/install/" description="Install the APK and turn on the module." />
+	<LinkCard title="Blocking cautions" href="/NightJar/safety/blocking-cautions/" description="What can break when you block a message type." />
+</CardGrid>

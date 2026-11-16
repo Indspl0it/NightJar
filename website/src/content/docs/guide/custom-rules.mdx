@@ -1,0 +1,163 @@
+---
+title: Custom rules
+description: Make exceptions to the preset for a sender, a port, a content type, a service centre or a text.
+---
+
+import { Image } from 'astro:assets';
+import rules from '../../../assets/screens/custom-rules.png';
+import editor from '../../../assets/screens/rule-editor.png';
+
+A preset sets one action for each message type. A custom rule sets the action for messages that match conditions you
+choose, such as one sender, one port or one SIM.
+
+<div class="nj-screens">
+	<figure>
+		<Image class="nj-screen" src={rules} alt="The Custom rules list with user rules and preset rules." />
+		<figcaption>Custom rules</figcaption>
+	</figure>
+	<figure>
+		<Image class="nj-screen" src={editor} alt="The rule editor with type, sender and action fields." />
+		<figcaption>Rule editor</figcaption>
+	</figure>
+</div>
+
+Open Protection > **Custom rules**. With no rules of your own, the list shows "No custom rules".
+
+## How NightJar applies rules
+
+For each message, NightJar finds the action in this order:
+
+1. Your custom rules, from top to bottom. The first rule that matches sets the action.
+2. The preset rules, marked **From preset**.
+3. The action of the message type on the Protection tab.
+4. If nothing matches: Allow.
+
+Your rules run before the preset rules, so a rule can allow one sender that the preset would block.
+
+After that, the [safety limits](/NightJar/internals/rules-engine/#safety-limits) can change the result:
+
+- If the type doesn't support the action, the message is allowed.
+- Emergency alerts are always allowed.
+- Location requests (SUPL) are always allowed during an emergency call and for the SUPL emergency grace after it.
+- In safe mode, or when blocking is off or unavailable, Hold and Block become Allow. Allow and notify still
+  notifies you.
+
+## Example rules
+
+| Goal | Type | Conditions | Then |
+|---|---|---|---|
+| Allow settings pushes from your carrier's service centre | Settings push | SMSC **is** `+919000000210` | Allow |
+| Hold settings pushes that arrive while you roam | Settings push | Roaming: **Roaming** | Hold |
+| Block data messages to high ports on your second SIM | Data message to a port | SIM 2, Port range 49152 to 65535 | Block |
+| Get notified about flash SMS from one sender | Flash SMS (Class 0) | From **is** `+919000000210` | Allow and notify |
+
+## Make a rule
+
+The editor has four steps: **When a message…**, **Then**, **Name and status** and **Preview**.
+
+1. Select **New rule**.
+2. Under **When a message…**, select one or more types.
+3. Optional: under **From**, select an operator and enter a sender.
+4. Optional: select **Add condition** to add more conditions.
+5. Under **Then**, select the action.
+6. Enter a name, or keep the suggested name, for example "Settings push from +919000000210".
+7. Select **Save**. NightJar sends the rule to the phone service at once.
+
+You can also start a rule from a message. Select **Block similar** on the message detail or on Home. The editor
+opens with the type and the exact sender of that message filled in, and the action set to Hold, or to Block if the
+type can't be held.
+
+If a field has a problem, the editor shows it under the field and **Save** shows "Fix the highlighted fields. Then
+save."
+
+## Conditions
+
+A message must match all conditions of a rule. To remove a condition, select the delete button next to it.
+
+| Condition | Values |
+|---|---|
+| Type | One or more message types. Required. |
+| From | The sender: **is**, **is not**, **starts with** or **matches regex** |
+| SIM | Any SIM, SIM 1 or SIM 2 |
+| Port | One destination port, 0 to 65535 |
+| Port range | A range of destination ports, from 0 to 65535 |
+| Content type | The content type of a WAP push, for example `application/vnd.wap.connectivity-wbxml`: **is** or **starts with** |
+| SMSC | The service centre number: **is** or **starts with** |
+| Roaming | Any, Roaming or Not roaming |
+| Text contains | Text in the decoded message. Case doesn't matter. |
+| Subtypes | Set by some preset rules. You can't change it. |
+
+### How numbers are compared
+
+For **is**, **is not** and **starts with**, NightJar removes spaces, every `+` and a leading `00` before it compares.
+In a number, it also removes the separators `-`, `(`, `)` and `.`, so `+91 90000-00210`, `0091 9000000210` and
+`919000000210` are the same number. An alphanumeric sender such as `VM-CARRIER` keeps its letters and separators, and
+case doesn't matter.
+
+A value that is only `+` or `00` counts as empty. The editor shows "Enter a value. NightJar treats a value of only +
+or 00 as empty."
+
+### Regular expressions
+
+**matches regex** tests the sender as received, without the changes above. The pattern can match anywhere in the
+sender unless you anchor it with `^` or `$`, and case doesn't matter. For example, `^VM-` matches each sender that
+starts with `VM-`.
+
+Supported: literals, `.`, `[...]` with ranges and `^`, `\d \D \w \W \s \S`, `^ $`, groups `(...)` and `(?:...)`, `|`,
+`* + ?` and `{n}`, `{n,}`, `{n,m}`. Not supported: backreferences, lookaround, inline flags, possessive quantifiers and
+Unicode classes. A pattern can have 200 characters at most.
+
+## Actions
+
+**Then** lists only the actions that every selected type supports:
+
+| Action | Result |
+|---|---|
+| Allow | NightJar records it. Nothing else happens. |
+| Allow and notify | NightJar records it and notifies you, based on its severity. |
+| Hold | NightJar holds it until you decide. No other app receives it. |
+| Block | NightJar blocks it before any app sees it. |
+
+A rule for **Normal message** can hold or block only when it also has a sender, port or text condition. Without one,
+the editor shows "This selection has no blocking action. Add a sender, port or text condition to get more actions."
+Some types, such as voicemail control and carrier app messages, can only be allowed, with or without a
+notification.
+
+## Preview
+
+The Preview step shows how many messages the rule matches from the last 30 days, for example "This rule matches 4
+recorded messages from the last 30 days." If a safety limit changes the action for some of them, it says how many.
+
+To test the rule against one message, paste its PDU in hex under **PDU hex**. In researcher mode, you can copy a PDU
+from the message detail with **Copy hex**. The editor shows the sender, service centre, type and port of the PDU,
+then "This rule would match this message" or "This rule would not match this message", and the result. If a safety
+limit would change the action, the preview says "A safety limit changes the action of this rule for this message."
+
+If the hex isn't a complete SMS PDU, or the PDU has no sender, SMSC or text that a rule can test, the preview says
+so.
+
+## Limits
+
+The editor refuses a rule that breaks one of these limits:
+
+| Limit | What the editor shows |
+|---|---|
+| A rule can't block or hold all normal messages | "NightJar does not allow a rule that blocks or holds every normal message. Add a sender, port or text condition. Or select Allow for normal messages." Select **Why?** for more detail. |
+| The action must be allowed for every selected type | "This action is not allowed for every selected type." For example, a SIM update can't be held. |
+| A regular expression must be valid and 200 characters or shorter | "This regular expression is not valid" or "A regular expression can have 200 characters at most." |
+| The rules file must stay below 64 KB | "The rules file would be larger than 64 KB. Delete or shorten a rule." |
+| At least one type | "Select at least one type." |
+| Ports from 0 to 65535 | "Use a port from 0 to 65535." |
+
+If the phone service can't use a saved rule, it skips that rule and applies all other rules. Protection status then
+shows "The phone service cannot use some of your rules". If you updated NightJar, reboot the phone.
+
+## Manage rules
+
+- Drag a rule, or use **Move up** and **Move down**, to change the order.
+- Select a rule to edit it. Turn off **Rule is on** to keep a rule without using it.
+- Delete a rule. The list shows "Rule deleted" with **Undo**.
+- Preset rules show **From preset**. You can't edit them here. To change them, select a different preset.
+
+Each rule in the list shows a summary of its conditions. A rule that hasn't matched a message yet shows "never
+matched".

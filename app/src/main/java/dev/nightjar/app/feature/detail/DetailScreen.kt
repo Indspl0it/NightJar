@@ -365,7 +365,8 @@ fun DetailContent(
         )
     }
 
-    // Releasing hands the message back to the system, so it is never a one-tap action.
+    // Detail confirms a release before it hands the message back to the system. The Home and Messages rows and the
+    // notification action release in one tap by design.
     if (state.showReleaseDialog) {
         NjDialog(
             title = stringResource(R.string.dlg_08_title),
@@ -1158,16 +1159,18 @@ private fun previewView(): DetailView =
     DetailView(
         id = 1,
         eventId = "e1",
-        title = "Silent SMS (Type 0)",
-        classId = ClassId.SILENT,
-        severity = Severity.SUSPICIOUS,
-        isQuarantined = true,
+        title = "Malformed WAP push: WSP header length is wrong",
+        classId = ClassId.WAP_UNREADABLE,
+        severity = Severity.HIGH,
+        isQuarantined = false,
         isStarred = false,
         isReviewed = true,
-        explanation = "A Type 0 message has no text. The phone receives it and sends an acknowledgement to the network.",
+        explanation =
+            "NightJar cannot read this push message, because its header is wrong: WSP header length is wrong. " +
+                "Attackers can use damaged push messages to crash a phone. By default, NightJar blocks this type of message.",
         detections = emptyList(),
         facts = emptyList(),
-        fateText = "Held by your rule for Silent SMS",
+        fateText = "NightJar blocked it",
         // Synthetic sender +10000004821 (TP-OA BCD 01 00 00 40 28 F1), never a real number.
         raw = byteArrayOf(0x00, 0x04, 0x0B, 0x91.toByte(), 0x01, 0x00, 0x00, 0x40, 0x28, 0xF1.toByte()),
         hex = "00040B910100004028F1",
@@ -1182,33 +1185,34 @@ private fun previewView(): DetailView =
         purgeText = null,
         links = emptyList(),
         siblings = emptyList(),
-        primary = PrimaryAction.RELEASE,
-        secondary = PrimaryAction.NONE,
-        canRelease = true,
+        primary = PrimaryAction.BLOCK_LIKE_THIS,
+        secondary = PrimaryAction.MARK_EXPECTED,
+        canRelease = false,
         originator = "+10000004821",
         originatorText = "+1…821",
         packageName = null,
         text = null,
-        family = ClassFamily.SILENT,
+        family = ClassFamily.WAP,
         simLabel = "SIM 1",
-        actionBadge = NjAction.HOLD,
+        actionBadge = NjAction.BLOCK,
         senderLine = "From +1…821 · Fri 13 Nov, 21:14",
         evidence =
             listOf(
-                DetailFact("Protocol ID (TP-PID)", "0x40 · Type 0", mono = true),
-                DetailFact("Data coding (TP-DCS)", "0x00 · GSM 7-bit", mono = true),
-                DetailFact("User data length", "0", mono = true),
+                DetailFact("Protocol ID (TP-PID)", "0x00 · Normal", mono = true),
+                DetailFact("Data coding (TP-DCS)", "0x04 · 8-bit data", mono = true),
+                DetailFact("User data length", "140", mono = true),
+                DetailFact("Destination port", "2948 · WAP push", mono = true),
                 DetailFact("Service centre", "+1…001", mono = true),
             ),
-        anomalies = listOf(AnomalyRow("Unknown header element", Severity.SUSPICIOUS, AnomalyCode.IE_RSV.wire())),
-        extraMatches = listOf(ExtraMatchRow("Data message to port 9999", "CL-DATA-PORT:UNKNOWN")),
+        anomalies = listOf(AnomalyRow("WSP header length is wrong", Severity.HIGH, AnomalyCode.WSP_HLEN.wire())),
+        extraMatches = emptyList(),
         timeline =
             listOf(
                 TimelineStep("Phone service received it", "21:14:03", TimelineTone.INFO),
-                TimelineStep("Classified as Silent SMS", "21:14:03", TimelineTone.INFO),
-                TimelineStep("Held by your rule for Silent SMS", "21:14:03", TimelineTone.HOLD),
+                TimelineStep("Classified as Malformed WAP push", "21:14:03", TimelineTone.INFO),
+                TimelineStep("NightJar blocked it", "21:14:03", TimelineTone.BLOCK),
             ),
-        buttons = detailButtonsFor(isQuarantined = true, releasable = true, direction = Direction.IN, fate = Fate.QUARANTINED),
+        buttons = detailButtonsFor(isQuarantined = false, releasable = false, direction = Direction.IN, fate = Fate.BLOCKED),
     )
 
 /** A sent message with two delivery reports. A sent message has no action badge and no Block similar tile. */
@@ -1219,6 +1223,9 @@ private fun previewSentView(): DetailView =
         severity = Severity.INFO,
         isQuarantined = false,
         explanation = "You sent this message.",
+        fateText = "Sent",
+        anomalies = emptyList(),
+        evidence = listOf(DetailFact("Service centre", "+1…001", mono = true)),
         family = ClassFamily.OUTBOUND,
         actionBadge = null,
         senderLine = "Fri 13 Nov, 21:20",

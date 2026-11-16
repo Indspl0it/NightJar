@@ -913,19 +913,17 @@ private fun previewRow(
     id: Long,
     minutesAgo: Long,
     classId: ClassId,
+    title: String,
     severity: Severity = Severity.INFO,
-    direction: Direction = Direction.IN,
     quarantined: Boolean = false,
     fate: Fate = Fate.SYSTEM,
-    deliveryStatus: String? = null,
-    relatedMessageId: Long? = null,
 ) = MessageListItem(
     id = id,
     eventId = "preview-$id",
     receivedAtWall = System.currentTimeMillis() - minutesAgo * 60_000,
     classId = classId,
     severity = severity,
-    title = "",
+    title = title,
     originator = "+15550104821",
     textPreview = "",
     fate = fate,
@@ -933,7 +931,7 @@ private fun previewRow(
     isQuarantined = quarantined,
     isReviewed = false,
     isStarred = false,
-    direction = direction,
+    direction = Direction.IN,
     subId = 1,
     slot = 0,
     partsHave = 1,
@@ -941,18 +939,28 @@ private fun previewRow(
     consumerPackage = null,
     consumerPackageLabel = null,
     isReplay = false,
-    deliveryStatus = deliveryStatus,
-    relatedMessageId = relatedMessageId,
+    deliveryStatus = null,
+    relatedMessageId = null,
 )
 
 private fun previewRows(): List<MessageListItem> =
     listOf(
-        previewRow(1, 5, ClassId.SILENT, Severity.SUSPICIOUS, quarantined = true),
-        previewRow(2, 20, ClassId.VVM),
-        previewRow(3, 40, ClassId.WAP_MMS),
-        previewRow(4, 50, ClassId.STATUS, deliveryStatus = "DELIVERED", relatedMessageId = 5),
-        previewRow(5, 51, ClassId.MO_VISIBLE, direction = Direction.OUT),
-        previewRow(6, PREVIEW_DAY_MINUTES + 30, ClassId.WAP_OTHER, Severity.SUSPICIOUS, fate = Fate.BLOCKED),
+        // Messages from the network with the actions of the Recommended preset: it holds a phone unlock message,
+        // notifies about a silent SMS and blocks a malformed WAP push, a silent location request and a settings push.
+        previewRow(
+            1,
+            5,
+            ClassId.ME_DEPERSO,
+            "Phone unlock message (de-personalization)",
+            Severity.HIGH,
+            quarantined = true,
+            fate = Fate.QUARANTINED,
+        ),
+        previewRow(2, 12, ClassId.WAP_UNREADABLE, "Malformed WAP push: WSP header length is wrong", Severity.HIGH, fate = Fate.BLOCKED),
+        previewRow(3, 20, ClassId.SILENT, "Silent SMS (Type 0)", Severity.SUSPICIOUS),
+        previewRow(4, 40, ClassId.WAP_SUPL, "Silent location request", Severity.SUSPICIOUS, fate = Fate.BLOCKED),
+        previewRow(5, 50, ClassId.WAP_MMS, "MMS notification"),
+        previewRow(6, PREVIEW_DAY_MINUTES + 30, ClassId.WAP_CP, "Settings push (APN or proxy)", Severity.SUSPICIOUS, fate = Fate.BLOCKED),
     )
 
 @Composable

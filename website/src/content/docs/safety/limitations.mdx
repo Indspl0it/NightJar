@@ -1,0 +1,60 @@
+---
+title: What NightJar cannot see
+description: The blind spots of NightJar and the limits on what it can block.
+---
+
+import { Image } from 'astro:assets';
+import blindSpots from '../../../assets/screens/blind-spots.png';
+
+NightJar sees only what reaches Android. To see the blind spots for your phone, open Settings > About > **What
+NightJar cannot see**.
+
+<div class="nj-screens">
+	<figure>
+		<Image class="nj-screen" src={blindSpots} alt="The What NightJar cannot see screen." />
+		<figcaption>What NightJar cannot see</figcaption>
+	</figure>
+</div>
+
+## Blind spots
+
+| Blind spot | Cause |
+|---|---|
+| Modem-only messages | Some networks send messages that the modem answers on its own without telling Android. NightJar can't see or block them. |
+| RCS chats | Google Messages sends RCS chats over the internet. NightJar monitors SMS only. |
+| After delivery | NightJar records when Android gives a message to an app, but not what the app does with it. |
+| Before the first unlock | NightJar records these messages, but notifications can't show their content until you unlock the phone. |
+| OnePlus and Oppo | Some builds pass messages through their own service first. NightJar then reports the message as handled by the phone maker. |
+
+## Before the first unlock
+
+After a reboot, the module uses its stored copy of your last rules right away, so holding and blocking work before you
+unlock the phone. Some things wait for the unlock:
+
+- Notifications show "Unlock the phone to see the details." until you unlock.
+- Android keeps regular SMS until the unlock and processes them after it. NightJar checks them then.
+- NightJar keeps up to 500 messages that arrive before the unlock in a staging store, and moves them to the history
+  after the unlock.
+- The self-test doesn't run before the first unlock.
+
+## Limits of blocking
+
+- **Silent SMS (Type 0).** Android discards a Type 0 message before NightJar can stop it. NightJar records it and can
+  notify you, but can't hold or block it.
+- **Messages for apps.** Visual voicemail, missed-call notices, carrier messages, chat setup, app-only codes and
+  messages handled by the phone maker go to their app first. NightJar can only record them and notify you.
+- **No delivery failure.** The network gets its confirmation before NightJar blocks a message, so the sender sees
+  "delivered".
+- **Unknown builds.** On a build NightJar doesn't know, a blocking hook may not attach. NightJar then only records
+  messages.
+- **CDMA.** NightJar doesn't support CDMA.
+
+## After a system update
+
+A system update can change the phone service. After an update, NightJar shows "Check again after the update". Run a
+[self-test](/NightJar/guide/self-test/). If a hook doesn't attach on the new build, Protection status shows that check
+as not OK.
+
+## The self-test
+
+The self-test checks detection inside Android. It can't test messages that the modem handles on its own.

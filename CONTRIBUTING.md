@@ -6,13 +6,14 @@ needed. Read this file before you open a pull request.
 ## Ground rules
 
 - The payload runs inside the phone process. It must never throw, never block the main looper and never change the
-  network acknowledgement. Every hook fails open. See the payload rules in [docs/architecture.md](docs/architecture.md).
+  network acknowledgement. Every hook fails open. See the payload rules in
+  [architecture](https://indspl0it.github.io/NightJar/internals/architecture/#fail-open).
 - The app has no `INTERNET` permission. It must not get one.
 - Logs, tests, fixtures, commit messages and issues must not contain message text or a full phone number. Use the
   contract masker or synthetic data.
 - Contract keys and wire names live in `:contract`. A change there is a protocol change and needs fixtures on both
   sides.
-- User-visible text follows the [copy standard](docs/copy-standard.md).
+- User-visible text follows the [writing rules](https://indspl0it.github.io/NightJar/dev/contributing/#writing-rules).
 
 ## Before you send a change
 
@@ -35,7 +36,7 @@ needed. Read this file before you open a pull request.
 ## Adding a hook, class or decoder
 
 - **Hook**: add the `HookSpec` to `HookCatalog`, then a unit test with fakes. See
-  [docs/architecture.md](docs/architecture.md#hooks).
+  [hooks](https://indspl0it.github.io/NightJar/internals/hooks/).
 - **Class**: update `ClassId`, `EnforcementMatrix`, `ClassRegistry`, the decoder classification and the fixtures.
 - **Decoder**: add a golden fixture (`hex` and `expected.json`) and a truncation or mutation case. No Android
   dependencies.

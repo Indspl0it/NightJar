@@ -1,0 +1,122 @@
+---
+title: Known senders and trusted apps
+description: Mark senders you expect, trust apps that send messages in the background, and manage mutes.
+---
+
+import { Image } from 'astro:assets';
+import known from '../../../assets/screens/known-senders.png';
+
+Your carrier and your bank send hidden messages too. If you mark them as known senders, NightJar stops rating their
+routine messages as suspicious. Trusted apps do the same for messages that apps on your phone send.
+
+<div class="nj-screens">
+	<figure>
+		<Image class="nj-screen" src={known} alt="The Known senders list with labels." />
+		<figcaption>Known senders</figcaption>
+	</figure>
+</div>
+
+The screen has three tabs: **Senders**, **Apps** and **Mutes**. To open it:
+
+- Protection > **Known senders**.
+- Settings > Detection > **Known senders**.
+- Settings > Outgoing messages > **Trusted apps**, which opens the **Apps** tab.
+
+Known senders, trusted apps and mutes change severity and notifications only. NightJar still records each message,
+and your actions on the Protection tab still apply. For example, if you block settings pushes, a settings push from
+a known sender is still blocked. To let one sender through, use a [custom rule](/NightJar/guide/custom-rules/).
+
+## Senders
+
+### What a known sender changes
+
+- NightJar lowers the severity of each message from a known sender by one level, for example from Suspicious to
+  Unusual.
+- A silent SMS from a known sender doesn't count as a silent SMS from a new sender.
+- A settings push from a sender with the label **Carrier** is Normal.
+
+Some severities don't go down for a known sender, because a sender number can be faked:
+
+- A pattern, such as several silent SMS in a short time.
+- A subtype rated High, such as a settings push with no security.
+- A format error in the PDU, which makes the message at least Suspicious.
+- A message that an app added, and a SIM update without security protection.
+
+See [detection](/NightJar/features/detection/) for the full order.
+
+### Add a sender from a message
+
+1. Open the message detail.
+2. Select **Mark sender as expected**.
+3. In the dialog "Mark (number) as expected?", select **Exact number** or **Prefix**.
+4. Select **Mark**.
+
+The detail shows "Sender marked as expected". NightJar applies the new severity to future messages from that sender.
+
+### Add a sender from the list
+
+1. On the **Senders** tab, select **Add sender**.
+2. Enter the number or sender ID.
+3. Select **Exact** or **Starts with**.
+4. Optional: select a label: **Carrier**, **Bank** or **Other**.
+5. Select **Save**.
+
+| Error | Cause |
+|---|---|
+| Enter a number or sender id. | The field is empty. |
+| Use 32 characters or fewer. | The value is too long. |
+| Use at least one letter or digit. | The value has only symbols or spaces. |
+| That sender is already on the list. | The same number or sender ID is already there. |
+
+To change an entry, select it. To delete it, select **Delete**. NightJar shows "Deleted" with an undo action. A
+known sender stays on the list until you delete it.
+
+### How NightJar matches a sender
+
+When NightJar compares numbers, it ignores spaces, plus signs, a leading `00`, and upper or lower case. In a number,
+it also ignores the separators `-`, `(`, `)` and `.`. So `+44 7700 900123`, `00447700900123` and `+447700900123` are
+the same sender.
+
+- **Exact** matches only that number or sender ID.
+- **Starts with** matches each number that begins with the value. For example, `+447700900` matches
+  `+447700900123` and `+447700900456`. If two entries match, the longer one wins.
+
+## Apps
+
+Trust covers the messages that an app itself sends or adds:
+
+- SMS that the app sends in the background.
+- Messages that the app adds to your messages without receiving them from the network. NightJar shows these as
+  "App-added message".
+
+Trust doesn't cover messages from the network. A sender on the network isn't an app on your phone.
+
+NightJar records the messages of a trusted app as Normal and doesn't notify you about them.
+
+### Trust an app
+
+From a message, select **Mark app as trusted** in the detail. Then confirm "Trust (app)? NightJar
+records background messages from this app as Normal. NightJar never notifies you about them."
+
+From the list:
+
+1. On the **Apps** tab, select **Add apps**.
+2. Search for the app, or filter by **User**, **System** or **All** apps.
+3. Select one or more apps. You can also use **Select all**, **Invert selection** and **Clear selection**.
+4. Save the list. NightJar shows "Trusted apps saved".
+
+If NightJar shows "NightJar cannot read the list of apps", close the picker and open it again.
+
+To stop trusting an app, select **Delete trust** on its row. NightJar shows "Trust deleted" with an undo action.
+
+## Mutes
+
+A mute stops notifications from one sender or one type for a time. NightJar still records the messages and applies
+your actions.
+
+In Messages, swipe left on a silent SMS to mute its sender for one hour. NightJar shows "Muted for 1 hour". A row
+without a sender can't be muted.
+
+The **Mutes** tab lists each active mute, with its scope (**Sender** or **Type**) and its end, for example
+"Until (date and time)". To end a mute early, select **Unmute**. NightJar shows "Mute deleted" with an undo action. When
+nothing is muted, the tab shows "Nothing is muted."

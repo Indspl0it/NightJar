@@ -732,7 +732,7 @@ private fun previewHealth(): HealthUiState =
         payloadVersion = "0.3.1",
         hooksLive = 6,
         hooksTotal = 6,
-        coverage = listOf(CoverageRow(ClassId.SILENT, "Silent ping", null)),
+        coverage = listOf(CoverageRow(ClassId.SILENT, "Silent SMS (Type 0)", null)),
     )
 
 private fun previewReport(): ProtectionReport =

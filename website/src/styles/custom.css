@@ -1,0 +1,117 @@
+/* NightJar colours. The values come from the app theme (NjTokens.kt): Night blue accent and the dark surfaces. */
+
+:root {
+	--sl-font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+	--sl-color-accent-low: #142246;
+	--sl-color-accent: #5b82e6;
+	--sl-color-accent-high: #c9d8ff;
+	--sl-color-white: #ffffff;
+	--sl-color-gray-1: #e9edf4;
+	--sl-color-gray-2: #c4cbd7;
+	--sl-color-gray-3: #a3adbd;
+	--sl-color-gray-4: #566072;
+	--sl-color-gray-5: #263045;
+	--sl-color-gray-6: #131925;
+	--sl-color-black: #0a0e15;
+	--nj-screen-radius: 1.75rem;
+}
+
+:root[data-theme='light'] {
+	--sl-color-accent-low: #dfe7ff;
+	--sl-color-accent: #2f5bd3;
+	--sl-color-accent-high: #1a3a8f;
+	--sl-color-white: #0a0e15;
+	--sl-color-gray-1: #131925;
+	--sl-color-gray-2: #263045;
+	--sl-color-gray-3: #566072;
+	--sl-color-gray-4: #8a93a3;
+	--sl-color-gray-5: #e3e6ee;
+	--sl-color-gray-6: #f5f6fa;
+	--sl-color-gray-7: #f9fafc;
+	--sl-color-black: #ffffff;
+}
+
+/* A phone screenshot: rounded corners and a thin outline, as on a phone. */
+.nj-screen {
+	display: block;
+	width: 100%;
+	max-width: 300px;
+	height: auto;
+	margin-inline: auto;
+	border-radius: var(--nj-screen-radius);
+	border: 1px solid var(--sl-color-gray-5);
+}
+
+.nj-screens {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: 1.25rem;
+	margin-block: 1.5rem;
+}
+
+.nj-screens figure {
+	margin: 0;
+}
+
+.nj-screens figcaption {
+	margin-top: 0.5rem;
+	text-align: center;
+	font-size: var(--sl-text-sm);
+	color: var(--sl-color-gray-3);
+}
+
+/* The action names of the app, shown as small labels in tables. */
+.nj-act {
+	display: inline-block;
+	padding: 0.05rem 0.5rem;
+	border-radius: 999px;
+	font-size: var(--sl-text-xs);
+	font-weight: 600;
+	white-space: nowrap;
+	border: 1px solid var(--sl-color-gray-5);
+}
+
+.nj-act-allow {
+	color: var(--sl-color-gray-2);
+}
+
+.nj-act-notify {
+	color: #b58a00;
+	border-color: #b58a0055;
+}
+
+.nj-act-hold {
+	color: #c26a00;
+	border-color: #c26a0055;
+}
+
+.nj-act-block {
+	color: #d33a3a;
+	border-color: #d33a3a55;
+}
+
+:root:not([data-theme='light']) .nj-act-notify {
+	color: #f4c74a;
+}
+
+:root:not([data-theme='light']) .nj-act-hold {
+	color: #ffb17a;
+}
+
+:root:not([data-theme='light']) .nj-act-block {
+	color: #ff8a8a;
+}
+
+/* Wide tables scroll inside their own box on a phone. */
+.sl-markdown-content table {
+	display: block;
+	overflow-x: auto;
+}
+
+/* D2 diagrams: dark cards with the same corner radius as code blocks, in both themes. */
+.sl-markdown-content img[src*='/d2/'] {
+	display: block;
+	width: 100%;
+	height: auto;
+	border-radius: 0.75rem;
+}

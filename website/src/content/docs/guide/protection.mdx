@@ -1,0 +1,130 @@
+---
+title: Protection
+description: Choose what NightJar does with each type of hidden message.
+---
+
+import { Image } from 'astro:assets';
+import protection from '../../../assets/screens/protection.png';
+
+On the Protection tab you pick a preset, which sets the action for every message type, and change single types
+when you need to, for example to allow a carrier service you use.
+
+<div class="nj-screens">
+	<figure>
+		<Image class="nj-screen" src={protection} alt="The Protection screen with the Blocking switch, the Recommended preset and the actions of each type." />
+		<figcaption>Protection with the Recommended preset</figcaption>
+	</figure>
+</div>
+
+## Actions
+
+Each message type has one of four actions:
+
+| Action | What NightJar does |
+|---|---|
+| Allow | Records the message. Android delivers it as usual. |
+| Allow and notify | Records the message, delivers it and sends you a notification. How the notification looks depends on the message's severity. |
+| Hold | Keeps the message in NightJar until you decide. No other app receives it. You can release it to your messaging app or block it on the [Held messages](/NightJar/guide/held-messages/) screen. |
+| Block | Discards the message before any app sees it. NightJar keeps the record. |
+
+The network gets a normal delivery confirmation for every message, so the sender can't tell that you held or blocked
+it.
+
+## Blocking
+
+The **Blocking** switch at the top turns holding and blocking on or off for all types. With blocking off, NightJar
+still records messages and sends notifications, so you can see what your phone receives before you block anything.
+
+When you turn the switch off, NightJar asks **Turn off blocking?** first. Turning it on takes effect at once. Safe
+mode is a separate switch in Settings and also pauses blocking.
+
+Below the switch is the active preset. If blocking can't work, NightJar shows the reason in its place:
+
+| Message | What to do |
+|---|---|
+| The NightJar module is not active yet | Turn on NightJar in Vector or LSPosed, select **Phone Services** as its scope, then reboot the phone. |
+| Safe mode is on, so NightJar paused blocking | Turn off safe mode on Home or in Settings. |
+| A blocking hook failed to load | NightJar can't block on this phone's software. It still records messages. Run the [self-test](/NightJar/guide/self-test/) and check [Protection status](/NightJar/guide/protection-status/) for the hook that failed. |
+| You turned off blocking | Turn on the Blocking switch. |
+
+## Presets
+
+Tap the preset line under the Blocking switch to choose a preset.
+
+| Preset | Action |
+|---|---|
+| Monitor | Records everything and blocks nothing. |
+| Recommended | Holds or blocks the hidden types that can be a risk, such as malformed WAP pushes and settings pushes, and notifies you about suspicious messages. New installs start here. |
+| Strict | Lets only regular texts and emergency alerts through. Flash SMS, voicemail indicators, MMS, email and DRM notifications, and data messages to unknown ports are held. Everything else that can be blocked is blocked. Some carrier features may stop working. |
+| Quarantine | Holds every type that can be held, except regular texts and emergency alerts. Types that can't be held are blocked or notify you. |
+| Custom | Shown after you change the action of any single type. You can't select it directly. |
+
+A preset replaces the action of every type. If your current preset is Custom, NightJar first asks **Replace your
+custom settings?** Custom rules and known senders stay as they are. [Message types](/NightJar/features/message-types/)
+lists what each preset does with each type.
+
+Before you choose Strict or Quarantine, read the [blocking cautions](/NightJar/safety/blocking-cautions/). Blocking
+voicemail indicators, MMS notifications or settings pushes can stop the matching carrier feature.
+
+## Setting a single type
+
+Each type has a row with its name, a one-line description, the **Allow**, **Hold** and **Block** buttons, and a
+**Notify me** bell. Some examples of the descriptions:
+
+| Type | Description on the row |
+|---|---|
+| Settings push | Tries to change your network settings. |
+| Malformed WAP push | A push message that NightJar cannot read. |
+| Location request | Asks the phone for its location. |
+| SIM update | The network sends data to your SIM. |
+| Silent SMS (Type 0) | This message has no text. The phone only sends a confirmation to the network. |
+
+The bell switches between Allow and Allow and notify. When a type is set to Hold or Block, the bell shows off and you
+can't change it.
+
+A lock on a button means that action isn't available for the type. Tap the lock to see the reason:
+
+| Reason | Meaning |
+|---|---|
+| NightJar cannot release this type later, so it cannot hold it. | NightJar can block the type but not hold it. This applies to SIM updates, cell broadcasts and malformed messages. |
+| NightJar can only allow this type. Select the bell to get a notification for each message. | NightJar can't stop the message. For example, Android discards a silent SMS before NightJar sees it. |
+| Allow is the only action for this type. | The type stays on Allow. This applies to regular texts, delivery reports and messages saved to the SIM. To hold or block regular texts from one sender, use a custom rule. |
+| NightJar cannot hold or block this type. Use the row of the type that it arrives as, for example Data message to a port. | NightJar names the type only after it sees which app receives the message, too late to stop it. This applies to voicemail control, missed-call notices, app-only messages, carrier app messages, chat (RCS) setup and messages handled by the phone maker. To hold or block them, set the action on the row of the type they arrive as. |
+
+NightJar asks before two kinds of block:
+
+- **Block SIM updates?** Your carrier uses SIM updates for roaming lists, keys and SIM services. If you block them,
+  your SIM may fall out of date. The network still gets a normal confirmation.
+- **This may break Voicemail indicator.** If you block voicemail indicators, the voicemail icon no longer turns on or
+  off. Calls and regular texts keep working.
+
+**Cancel** in either dialog leaves the previous action in place.
+
+## Emergency alerts
+
+Emergency alerts have a row with no buttons and the line "NightJar cannot block or hold emergency alerts." NightJar
+records them and always delivers them. Tap the row to see "NightJar can never block or hold emergency alerts.
+NightJar still records them."
+
+## Custom rules and known senders
+
+The links at the bottom of the screen open two lists that work alongside the preset:
+
+- [**Custom rules**](/NightJar/guide/custom-rules/) match on sender, port, text and more, and take priority over the
+  preset. For example, a rule can allow your carrier's settings number in a type you block. A rule can't block or
+  hold all normal messages. It needs a sender, port or text condition.
+- [**Known senders**](/NightJar/guide/known-senders/) are numbers you trust, such as your carrier's settings number.
+  NightJar rates their messages as less severe. Your actions still apply.
+
+## If a change doesn't reach the phone service
+
+NightJar saves each change at once and sends it to the module. If the module isn't connected, for example right after
+a reboot, you'll see "NightJar saved the change. The phone service did not receive it. NightJar sends it again when
+the phone service connects." The module keeps the settings it had before.
+
+The module keeps a copy of your last rules and settings on the phone. After a reboot or a restart of the phone
+service, it uses that copy right away, also before you unlock the phone. After you unlock, the app sends the current
+rules.
+
+If the message stays after a reboot, check that the module is active in Vector or LSPosed. See
+[Troubleshooting](/NightJar/help/troubleshooting/).

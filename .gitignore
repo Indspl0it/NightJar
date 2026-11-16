@@ -26,6 +26,8 @@ __pycache__/
 .DS_Store
 Thumbs.db
 
-# Python
-__pycache__/
-*.pyc
+# Website (Astro): dependencies, build output, cache and generated diagrams
+website/node_modules/
+website/dist/
+website/.astro/
+website/public/d2/

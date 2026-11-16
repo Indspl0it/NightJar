@@ -1,0 +1,99 @@
+---
+title: Self-test
+description: Check that NightJar recognises each message type on your phone, and read the results.
+---
+
+import { Image } from 'astro:assets';
+import picker from '../../../assets/screens/self-test-picker.png';
+import report from '../../../assets/screens/self-test-report.png';
+
+The self-test creates harmless test messages inside the phone service and checks that NightJar recognises each one
+at the expected point in Android's SMS path. NightJar stops each test message before any app receives it. The test
+messages don't appear in Messages, don't count on Home and don't send notifications.
+
+<div class="nj-screens">
+	<figure>
+		<Image class="nj-screen" src={picker} alt="The self-test type picker." />
+		<figcaption>Select the types</figcaption>
+	</figure>
+	<figure>
+		<Image class="nj-screen" src={report} alt="The self-test results with passed and skipped tests." />
+		<figcaption>Results</figcaption>
+	</figure>
+</div>
+
+NightJar protects the phone without the self-test. Setup offers it as an optional step, and you can run it again at
+any time from Protection status.
+
+## Run the self-test
+
+1. Unlock the phone.
+2. Open Protection status. Select **Run self-test**.
+3. Select the types to test, or select **Select all**.
+4. Select **Start**.
+5. Read the dialog "Run self-test?". NightJar creates test messages and deletes them at once.
+6. Select **Run**.
+
+While the test runs, the screen shows its progress, for example "3 of 8" and "Testing WAP CP…". Select **Cancel** to
+stop it. You can't close the sheet while the test runs. Test messages that are already on their way still reach NightJar, which stops them.
+
+| Test | Message type | Expected result |
+|---|---|---|
+| Flash | Flash SMS (Class 0) | NightJar's head filter blocks it. |
+| Data port | Data message to a port | NightJar's head filter blocks it. |
+| WAP SI | Web link push | NightJar blocks it at the WAP push dispatcher. |
+| WAP CP | Settings push | NightJar blocks it at the WAP push dispatcher. |
+| MWI | Voicemail indicator | NightJar sees the indicator and stops it, so the voicemail icon doesn't change. |
+| Silent | Silent SMS (Type 0) | NightJar sees Android take the Type 0 path. Android discards it. |
+| SIM DD | SIM update from the network | NightJar blocks it before the SIM receives it. |
+| Replace | Replacement message | NightJar's head filter blocks it. |
+
+Each test needs one or more [hooks](/NightJar/internals/hooks/). If a hook isn't active, NightJar skips that test
+and doesn't send its message.
+
+## Results
+
+| Result | Meaning |
+|---|---|
+| Passed | NightJar recognised the message as expected. |
+| Failed | NightJar saw something different. The reason shows below the result. |
+| Skipped | NightJar didn't run the test, because a hook it needs isn't active on this phone. |
+| No result | NightJar got no result within 5 seconds. The test message didn't return to NightJar. |
+| Cancelled | You stopped the test before this type ran. |
+| Not run | The test didn't start. |
+
+A failed test shows one of these reasons:
+
+| Reason | Meaning |
+|---|---|
+| Android handled it as "(type)" instead of the expected type. | NightJar classified the message as a different type, for example because this Android build parses the message differently. |
+| NightJar did not see the step "(step)". | The message took a different path, or this phone doesn't support the test. |
+| It ended as "(result)" instead of the expected outcome. | NightJar saw the message, but it wasn't blocked or handled as expected. |
+
+The last result stays on Protection status, as "Last run: (date and time)", with **Run again**. Before the first run, it shows "No self-test result yet."
+
+## If the self-test can't start
+
+| Message | What to do |
+|---|---|
+| Unlock your phone. Then run the self-test. | Unlock the phone and start again. The module doesn't run the test before the first unlock after a reboot. |
+| A self-test is already running. | Wait for the running test to finish. |
+| Select at least one type. | Select one or more types in the picker. |
+| The module is not running in this boot. | Turn on NightJar in Vector or LSPosed with scope Phone Services. Then reboot the phone. |
+
+## When to run it
+
+- After you install NightJar.
+- After a system update. NightJar shows the banner "Check again after the update. Your phone updated. Run a
+  self-test to check detection again." The banner stays until you complete a self-test. A cancelled test doesn't
+  clear it.
+- If some tests show **Skipped** or **Failed**, after you update NightJar or Vector or LSPosed.
+- If you think NightJar misses messages.
+
+If tests still fail, [share diagnostics](/NightJar/guide/protection-status/#share-diagnostics) when you report the
+problem. The diagnostics file includes the state of each hook.
+
+:::note
+The self-test creates its messages inside the phone service, so it doesn't test the modem or the network. It can't
+test messages that the modem handles on its own. See [what NightJar can't see](/NightJar/safety/limitations/).
+:::

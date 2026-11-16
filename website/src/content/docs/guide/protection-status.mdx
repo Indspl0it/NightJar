@@ -1,0 +1,126 @@
+---
+title: Protection status
+description: The checks for the module, root, Vector or LSPosed, the rules, the hooks and the database, and how to fix each one.
+---
+
+import { Image } from 'astro:assets';
+import status from '../../../assets/screens/protection-status.png';
+import problems from '../../../assets/screens/protection-status-problems.png';
+import diagnostics from '../../../assets/screens/diagnostics.png';
+
+Protection status shows whether each part of NightJar works on your phone, and how to fix a part that doesn't. To open
+it, select the status card on Home, or select More actions > **Protection status**.
+
+<div class="nj-screens">
+	<figure>
+		<Image class="nj-screen" src={status} alt="Protection status with all checks OK." />
+		<figcaption>All checks OK</figcaption>
+	</figure>
+	<figure>
+		<Image class="nj-screen" src={problems} alt="Protection status with checks that need attention." />
+		<figcaption>Checks that need attention</figcaption>
+	</figure>
+	<figure>
+		<Image class="nj-screen" src={diagnostics} alt="The dialog that creates a diagnostics file." />
+		<figcaption>Diagnostics</figcaption>
+	</figure>
+</div>
+
+The status card at the top shows the protection state, as on [Home](/NightJar/guide/home/#status-card), and a badge
+with "All checks OK" or the number of checks that need attention. Select **Refresh** in the top bar to run the
+checks again.
+
+## Checks
+
+Each check shows its current value and a state: OK, a warning or a failure. A check that isn't OK has a **How to fix**
+button that opens the help text from the table.
+
+| Check | OK value | Other values and how to fix them |
+|---|---|---|
+| Module | Active | **The module is not active yet.** Open Vector or LSPosed, turn on the NightJar module, select Phone Services as its scope, then reboot the phone. **Vector/LSPosed not found:** install a Vector or LSPosed build from your root manager, then check again. |
+| Module version | Matches the app | **Newer than the app:** the module is newer than the app. Update NightJar to see all details. |
+| Root | The root manager and its version | **Failure:** your root manager denied root access. Open your root manager and allow NightJar. **Unknown:** NightJar can't check root access. Open your root manager and allow NightJar, then select **Refresh**. |
+| Vector or LSPosed | Found | **Vector/LSPosed not found:** install a Vector or LSPosed build from your root manager, then check again. |
+| Rules in the phone service | In use | See [rules problems](#rules-problems). |
+| Hooks | (active) of (total) active, with all hooks active | **Fewer hooks active:** one or more hooks aren't active on this build. **How to fix** opens the logs, where you can see the state of each hook. |
+| Module events | No lost events | **NightJar lost 12 events while the app was unavailable.** The module couldn't pass these events to the app, so these messages may be missing from Messages. |
+| Database size | The size, for example "48 MB" | **Over 200 MB:** keep messages for a shorter time in Settings > Data and storage > **Keep messages for**. |
+
+Some checks show only in some cases:
+
+- **Module version** and **Rules in the phone service** need a connection to the module, so they don't show when the
+  module isn't active.
+- **Hooks** shows only in [Researcher mode](/NightJar/guide/settings/).
+
+### Rules problems
+
+| Value | Meaning and fix |
+|---|---|
+| NightJar cannot use the rules: (reason) | The phone service didn't accept the last rules and still uses the rules it had before. Select **Refresh**. If the problem stays, [share diagnostics](#share-diagnostics). |
+| The phone service uses older rules | The phone service didn't get your latest rules. Select **Refresh**. If the rules stay old, reboot the phone. |
+| The phone service cannot use 2 rules | The phone service skips those rules and applies all other rules. If you updated NightJar, reboot the phone. |
+
+The first value is a failure. The other two are warnings, because the phone service still applies your other rules.
+
+## Details
+
+- **Build** shows a short form of the build fingerprint. Select it to copy the full fingerprint. NightJar shows
+  "Copied".
+- **Versions** shows the app and module versions, for example "App 0.5.0 · module 0.5.0".
+
+## Self-test
+
+This section shows the result of the last [self-test](/NightJar/guide/self-test/), or "No self-test result yet."
+Select **Run self-test** to run it.
+
+## Seen from the network
+
+This section lists each message type with the time NightJar last saw one, or "never". Select a "never" row to see
+"Not seen yet. This type may not have arrived. The modem of your phone may handle it without telling Android."
+
+## Restart the phone service
+
+The phone service can restart, for example after a crash caused by a malformed message. If it comes back without the
+module, NightJar stops recording new messages, and Protection status shows the card "Phone service runs without
+NightJar": "NightJar does not record new messages until the module loads again. To load it, restart the phone
+service. Calls disconnect."
+
+1. Select **Restart phone service**.
+2. Read the dialog "Restart phone service?". Calls disconnect. Messages pause for a few seconds.
+3. Select **Restart**.
+
+NightJar shows "The phone service restarted." If the restart fails, NightJar shows "NightJar cannot restart the phone
+service:" and the reason. Reboot the phone instead.
+
+You can't restart the phone service during a call or while the phone rings, or in safe mode. NightJar never
+restarts the phone service by itself.
+
+## Share diagnostics
+
+A diagnostics file helps the developers find a problem on your phone. To create one, open Settings > Diagnostics >
+**Share diagnostics**.
+
+1. Read the dialog "Create diagnostics file".
+2. Optional: turn on **Include messages**.
+3. Select **Create**.
+4. Share the ZIP file with an app you choose.
+
+The file `nightjar-diagnostics-(date)-(time).zip` contains text files:
+
+| File | Content |
+|---|---|
+| `device.txt` | App and module versions, Android version, device model, build fingerprint, root manager and Vector or LSPosed state |
+| `hooks.txt` | The state of each hook, with its error count and last error |
+| `audit.json` | The audit history of the last 30 days |
+| `app.log`, `payload-log.txt` | The app and module logs |
+| `phone-process.txt` | The state of the phone service connection |
+| `messages.txt` | Only with **Include messages**: the newest 1,000 messages, with time, type, severity, direction, SIM slot, sender and app. No message text. |
+
+NightJar masks phone numbers and message text in each file. If NightJar can't create the file, it shows "NightJar
+cannot create the diagnostics file. Try again."
+
+## More
+
+- **What NightJar cannot see** opens the [limitations](/NightJar/safety/limitations/).
+- **View logs** opens the masked logs of the module, the app and Vector or LSPosed, and the audit history. It shows
+  only in Researcher mode.

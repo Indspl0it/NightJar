@@ -1,0 +1,104 @@
+---
+title: Home
+description: The Home screen shows the protection state, this week's numbers and the messages that need attention.
+---
+
+import { Image } from 'astro:assets';
+import home from '../../../assets/screens/home.png';
+import safeMode from '../../../assets/screens/home-safe-mode.png';
+import notActive from '../../../assets/screens/home-not-active.png';
+
+Home is the first tab. It shows whether NightJar is working, what your phone received this week and which messages
+need your attention.
+
+<div class="nj-screens">
+	<figure>
+		<Image class="nj-screen" src={home} alt="Home with the state Protected, the numbers of this week and two messages that need attention." />
+		<figcaption>Protected</figcaption>
+	</figure>
+	<figure>
+		<Image class="nj-screen" src={safeMode} alt="Home with safe mode on." />
+		<figcaption>Safe mode</figcaption>
+	</figure>
+	<figure>
+		<Image class="nj-screen" src={notActive} alt="Home when the module is not active." />
+		<figcaption>Module not active</figcaption>
+	</figure>
+</div>
+
+## Status card
+
+The card at the top has a badge, a title and one line of text. When the state needs you, the card is tinted and has
+a button for the fix.
+
+| Badge | Title | Meaning | Button |
+|---|---|---|---|
+| Module active | Protected | The module is running and blocking is on. The text names the SIMs NightJar monitors, for example "NightJar monitors SIM 1 and SIM 2." | None |
+| Blocking paused | Blocking paused | Safe mode is on. "NightJar still monitors messages. Turn off safe mode to block again." | **Turn off safe mode** |
+| Blocking off | Blocking off | The **Blocking** switch is off. NightJar records messages but doesn't hold or block them. | None |
+| Module not active | NightJar is not active | The module didn't start in the phone service in this boot. | **Open LSPosed**, which opens the Vector or LSPosed manager |
+| Not supported | NightJar does not support this build | The module stopped itself in the phone service. | None |
+
+If the module isn't active, turn on the NightJar module in Vector or LSPosed with the scope Phone Services, then
+reboot the phone. If NightJar doesn't support your build, share diagnostics to help add support. See
+[compatibility](/NightJar/help/compatibility/).
+
+Select the card to open [Protection status](/NightJar/guide/protection-status/). When blocking is off, the card opens
+the [Protection](/NightJar/guide/protection/) tab instead, where the **Blocking** switch is.
+
+## This week
+
+The header shows the seven days it covers, today and the six days before. Four numbers count the messages of those
+days:
+
+| Number | Messages |
+|---|---|
+| Hidden | Each recorded message except regular texts, texts you sent from your messaging app and delivery reports |
+| Suspicious | Messages with the severity Suspicious or High |
+| On hold | Messages that NightJar holds now |
+| Blocked | Messages that NightJar blocked |
+
+Select a number to open Messages with the same week and messages. For example, **Blocked** opens the messages
+NightJar blocked in those seven days.
+
+The chart "Hidden messages per day" has one bar for each day. Select a bar to open Messages filtered to that day.
+
+## Needs attention
+
+This section shows up to three messages you haven't reviewed that are held or have the severity Suspicious or High.
+A held message shows "NightJar holds this message until you release or block it."
+
+A row can have quick actions:
+
+- **Release** passes a held message to Android. It shows only for types that can be released. See
+  [held messages](/NightJar/guide/held-messages/).
+- **Block similar** opens the [rule editor](/NightJar/guide/custom-rules/) with a rule for messages like this one. It
+  shows for incoming messages that aren't blocked yet, of a type a rule can block.
+
+Select a row to open the message. Select **View all** to open Messages with the same filter.
+
+## By type
+
+This section lists each message type that arrived this week, with its count, largest count first. Select a type to
+open Messages filtered to that type.
+
+## Top bar
+
+| Control | Action |
+|---|---|
+| Search messages | Opens Messages with search. You can search by sender, text, port or app. |
+| Filter messages | Opens the message filters. |
+| More actions | Opens a menu with **Protection status**, **Safe mode** and **Info**. |
+
+## Safe mode
+
+Safe mode pauses blocking. NightJar keeps recording messages and sending notifications, and Android delivers each
+message as if NightJar blocked nothing.
+
+To turn it on, select More actions > **Safe mode**, or use the switch in Settings > Diagnostics. NightJar asks "Turn
+on safe mode? NightJar blocks no messages. NightJar still records them." Select **Turn on**.
+
+To turn it off, select **Turn off safe mode** on the status card, or use the same menu item or switch. NightJar never
+turns on safe mode by itself.
+
+While safe mode is on, you can't [restart the phone service](/NightJar/guide/protection-status/#restart-the-phone-service).

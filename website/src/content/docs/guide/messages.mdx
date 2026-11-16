@@ -1,0 +1,164 @@
+---
+title: Messages and detail
+description: Find, filter and review the messages that NightJar recorded, and read the detail of one message.
+---
+
+import { Image } from 'astro:assets';
+import messages from '../../../assets/screens/messages.png';
+import filter from '../../../assets/screens/messages-filter.png';
+import detail from '../../../assets/screens/detail.png';
+
+The Messages tab lists each message NightJar recorded, newest first. Before the first message arrives, it shows "No
+hidden messages yet".
+
+<div class="nj-screens">
+	<figure>
+		<Image class="nj-screen" src={messages} alt="The Messages list with one held message and blocked messages." />
+		<figcaption>Messages</figcaption>
+	</figure>
+	<figure>
+		<Image class="nj-screen" src={filter} alt="The filter sheet with type, severity, direction and date filters." />
+		<figcaption>Filters</figcaption>
+	</figure>
+	<figure>
+		<Image class="nj-screen" src={detail} alt="The detail of a blocked malformed WAP push." />
+		<figcaption>Message detail</figcaption>
+	</figure>
+</div>
+
+## The list
+
+Each row shows the type, sender, SIM, time, a short reason and the result, such as **Delivered**, **Not delivered**,
+**Released** or **Waiting**. A dot marks a message you haven't reviewed. A message without a sender shows "No sender
+address".
+
+**Waiting for you** at the top lists the held messages, with a count. Each has two buttons:
+
+- **Release** gives the message to Android as a new message.
+- **Block** keeps the record and sets its result to blocked. No app receives the message, and you can't undo it.
+
+Below that, the list groups messages by day. See [held messages](/NightJar/guide/held-messages/) for what happens on
+release.
+
+## Search and quick filters
+
+The search field finds messages by sender, text, port or app.
+
+The chips below the search field are quick filters:
+
+| Chip | Shows |
+|---|---|
+| All | All messages |
+| Suspicious | Messages with the severity Suspicious or High |
+| On hold | Held messages |
+| Outgoing | Messages that apps on this phone sent |
+| Broadcasts | Cell broadcasts |
+| SIM 1, SIM 2 | Messages of one SIM. Shown only on phones with two SIMs. |
+| Delivery reports | Shows or hides delivery reports |
+
+## Filters
+
+Select **Filters** to open all filters. The filter button shows how many filters are active, and **Clear** removes
+them all.
+
+| Filter | Options |
+|---|---|
+| Type | One or more message types |
+| Severity | Normal, Unusual, Suspicious or High |
+| Direction | Any, Incoming or Outgoing |
+| SIM | Any SIM, SIM 1 or SIM 2 |
+| Date | Any time, Today, Last 7 days or Last 30 days |
+| Only unreviewed, Only starred | On or off |
+| More conditions | From number, Destination port, Content type and App package |
+
+To reuse a set of filters, select **Save as view** and name it. Your views show under **Saved views**. If NightJar
+can't read a saved view, it shows "NightJar cannot read that saved view. NightJar did not change anything."
+
+Example: to find settings pushes from the last week that you haven't reviewed, set Type to **Settings push**, Date to
+**Last 7 days** and turn on **Only unreviewed**.
+
+## Actions on a message
+
+| Gesture | Result |
+|---|---|
+| Swipe right | Marks the message as reviewed. **Undo** removes the mark. |
+| Swipe left on a type you can block | Opens the rule editor with **Block similar**. |
+| Swipe left on a silent SMS | Mutes notifications from that sender for 1 hour. |
+| Touch and hold | Starts a selection. |
+
+If a type has no left-swipe action, or the message has no sender to mute, NightJar shows "No quick action for this
+type".
+
+With a selection, you can **Select all**, **Invert**, mark messages as reviewed or not reviewed, **Star**, **Export**
+or **Delete** them. Delete asks first and can't be undone. If the selection includes held messages, the dialog warns
+that NightJar will never deliver them.
+
+NightJar marks a message as reviewed when you open it. To change this, open Settings > Appearance > **Mark reviewed
+when opened**.
+
+## Message detail
+
+Select a row to open the detail. When the screen is at least 840 dp wide, for example a tablet in landscape, the
+detail opens next to the list. From top to bottom:
+
+| Section | Content |
+|---|---|
+| Header | Type, severity, result badge, SIM, sender and time |
+| What this is | A short explanation of the type |
+| Message text | The decoded text, if the message has any |
+| Evidence | Protocol ID (TP-PID), data coding (TP-DCS), user data length, destination port and service centre, followed by format errors and anomalies in the PDU |
+| Why NightJar marks this as suspicious | The patterns a detector found. For a message below Suspicious, the heading is **Why NightJar flagged it**. See [detection](/NightJar/features/detection/). |
+| What happened | Each step, for example "The phone service received it", "Classified as Settings push" and the result |
+| Parts | For a multipart message, the arrival time of each part. If parts are missing, it shows how many and the date Android deletes the incomplete message. |
+| Raw PDU | *Researcher mode.* Select **Show** to see the bytes in hex, the decoded fields and the pipeline trace. Select a byte to see its field. |
+| Linked records, Same detection | Related messages, such as a sent message and its delivery report, or other messages from the same detection |
+
+The Evidence card shows only lines with a value. If a safety limit changed the action of a rule, the detail shows a
+**Safety limit** line, for example "The rule action was Block. A safety limit changed it to Allow.", and the reason
+for the limit.
+
+### Detail actions
+
+| Action | Result |
+|---|---|
+| Release | Gives a held message to Android. Only for held messages of a type that can be released. |
+| Block similar | Opens the rule editor with a rule for messages like this one. |
+| Mark sender as expected | Adds the sender to [Known senders](/NightJar/guide/known-senders/). New messages from this sender get a lower severity. |
+| Mark app as trusted | For a message that an app sent. NightJar records background messages from this app as Normal. |
+| Star, Unstar | Adds the message to the **Only starred** filter, or removes it |
+| Mark as not reviewed | Brings back the unreviewed dot |
+| Copy text | Copies the message text |
+| Copy hex | *Researcher mode.* Copies the PDU in hex |
+| Export | Exports this message. See [export](/NightJar/guide/export/). |
+| Delete | Deletes the message from NightJar |
+
+If a release fails, NightJar shows the reason and the message stays on hold, for example "NightJar did not release
+the message. The message is still on hold." If the phone service isn't connected, it shows "Release is not available
+yet".
+
+## Message results
+
+The result says what happened to the message after NightJar recorded it.
+
+| Result | Meaning |
+|---|---|
+| Shown in (app) | Your messaging app showed the message. |
+| Delivered to (app) | Android gave the message to this app. |
+| Sent to the voicemail app | The visual voicemail app received the message. |
+| Sent to the SIM card | The SIM received the message. |
+| Shown as a missed-call notice | Android made a missed-call entry from the message. |
+| No app handles it, so Android did not keep it | No app on the phone listens for this message. |
+| Android received it and did not keep it | Android handled the message internally, for example a silent SMS. |
+| Your blocked-numbers list blocked it | The system list of blocked numbers stopped the message. |
+| NightJar blocked it | A preset action or a rule blocked the message. The rule name shows in brackets when a rule did it. |
+| On hold in NightJar | NightJar holds the message until you decide. |
+| You released it on (date) | You released the message. |
+| Software from the phone maker took it | The phone maker's software handled the message first. |
+| Parts still missing: (n) | A multipart message is still incomplete. |
+| Android rejected it because phone storage is full | The phone had no space to save the message. |
+| Android will process this after you unlock the phone | The phone hasn't been unlocked since it started. |
+| The phone service stopped before the message had a result | The phone service restarted while it handled the message. |
+| NightJar did not see what happened to it | NightJar recorded the message but not its result. |
+
+For outgoing messages, the result is **Sent**, "Sending failed (code)", "Android did not send it" or "NightJar blocked
+it. You blocked (app) from sending messages."

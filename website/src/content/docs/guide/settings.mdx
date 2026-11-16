@@ -1,0 +1,161 @@
+---
+title: Settings
+description: Every NightJar setting, its default and what it does.
+---
+
+import { Image } from 'astro:assets';
+import settings from '../../../assets/screens/settings.png';
+
+<div class="nj-screens">
+	<figure>
+		<Image class="nj-screen" src={settings} alt="The Settings home with its groups." />
+		<figcaption>Settings</figcaption>
+	</figure>
+</div>
+
+Settings has six groups: Appearance, Notifications, Protection, Data and storage, Diagnostics, and About. Rows that
+open a sub-screen show a short summary below the name.
+
+The **Search settings** field at the top searches the names and summaries of all rows, including rows on
+sub-screens. A row matches when it contains every word you type, in any case. If nothing matches, you see "No
+settings found".
+
+Each change is saved at once and NightJar shows **Saved**. If the save fails, you see "NightJar cannot save the
+setting. Try again." Rows marked *Researcher* below show only in researcher mode.
+
+## Appearance
+
+**Mode** is on the Settings home. The other appearance settings are on the **Appearance** sub-screen, which has a
+preview card at the top that shows your choices as you make them.
+
+| Setting | Default | Options and effect |
+|---|---|---|
+| Mode | Simple | **Simple** hides raw tabs and tools. **Researcher** shows raw tabs, logs and tools. Each time you change to Researcher, a dialog lists what appears. |
+| Theme | System | System, Light, Dark or Black. Black also turns on True black. |
+| Colour theme | Night blue | Night blue, Moss, Ember, Orchid or Mono |
+| Wallpaper colours | Off | Uses colours from your wallpaper. |
+| True black | Off | Uses a black background in dark mode. Turning it off also changes a Black theme back to Dark. |
+| Floating bar | On | Shows the tab bar as a floating panel. |
+| List animations | On | Animates list items when they appear. |
+| Bounce at list end | On | Lists bounce when you scroll past the end. |
+| Reduce motion | Off | Turns off most animations. NightJar also follows the Android animation setting. |
+| Haptic feedback | On | The phone vibrates a little when you press a control. |
+| Mark reviewed when opened | On | Opening a message marks it as reviewed. With this off, swipe a message right or use the selection menu to mark it. |
+
+## Notifications
+
+| Setting | Default | Options and effect |
+|---|---|---|
+| Suspicious | On | Notifications for Suspicious and High messages |
+| Unusual | Off | Notifications for Unusual messages |
+| Broadcast copies | Off | A notification with a copy of each cell broadcast |
+| Digest | Weekly | Off, or a weekly summary of what NightJar recorded |
+| Notify at most every | 5 min | 1, 5 or 15 min between two notifications |
+| System channels | | Opens the Android settings of each NightJar notification channel |
+
+Digest, Notify at most every and System channels are on the **Frequency and channels** sub-screen. See
+[notifications](/NightJar/guide/notifications/).
+
+## Protection
+
+The Protection group has five sub-screens.
+
+### Detection
+
+| Setting | Default | Range |
+|---|---|---|
+| Silent SMS burst count | 3 | 2 to 20 |
+| Burst window | 15 min | 5, 15, 30 or 60 min |
+| Flag first-time senders | On | |
+| Flag while roaming | On | |
+| SUPL emergency grace | 5 min | 5 to 60 min |
+| Known senders | | Opens [known senders](/NightJar/guide/known-senders/) |
+
+With the defaults, three silent SMS within 15 minutes count as a burst. The SUPL emergency grace is the time after an
+emergency call during which NightJar always allows location requests. [Detection](/NightJar/features/detection/)
+describes each detector.
+
+### Severity per type
+
+Each message type has a severity: Normal, Unusual, Suspicious or High. **Default** uses the NightJar rating. Select a
+type to set its severity yourself. NightJar applies the new severity to new messages and recalculates the severity of
+stored messages. Notifications follow the severity you set.
+
+### Cell broadcasts
+
+| Setting | Default | Effect |
+|---|---|---|
+| Record broadcasts | On | NightJar records each cell broadcast. |
+| Receive all channels | Off | *Researcher.* The modem receives all GSM broadcast channels, not only the ones Android turns on. |
+
+If you turn off Receive all channels, the modem keeps the wider channel list until Android configures cell
+broadcasts again, for example after a SIM change or a phone restart. See
+[cell broadcasts](/NightJar/features/cell-broadcast/).
+
+### Outgoing messages
+
+| Setting | Default | Effect |
+|---|---|---|
+| Outgoing monitor | On | NightJar records messages that apps on this phone send. |
+| Also record visible messages | Off | NightJar also records messages you send from your messaging app. |
+| Trusted apps | | Apps whose background messages NightJar records as Normal |
+| Apps that send messages | | Each app that sent a message, with a switch to block it |
+
+**Apps that send messages** lists the apps that sent messages from this phone. If you turn on an app's switch,
+NightJar asks "Block messages from (app)?" and then blocks each message that app sends. The app may show a send
+error. Messages to emergency numbers still go out. If the app is your default messaging app, the dialog warns that
+you can't send messages from it after the block.
+
+The block works only while Outgoing monitor is on, safe mode is off and blocking is on. See
+[outgoing messages](/NightJar/features/outgoing/).
+
+### Privacy and security
+
+| Setting | Default | Effect |
+|---|---|---|
+| App lock | Off | NightJar asks for your screen lock when it opens. |
+| Lock after | 5 min | Immediately, 1, 5 or 15 min. Shows only when App lock is on. |
+| Mask numbers in lists | Off | Lists show masked phone numbers. |
+| Hide numbers in notifications | Off | Notifications don't show phone numbers. |
+| Block screenshots | Off | Android doesn't allow screenshots or screen recording of NightJar. |
+
+App lock needs a screen lock on the phone. If the phone has none, NightJar shows "Set a screen lock first" with a
+button that opens the system settings. When you turn on App lock, NightJar locks at once.
+
+## Data and storage
+
+| Setting | Default | Effect |
+|---|---|---|
+| Keep messages for | 90 days | 30, 90 or 365 days, or Forever. NightJar deletes older messages. |
+| Export | | Opens [export](/NightJar/guide/export/). |
+| Delete all data | | Deletes messages, history and logs on this phone. Keeps rules and settings. |
+| Turn off NightJar | | Shows the steps to turn off the module in Vector or LSPosed. |
+
+If a shorter keep time would delete recorded messages, NightJar shows how many and asks before it deletes them. Select
+**Cancel** to keep the old value.
+
+**Delete all data** asks you to type DELETE. Any other text keeps the dialog open with "Type DELETE to continue."
+
+## Diagnostics
+
+| Setting | Default | Effect |
+|---|---|---|
+| Share diagnostics | | Creates a diagnostics file. See [protection status](/NightJar/guide/protection-status/#share-diagnostics). |
+| Safe mode | Off | NightJar blocks no messages and still records them. |
+| Record debug details | Off | *Researcher.* The module writes more detail to its log. NightJar turns it off after 24 hours. |
+| View logs | | *Researcher.* Masked logs of the module and the framework. |
+| Audit history | | *Researcher.* Each change to rules, presets and settings, and who made it: You, Preset or System. |
+| Restart phone service | | *Researcher.* Restarts `com.android.phone`. Calls disconnect. |
+
+When you turn on safe mode, NightJar shows "Safe mode is on. NightJar paused blocking." with an **Undo** button.
+Home and Protection show that blocking is paused until you turn it off.
+
+You can't restart the phone service during a call or in safe mode. If the restart fails, NightJar shows the reason,
+for example "your root manager denied root access".
+
+## About
+
+| Item | Content |
+|---|---|
+| Version | The app version |
+| What NightJar cannot see | The blind spots. See [limitations](/NightJar/safety/limitations/). |

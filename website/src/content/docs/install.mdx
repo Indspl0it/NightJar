@@ -1,0 +1,75 @@
+---
+title: Install
+description: Install the NightJar APK, turn on the module in Vector or LSPosed and reboot the phone.
+---
+
+import { Steps } from '@astrojs/starlight/components';
+
+Before you start, check that your phone meets the [requirements](/NightJar/requirements/).
+
+## Get the APK
+
+Download the APK from the [releases page](https://github.com/Indspl0it/NightJar/releases/latest). Each release has
+one APK, which contains both the app and the Xposed module. To build the APK yourself, see
+[building](/NightJar/dev/building/).
+
+## Install and turn on the module
+
+<Steps>
+
+1. Install the NightJar APK.
+
+2. Open Vector or LSPosed.
+
+3. Turn on the NightJar module.
+
+4. Select **Phone Services** (`com.android.phone`) as the module scope. Do not add other apps to the scope.
+
+5. Reboot the phone.
+
+6. Open NightJar. The setup screens check each step. See [first run](/NightJar/first-run/).
+
+</Steps>
+
+:::note
+Keep the app installed. Vector or LSPosed loads the module into the phone service each time the phone service starts,
+and the module sends its events to the app.
+:::
+
+## Update NightJar
+
+Install the new APK over the old one. NightJar keeps your rules, settings and recorded messages.
+
+Reboot the phone after the update. The old module keeps running in the phone service until you reboot. If the
+module is newer than the app, NightJar shows "Update the NightJar app".
+
+## Turn off or uninstall NightJar
+
+<Steps>
+
+1. Open Vector or LSPosed.
+
+2. Turn off the NightJar module.
+
+3. Reboot the phone. The phone service now runs without NightJar.
+
+4. To delete your data too, uninstall the NightJar app.
+
+</Steps>
+
+Settings > Data and storage > **Turn off NightJar** shows the same steps.
+
+## If calls or messages stop working
+
+<Steps>
+
+1. Open Vector or LSPosed and turn off the NightJar module.
+
+2. Reboot the phone.
+
+3. Report the problem with the build fingerprint and a diagnostics file. See
+   [troubleshooting](/NightJar/help/troubleshooting/).
+
+</Steps>
+
+If the phone can't start, turn off Xposed modules with the safe mode or module controls of your root manager.

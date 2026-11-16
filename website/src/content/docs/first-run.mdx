@@ -1,0 +1,80 @@
+---
+title: First run
+description: The three setup screens of NightJar and what to do when a check fails.
+---
+
+import { Image } from 'astro:assets';
+import welcome from '../../assets/screens/onboarding-welcome.png';
+import setup from '../../assets/screens/onboarding-setup.png';
+import ready from '../../assets/screens/onboarding-ready.png';
+
+The first time you open NightJar, it shows three setup screens and checks each step for you.
+
+<div class="nj-screens">
+	<figure>
+		<Image class="nj-screen" src={welcome} alt="The welcome screen with three examples of hidden messages." />
+		<figcaption>1. Welcome</figcaption>
+	</figure>
+	<figure>
+		<Image class="nj-screen" src={setup} alt="The setup screen with four steps: root, framework, module and reboot." />
+		<figcaption>2. Setup</figcaption>
+	</figure>
+	<figure>
+		<Image class="nj-screen" src={ready} alt="The ready screen that says NightJar is active." />
+		<figcaption>3. Ready</figcaption>
+	</figure>
+</div>
+
+## 1. Welcome
+
+The welcome screen asks "Curious to see hidden messages and want to block or quarantine them?" and shows three
+examples:
+
+- **Silent SMS**: pings that confirm your phone is on and on the network.
+- **Settings pushes**: APN and proxy changes that can send your traffic elsewhere.
+- **Location and SIM**: SUPL location requests and SIM data download.
+
+A line at the bottom confirms that NightJar has no internet permission. Select **Start**.
+
+## 2. Setup
+
+The setup screen has four steps. NightJar marks each one **Done**, **Do this step**, **Next step** or **Not
+started**, and shows **Checking…** while a check runs.
+
+| Step | NightJar checks that | If the check fails |
+|---|---|---|
+| Root access | NightJar has root | Select **Grant root** and allow NightJar in your root manager. If you denied it, open your root manager, allow NightJar, then select **Check again**. |
+| Vector or LSPosed | The Xposed framework is installed | Install Vector or LSPosed from your root manager. Then select **Check again**. |
+| Turn on the module | The NightJar module is on, with the scope Phone Services | Select **Open LSPosed**. Turn on NightJar. Select Phone Services as the scope. |
+| Reboot the phone | The module runs in the phone service | Select **Reboot phone**. NightJar keeps your messages and settings. |
+
+Your root manager asks once for root access. NightJar uses root to find Vector or LSPosed, restart the phone service
+and reboot the phone. It doesn't use root to read your messages.
+
+If you select **Later** on the reboot step, reboot the phone from the power menu. If NightJar can't reboot the phone,
+it shows the reason and you can select **Later** and use the power menu instead.
+
+If the checks can't run at all, NightJar shows "NightJar cannot complete the checks. Select Check again."
+
+## 3. Ready
+
+After the reboot, NightJar shows **NightJar is active** and the SIMs it monitors. With the Recommended preset, it
+adds "The Recommended preset is on." Two switches follow:
+
+- **Notifications** (Suspicious messages only) shows whether NightJar may send notifications. Turn it on to give
+  Android's notification permission. Turning it off opens the system notification settings.
+- **Researcher mode** (Raw PDUs and decoder details) adds the researcher views to the app. It's off by default.
+
+You can change both later in [Settings](/NightJar/guide/settings/). Select **Open NightJar** to go to
+[Home](/NightJar/guide/home/).
+
+## Optional self-test
+
+The [self-test](/NightJar/guide/self-test/) sends harmless test messages to the phone and checks that NightJar
+recognises each message type. NightJar blocks each test message before an app receives it. Protection works without
+the self-test.
+
+## Next steps
+
+- Read the [blocking cautions](/NightJar/safety/blocking-cautions/).
+- Open the [Protection](/NightJar/guide/protection/) tab to see what the Recommended preset does.

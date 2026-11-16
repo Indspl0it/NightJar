@@ -9,7 +9,7 @@ The same APK is the module and the companion app. The module records each messag
 stores, explains and notifies. Google Messages and RCS continue to work as usual.
 
 > **Status:** 0.5.0, early release. Test it on a phone that you can recover. Read the
-> [blocking cautions](docs/user-guide.md#blocking-cautions) before you turn on blocking.
+> [blocking cautions](https://indspl0it.github.io/NightJar/safety/blocking-cautions/) before you turn on blocking.
 
 ## Requirements
 
@@ -33,7 +33,7 @@ hold or block some message types. If the blocking hooks do not load, NightJar on
 ## Install
 
 Download the APK from the [releases page](https://github.com/Indspl0it/NightJar/releases), then follow the
-[user guide](docs/user-guide.md#install).
+[install guide](https://indspl0it.github.io/NightJar/install/).
 
 ## Build
 
@@ -45,7 +45,8 @@ You need JDK 21 and the Android SDK (platforms 36 and 37).
 ./gradlew verify                 # all quality checks
 ```
 
-See [docs/building.md](docs/building.md) for the toolchain, the quality checks and release signing.
+See [building](https://indspl0it.github.io/NightJar/dev/building/) for the toolchain, the quality checks and the screenshots, and
+[release](https://indspl0it.github.io/NightJar/dev/release/) for release signing.
 
 ## Repository layout
 
@@ -60,15 +61,16 @@ See [docs/building.md](docs/building.md) for the toolchain, the quality checks a
 | `xposed-stubs/`, `hiddenapi-stubs/` | Compile-only API stubs |
 | `buildSrc/` | Gradle tasks for the quality checks |
 | `testdata/` | Synthetic message scenarios for the unit tests |
-| `docs/` | User guide, architecture, build and release documentation |
+| `website/` | Documentation website (Astro and Starlight) |
 
 ## Documentation
 
-- [User guide](docs/user-guide.md)
-- [Architecture](docs/architecture.md)
-- [Building](docs/building.md)
-- [Release checklist](docs/release.md)
-- [Copy standard](docs/copy-standard.md)
+The documentation is at **https://indspl0it.github.io/NightJar/**.
+
+- [Introduction](https://indspl0it.github.io/NightJar/intro/)
+- [Install](https://indspl0it.github.io/NightJar/install/)
+- [Architecture](https://indspl0it.github.io/NightJar/internals/architecture/)
+- [Building](https://indspl0it.github.io/NightJar/dev/building/)
 - [Contributing](CONTRIBUTING.md)
 - [Security policy](SECURITY.md)
 

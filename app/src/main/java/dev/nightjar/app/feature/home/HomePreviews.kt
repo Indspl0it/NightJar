@@ -25,7 +25,7 @@ private fun HomePreview(
         HomeContent(
             state = previewState(status),
             attentionCount = 2,
-            attentionAt = { index -> if (index == 0) previewHeldRow() else previewBlockedRow() },
+            attentionAt = { index -> if (index == 0) previewBlockedRow() else previewHeldRow() },
             snackbar = SnackbarHostState(),
             onRefresh = {},
             onOpenHealth = {},
@@ -125,7 +125,7 @@ private fun previewState(status: HomeStatus): HomeUiState {
             listOf(
                 TypeRow(ClassId.SILENT, "Silent SMS (Type 0)", 12),
                 TypeRow(ClassId.MWI, "Voicemail indicator", 9),
-                TypeRow(ClassId.WAP_CP, "Malformed WAP push", 1),
+                TypeRow(ClassId.WAP_UNREADABLE, "Malformed WAP push", 1),
             ),
     )
 }
@@ -133,6 +133,8 @@ private fun previewState(status: HomeStatus): HomeUiState {
 private fun previewRow(
     id: Long,
     classId: ClassId,
+    title: String,
+    severity: Severity,
     quarantined: Boolean,
     fate: Fate,
     slot: Int,
@@ -142,8 +144,8 @@ private fun previewRow(
         eventId = "e$id",
         receivedAtWall = System.currentTimeMillis(),
         classId = classId,
-        severity = Severity.SUSPICIOUS,
-        title = "Silent SMS (Type 0)",
+        severity = severity,
+        title = title,
         originator = "+10000004821",
         textPreview = "",
         fate = fate,
@@ -161,6 +163,25 @@ private fun previewRow(
         isReplay = false,
     )
 
-private fun previewHeldRow(): MessageListItem = previewRow(1, ClassId.SILENT, quarantined = true, fate = Fate.QUARANTINED, slot = 0)
+// The Recommended preset blocks a malformed WAP push and holds a phone unlock message.
+private fun previewHeldRow(): MessageListItem =
+    previewRow(
+        1,
+        ClassId.ME_DEPERSO,
+        "Phone unlock message (de-personalization)",
+        Severity.HIGH,
+        quarantined = true,
+        fate = Fate.QUARANTINED,
+        slot = 0,
+    )
 
-private fun previewBlockedRow(): MessageListItem = previewRow(2, ClassId.WAP_CP, quarantined = false, fate = Fate.BLOCKED, slot = 1)
+private fun previewBlockedRow(): MessageListItem =
+    previewRow(
+        2,
+        ClassId.WAP_UNREADABLE,
+        "Malformed WAP push: WSP header length is wrong",
+        Severity.HIGH,
+        quarantined = false,
+        fate = Fate.BLOCKED,
+        slot = 1,
+    )

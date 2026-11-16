@@ -76,7 +76,8 @@ import dev.nightjar.app.ui.theme.NjSpacing
 import dev.nightjar.app.ui.theme.NjTheme
 import dev.nightjar.app.ui.theme.PreviewTheme
 import dev.nightjar.contract.ClassId
-import dev.nightjar.contract.Verdict
+import dev.nightjar.rules.Preset
+import dev.nightjar.rules.Presets
 
 /**
  * Protection (formerly Firewall): large title, the Blocking card with the preset, one group with one compact
@@ -655,13 +656,8 @@ private fun FirewallDialogHost(
 
 // ------------------------------------------------------------------ previews
 
-private val PreviewActions =
-    mapOf(
-        ClassId.SILENT to Verdict.NOTIFY,
-        ClassId.WAP_CP to Verdict.BLOCK,
-        ClassId.SIM_DD to Verdict.BLOCK,
-        ClassId.FLASH to Verdict.ALLOW,
-    )
+/** The Recommended preset, the preset of a new install. */
+private val PreviewActions = Presets.classActions(Preset.RECOMMENDED)
 
 @Composable
 private fun ProtectionPreview(themeMode: ThemeMode) {
@@ -670,7 +666,7 @@ private fun ProtectionPreview(themeMode: ThemeMode) {
             state =
                 FirewallUiState(
                     loading = false,
-                    preset = PresetId.CUSTOM,
+                    preset = PresetId.RECOMMENDED,
                     rows = firewallRows(PreviewActions),
                     userRuleCount = 2,
                     knownSenderCount = 5,
