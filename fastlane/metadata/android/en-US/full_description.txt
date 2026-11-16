@@ -1,0 +1,36 @@
+<p>Your phone receives SMS that never show up in your messaging app. The network, your carrier, apps on your SIM card and attackers can all send them. Some tell the sender where you are. Some send commands to your SIM card. Some crash the phone service the moment they arrive, without you tapping anything.</p>
+
+<p>NightJar runs inside Android's phone service as an Xposed module. It checks each message before Android acts on it, blocks the types that attacks use, holds suspicious ones for you to review, and keeps a record of every message with a plain explanation of what it was.</p>
+
+<p><b>NightJar needs a rooted phone with Android 15 or later (arm64), and Vector or LSPosed.</b> Install it on a phone you can recover.</p>
+
+<p><b>What it protects you from</b></p>
+<ul>
+<li><b>Silent SMS:</b> show nothing, but tell the sender your phone is on. NightJar records each one and alerts you on a burst.</li>
+<li><b>Location requests (SUPL):</b> ask your phone to report its position. Blocked, except during an emergency call and for 5 minutes after.</li>
+<li><b>SIM data download (Simjacker, WIBattack):</b> commands to apps on your SIM card. Blocked, and commands to the S@T or WIB browser are rated High.</li>
+<li><b>Malformed WAP push and SMS (CVE-2026-58882):</b> a broken header crashes the phone service and drops calls. Blocked before Android's parser reads it.</li>
+<li><b>Settings push:</b> changes your APN or proxy. Blocked.</li>
+<li><b>Device management request:</b> asks your phone to contact a server that can change it remotely. Blocked.</li>
+</ul>
+<p>These are the defaults of the Recommended preset. Emergency alerts always reach you.</p>
+
+<p><b>How it works</b></p>
+<ul>
+<li>Allow, Allow and notify, Hold or Block for each message type, or pick a preset: Monitor, Recommended, Strict or Quarantine.</li>
+<li>Custom rules for a sender, SIM, port or text.</li>
+<li>Your rules apply from the moment the phone starts, before you unlock it.</li>
+<li>Each message has an explanation, the decoded fields and the path it took through the phone service. Export as JSON, CSV or PDU hex.</li>
+<li>See the SMS that apps on your phone send, and stop an app from sending SMS.</li>
+<li>Google Messages, RCS and your regular texts keep working. NightJar doesn't need to be your default SMS app.</li>
+</ul>
+
+<p><b>Privacy and safety</b></p>
+<ul>
+<li>No internet permission. Nothing leaves your phone unless you export it.</li>
+<li>NightJar counts your regular conversations but doesn't store them.</li>
+<li>Encrypted database and an optional app lock.</li>
+<li>If NightJar's code fails, Android handles the message as if NightJar weren't installed.</li>
+</ul>
+
+<p>Documentation: https://indspl0it.github.io/NightJar/</p>

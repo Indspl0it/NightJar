@@ -1,0 +1,1 @@
+SMS firewall for rooted Android. Blocks location, SIM and crash attacks.

@@ -1,0 +1,7 @@
+First public release.
+
+- SMS firewall inside the phone service: Allow, Hold or Block for each message type, presets and custom rules.
+- Blocks location requests, SIM data download, settings pushes and malformed WAP push (CVE-2026-58882) by default.
+- Records every hidden message with an explanation and the decoded fields.
+- Rules apply from boot, before the first unlock.
+- No internet permission. Encrypted database.
