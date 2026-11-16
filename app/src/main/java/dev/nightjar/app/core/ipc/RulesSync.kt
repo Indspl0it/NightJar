@@ -22,9 +22,9 @@ import javax.inject.Singleton
 /**
  * Keeps the payload in step with the rules database.
  *
- * The Xposed payload reads no file: it gets the snapshot in the `hello` reply and through `updateRules`. A rule change
- * therefore survives a phone-process restart because the next `hello` carries it (AC1). Before the first
- * unlock the app cannot read the rules, so the payload runs without rules (monitor only) until the unlock.
+ * The Xposed payload gets the snapshot in the `hello` reply and through `updateRules`. A rule change therefore survives
+ * a phone-process restart because the next `hello` carries it (AC1). Before the first unlock the app cannot read the
+ * rules, so the payload applies its own copy of the last snapshot (device-protected storage) until the unlock.
  * Pushes are coalesced by [distinctUntilChanged] on the serialized document, so a burst of edits produces one push.
  */
 @Singleton
@@ -91,8 +91,8 @@ private object SeverityConfigFactoryKnown {
 }
 
 /**
- * Pushes the payload settings document to the payload (`SettingsSync`). No file is written: the payload
- * reads none, and the next `hello` carries the current document.
+ * Pushes the payload settings document to the payload (`SettingsSync`). The app writes no file. The payload keeps its
+ * own copy for the time before the first unlock, and the next `hello` carries the current document.
  *
  * Only keys that the payload mirrors trigger a push, so changing the theme does not wake the phone process.
  * The blocked sender packages (`outgoing.blocked`) are mirrored too: a change in [OutgoingBlockStore] pushes the

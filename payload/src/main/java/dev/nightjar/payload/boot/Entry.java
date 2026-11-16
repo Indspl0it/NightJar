@@ -28,9 +28,10 @@ import org.json.JSONObject;
  * injection, the head-filter sweep) is posted to the payload worker by {@link PayloadRuntime#scheduleWiring()}, which
  * waits for the context to appear.
  *
- * <p>Configuration: the payload never reads rules or settings from disk. The profiles come from the module's
- * resources; rules and settings arrive over the IPC handshake. Until then the default rules (every class ALLOW) apply,
- * so the payload only monitors. Before the first unlock after boot the head filter filters no message.
+ * <p>Configuration: the profiles come from the module's resources; rules and settings arrive over the IPC handshake.
+ * The wiring step {@code configCopies} applies the copies of the last session from device-protected storage before
+ * that ({@code ConfigCopies}). Without a copy the default rules (every class ALLOW) apply, so the payload only monitors.
+ * Before the first unlock after boot the head filter filters no message.
  *
  * <p>Thread: the main thread of the phone process, in {@code handleLoadPackage}; nothing here blocks on I/O.
  */

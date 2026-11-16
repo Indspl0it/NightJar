@@ -2,7 +2,9 @@ package dev.nightjar.payload.config;
 
 import dev.nightjar.payload.env.Clock;
 import dev.nightjar.payload.ipc.ConfigSink;
+import java.nio.charset.StandardCharsets;
 import java.util.function.Consumer;
+import org.json.JSONObject;
 
 /**
  * The three configuration snapshots plus the profile matcher (T06).
@@ -10,6 +12,11 @@ import java.util.function.Consumer;
  * <p>This is the seam the control binder uses: {@code updateRules}/{@code updateSettings} arrive on
  * a binder thread, are parsed here (never on the phone main looper), and become visible through one
  * volatile swap each.
+ *
+ * <p>Each rules and settings document from the app goes to a persister, which stores a copy in device-protected
+ * storage ({@link ConfigCopyFile}). After a reboot the payload applies those copies with {@link #applyStoredCopies}
+ * before the app can send anything, also before the user unlocks the phone. A document from the app always wins
+ * over a stored copy.
  *
  * <p>Thread: any; a concurrent apply is serialised on this object so two binder calls cannot
  * interleave a parse.
@@ -35,6 +42,18 @@ public final class ConfigStore implements ConfigSink {
     /** Stores each explicit switch. It must only post the write to the worker and never block. */
     private volatile Consumer<Boolean> firewallPersister;
     private volatile Runnable firewallListener;
+    /** Stores each rules document from the app. It must only post the write to the worker and never block. */
+    private volatile Consumer<String> rulesPersister;
+    /** Stores each settings document from the app, also after a safe mode change. Same contract as above. */
+    private volatile Consumer<String> settingsPersister;
+    /** The last rules document from the app in this process, or null. Guarded by {@code this}. */
+    private String rulesFromApp;
+    /** The settings document behind the current snapshot when it came from the app, or null. Guarded by {@code this}. */
+    private String settingsFromApp;
+    /** The stored settings copy applied at startup, or null. Guarded by {@code this}. */
+    private String settingsStored;
+    /** True once a settings document from the app applied in this process. Guarded by {@code this}. */
+    private boolean settingsAppliedFromApp;
 
     public ConfigStore(Clock clock) {
         this.clock = clock;
@@ -58,14 +77,89 @@ public final class ConfigStore implements ConfigSink {
 
     /** Applies a {@code rules.json} document; false keeps the previous snapshot. */
     public synchronized boolean applyRules(byte[] utf8) {
-        return rules.apply(utf8, clock.wallMs());
+        return utf8 != null && acceptRules(new String(utf8, StandardCharsets.UTF_8));
     }
 
     /** Applies a {@code settings.json} document. */
     public synchronized boolean applySettings(byte[] utf8) {
-        boolean ok = settings.apply(utf8);
+        boolean ok = utf8 != null && acceptSettings(new String(utf8, StandardCharsets.UTF_8));
         fireFirewallListener();
         return ok;
+    }
+
+    /**
+     * Applies the copies read from device-protected storage at startup. A copy applies only while no document of
+     * its kind arrived from the app in this process; a bad copy keeps the defaults. Neither copy is stored again.
+     *
+     * @param rulesJson the stored {@code rules.json}, or null when there is no copy
+     * @param settingsJson the stored {@code settings.json}, or null when there is no copy
+     */
+    public synchronized void applyStoredCopies(String rulesJson, String settingsJson) {
+        if (rulesFromApp == null && rulesJson != null) {
+            rules.apply(rulesJson, clock.wallMs());
+        }
+        if (settingsFromApp == null && settingsJson != null && settings.apply(settingsJson)) {
+            settingsStored = settingsJson;
+        }
+        fireFirewallListener();
+    }
+
+    /** The last rules document from the app in this process, or null. */
+    public synchronized String rulesFromApp() {
+        return rulesFromApp;
+    }
+
+    /** The settings document from the app behind the current snapshot, with the current safe mode, or null. */
+    public synchronized String settingsFromApp() {
+        return settingsFromApp;
+    }
+
+    /** Sets the callback that stores each rules document from the app; it must only post the write. */
+    public void setRulesPersister(Consumer<String> persister) {
+        this.rulesPersister = persister;
+    }
+
+    /** Sets the callback that stores each settings document from the app; it must only post the write. */
+    public void setSettingsPersister(Consumer<String> persister) {
+        this.settingsPersister = persister;
+    }
+
+    /** Applies a rules document from the app and stores it when it parsed. Caller holds the lock. */
+    private boolean acceptRules(String json) {
+        if (!rules.apply(json, clock.wallMs())) return false;
+        rulesFromApp = json;
+        persist(rulesPersister, json);
+        return true;
+    }
+
+    /** Applies a settings document from the app and stores it when it parsed. Caller holds the lock. */
+    private boolean acceptSettings(String json) {
+        if (!settings.apply(json)) return false;
+        settingsFromApp = json;
+        settingsAppliedFromApp = true;
+        persist(settingsPersister, json);
+        return true;
+    }
+
+    /**
+     * The pinned app certificate ({@code appCertSha256}) of a settings document that the app sent in this process, or
+     * an empty string while the settings come from a stored copy or the defaults.
+     *
+     * <p>A stored pin can be stale: the app can be installed again with a different signing key (a debug build and a
+     * release build share the package name). A stale pin would withhold content for ever, and the app's new settings
+     * with the new pin are only applied after a pin match. So the handshake does not use a stored pin.
+     */
+    public synchronized String appCertPinFromApp() {
+        return settingsAppliedFromApp ? settings.get().appCertSha256() : "";
+    }
+
+    private static void persist(Consumer<String> persister, String json) {
+        if (persister == null) return;
+        try {
+            persister.accept(json);
+        } catch (Throwable ignored) {
+            // Fail open: the document stays active in memory.
+        }
     }
 
     /** Applies a {@code profiles.json} document; false keeps the previous document. */
@@ -124,7 +218,24 @@ public final class ConfigStore implements ConfigSink {
      */
     public synchronized void setSafeMode(boolean on) {
         settings.setSafeMode(on);
+        // The stored copy must carry the switch too, or a reboot before the next push would apply a stale value.
+        String json = withSafeMode(settingsFromApp != null ? settingsFromApp : settingsStored, on);
+        if (json != null) {
+            settingsFromApp = json;
+            persist(settingsPersister, json);
+        }
         fireFirewallListener();
+    }
+
+    /** {@code base} with its {@code safeMode} key set to {@code on}; a null base gives a document with only that key. */
+    static String withSafeMode(String base, boolean on) {
+        try {
+            JSONObject o = base == null ? new JSONObject() : new JSONObject(base);
+            o.put("safeMode", on);
+            return o.toString();
+        } catch (Throwable t) {
+            return null;
+        }
     }
 
     /** Called when the firewall enablement changes (the runtime recomputes the firewall state). */
@@ -147,13 +258,13 @@ public final class ConfigStore implements ConfigSink {
     /** Applies a {@code rules.json} string from the control binder or the IPC reply; a bad one keeps the snapshot. */
     @Override
     public synchronized void applyRulesJson(String json) {
-        rules.apply(json, clock.wallMs());
+        if (json != null) acceptRules(json);
     }
 
     /** Applies a {@code settings.json} string from the control binder or the IPC reply; a bad one is ignored. */
     @Override
     public synchronized void applySettingsJson(String json) {
-        settings.apply(json);
+        if (json != null) acceptSettings(json);
         fireFirewallListener();
     }
 

@@ -82,6 +82,8 @@ public final class PayloadRuntime {
     private volatile dev.nightjar.payload.firewall.FirewallState firewallState;
     /** The stored firewall switch; null until the wiring step knows the device-protected directory. */
     private volatile dev.nightjar.payload.config.FirewallFlagFile firewallFlagFile;
+    /** The stored rules and settings copies; null until the wiring step knows the device-protected directory. */
+    private volatile dev.nightjar.payload.config.ConfigCopies configCopies;
     private volatile dev.nightjar.payload.firewall.Enforcer enforcer;
     private volatile dev.nightjar.payload.inject.SmsInjector injector;
     private volatile dev.nightjar.payload.inject.Releaser releaser;
@@ -121,7 +123,7 @@ public final class PayloadRuntime {
 
     /** Period of {@link #onWorkerTick()}: seal timeouts and expiries are seconds wide. */
     static final long TICK_MS = 1_000L;
-    /** Payload subdirectory in device-protected storage: spool, crash journal, firewall switch. */
+    /** Payload subdirectory in device-protected storage: spool, crash journal, firewall switch, config copies. */
     private static final String DE_DIR = "nightjar";
 
     /**
@@ -138,6 +140,9 @@ public final class PayloadRuntime {
         this.config = new ConfigStore(clock);
         // An explicit switch arrives on a binder or IPC thread; the file write runs on the worker.
         this.config.setFirewallPersister(on -> worker.post(() -> persistFirewallFlag(on)));
+        // Rules and settings arrive on a binder or IPC thread; the copies are written on the worker.
+        this.config.setRulesPersister(json -> worker.post(() -> persistRulesCopy(json)));
+        this.config.setSettingsPersister(json -> worker.post(() -> persistSettingsCopy(json)));
         this.session = new Session(sessionId, clock.wallMs());
         this.registry.setBridge(this.bridge);
         // A hook that disables itself must be uninstalled and reported from the worker. One
@@ -603,6 +608,9 @@ public final class PayloadRuntime {
         // The stored switch is read before the firewall state is published, so a user who turned blocking
         // off keeps it off after a reboot, also before unlock and before the first hello.
         ok &= step("firewallFlag", () -> wireFirewallFlag(ctx));
+        // The stored rules and settings are applied before the firewall starts, so it holds and blocks after a reboot
+        // before the user unlocks the phone and before the first hello reply that carries rules.
+        ok &= step("configCopies", () -> wireConfigCopies(ctx));
         ok &= step("firewall", this::wireFirewall);
         ok &= step("release", this::wireRelease);
         ok &= step("cbChannels", this::wireCbChannels);
@@ -666,6 +674,34 @@ public final class PayloadRuntime {
         // Before wireFirewallFlag the file is not known: that step stores the current switch.
         if (file == null) return;
         writeFirewallFlag(file, enabled);
+    }
+
+    /**
+     * Applies the stored rules and settings from device-protected storage; runs on the worker. Documents that came
+     * from the app before this step are stored now instead. Without the directory the defaults (everything ALLOW)
+     * apply until the app sends rules.
+     */
+    private void wireConfigCopies(android.content.Context ctx) {
+        java.io.File dir = dev.nightjar.payload.env.Contexts.deviceProtectedDir(ctx, DE_DIR);
+        if (dir == null) {
+            log.w("boot", "no device-protected directory: rules and settings are not kept after a restart");
+            return;
+        }
+        dev.nightjar.payload.config.ConfigCopies copies = new dev.nightjar.payload.config.ConfigCopies(dir, config, log);
+        copies.start();
+        configCopies = copies;
+    }
+
+    /** Stores one rules document from the app; runs on the worker. Before wireConfigCopies, that step stores it. */
+    private void persistRulesCopy(String json) {
+        dev.nightjar.payload.config.ConfigCopies copies = configCopies;
+        if (copies != null) copies.storeRules(json);
+    }
+
+    /** Stores one settings document from the app; runs on the worker. Before wireConfigCopies, that step stores it. */
+    private void persistSettingsCopy(String json) {
+        dev.nightjar.payload.config.ConfigCopies copies = configCopies;
+        if (copies != null) copies.storeSettings(json);
     }
 
     /** A failed write keeps the switch active in memory (fail open: the payload does what the user chose). */
@@ -833,8 +869,11 @@ public final class PayloadRuntime {
 
             @Override
             public String appCertSha256() {
-                String pinned = config.settings().get().appCertSha256();
-                if (!pinned.isEmpty() || !"true".equals(infoValue("trustInstalledApp", ""))) return pinned;
+                boolean trustInstalled = "true".equals(infoValue("trustInstalledApp", ""));
+                // A pin from a stored settings copy can be stale (the app installed again with another key); with
+                // trustInstalledApp only a pin that the app sent in this process counts.
+                String pinned = trustInstalled ? config.appCertPinFromApp() : config.settings().get().appCertSha256();
+                if (!pinned.isEmpty() || !trustInstalled) return pinned;
                 // Xposed delivery has no settings.json on disk, and the pin only arrives in the handshake
                 // reply that is itself withheld until the pin matches. The installed package's signer is the
                 // pin for the first handshake; the app's own settings (same certificate) replace it after.
