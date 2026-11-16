@@ -113,6 +113,13 @@ android {
 
     packaging { resources.excludes += "/META-INF/{AL2.0,LGPL2.1}" }
 
+    // AGP adds a dependency list, encrypted with a Google key, to the APK signing block. Only Google Play can read
+    // it, and F-Droid rejects APKs that carry it.
+    dependenciesInfo {
+        includeInApk = false
+        includeInBundle = false
+    }
+
     lint {
         lintConfig = file("lint.xml")
         abortOnError = true
