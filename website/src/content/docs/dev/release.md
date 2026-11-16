@@ -72,7 +72,7 @@ The warning never shows a value, and a release build never uses the debug key.
    ```
 
 4. Commit, make an annotated tag, for example `v0.5.0`, and push `main` and the tag.
-5. Build the release from a clean clone of the tag, with the signing variables set:
+5. Build the unsigned release from a clean clone of the tag:
 
    ```sh
    git clone --branch v0.5.0 https://github.com/Indspl0it/NightJar.git nightjar-v0.5.0
@@ -80,31 +80,41 @@ The warning never shows a value, and a release build never uses the debug key.
    ./gradlew :app:assembleRelease
    ```
 
-6. Check the signature. The `Signer #1 certificate SHA-256 digest` must be `ba4c89901c27d3fbd6b124842eb80cbaa3e8d3abe5f2a3b06925ac478f1b138a`:
+6. Check that the APK is the same as the one the **Release check** workflow built for the tag. Download the
+   `nightjar-release-unsigned` artifact from the workflow run. Both files must have the same SHA-256:
 
    ```sh
-   apksigner verify --print-certs app/build/outputs/apk/release/NightJar-0.5.0-release.apk
+   sha256sum app/build/outputs/apk/release/NightJar-0.5.0-release-unsigned.apk NightJar-0.5.0-release-unsigned.apk
    ```
 
-7. Compare the signed APK with the unsigned APK that the **Release check** workflow built for the tag. Download the
-   `nightjar-release-unsigned` artifact from the workflow run, then compare with
-   [apksigcopier](https://github.com/obfusk/apksigcopier), the tool F-Droid uses:
+   If they differ, F-Droid's build won't match either. Find the cause before you continue.
+
+7. Sign the APK with the release key, on your own computer:
 
    ```sh
-   pip install apksigcopier
-   apksigcopier compare app/build/outputs/apk/release/NightJar-0.5.0-release.apk --unsigned NightJar-0.5.0-release-unsigned.apk
+   apksigner sign --ks nightjar-release.jks --ks-key-alias nightjar      --v1-signing-enabled false --alignment-preserved true      --out NightJar-0.5.0-release.apk app/build/outputs/apk/release/NightJar-0.5.0-release-unsigned.apk
+   apksigner verify --print-certs NightJar-0.5.0-release.apk
    ```
 
-   The command exits with 0 when the two APKs match. If they differ, F-Droid's build won't match
-   either. Find the cause before you publish.
+   The line with `certificate SHA-256 digest` must show
+   `ba4c89901c27d3fbd6b124842eb80cbaa3e8d3abe5f2a3b06925ac478f1b138a`.
 
-8. Rename the APK to `NightJar-0.5.0.apk` and write its checksum:
+   F-Droid copies this signature onto its own build with [apksigcopier](https://github.com/obfusk/apksigcopier) and
+   verifies the result, and both options are needed for that. Android 15 and later ignore the v1 (JAR) signature, and
+   apksigcopier can't read how apksigner compresses its files. Without `--alignment-preserved`, apksigner changes the
+   zip layout, and the signature no longer fits F-Droid's build. Check it with:
 
    ```sh
-   sha256sum NightJar-0.5.0.apk > SHA256SUMS
+   apksigcopier compare NightJar-0.5.0-release.apk --unsigned NightJar-0.5.0-release-unsigned.apk
    ```
 
-9. Make a GitHub release for the tag. Attach `NightJar-0.5.0.apk` and `SHA256SUMS`, and copy the changelog section
+8. Write the checksum:
+
+   ```sh
+   sha256sum NightJar-0.5.0-release.apk > SHA256SUMS
+   ```
+
+9. Make a GitHub release for the tag. Attach `NightJar-0.5.0-release.apk` and `SHA256SUMS`, and copy the changelog section
    into the release notes.
 10. Publish the same APK as a release in the LSPosed module repository, `Xposed-Modules-Repo/dev.nightjar`.
 11. F-Droid finds the new tag by itself. It builds the tag, checks that its APK matches the one on GitHub, and then

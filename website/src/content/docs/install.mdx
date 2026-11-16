@@ -27,10 +27,10 @@ SHA-256: BA:4C:89:90:1C:27:D3:FB:D6:B1:24:84:2E:B8:0C:BA:A3:E8:D3:AB:E5:F2:A3:B0
 - **On a computer:** run `apksigner` from the Android SDK build tools.
 
   ```sh
-  apksigner verify --print-certs NightJar-0.5.0.apk
+  apksigner verify --print-certs NightJar-0.5.0-release.apk
   ```
 
-  The line `Signer #1 certificate SHA-256 digest` must show `ba4c89901c27d3fbd6b124842eb80cbaa3e8d3abe5f2a3b06925ac478f1b138a`.
+  The line with `certificate SHA-256 digest` must show `ba4c89901c27d3fbd6b124842eb80cbaa3e8d3abe5f2a3b06925ac478f1b138a`.
 
 If the fingerprint is different, don't install the APK, and report it as described in the
 [security policy](https://github.com/Indspl0it/NightJar/blob/main/SECURITY.md).
