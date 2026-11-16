@@ -27,8 +27,8 @@ class LogFileSinkTest {
     fun `format matches the log line layout`() {
         val line = LogFileSink.format(1762330931204L, LogLevel.I, "ingest", "batch", listOf("count" to 3, "ms" to 12))
         assertTrue(line.contains("  I  ingest  batch count=3 ms=12"), line)
-        // ISO8601 with milliseconds and a zone offset.
-        assertTrue(Regex("""^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}[+-]\d{2}:\d{2}  I""").containsMatchIn(line), line)
+        // ISO8601 with milliseconds and a zone offset, which is "Z" when the zone is UTC (as on CI runners).
+        assertTrue(Regex("""^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}(Z|[+-]\d{2}:\d{2})  I""").containsMatchIn(line), line)
     }
 
     @Test
