@@ -22,16 +22,16 @@ import dev.nightjar.contract.Severity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.retryWhen
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -198,10 +198,13 @@ class DataStoreSettingsStore
         /** Set by the [settings] pipeline: true after the first successful read, or after a corrupt store. */
         private val loadedState = MutableStateFlow(false)
 
-        override val settings: StateFlow<Settings> =
+        private val settingsState = MutableStateFlow(Settings())
+
+        override val settings: StateFlow<Settings> = settingsState.asStateFlow()
+
+        init {
             dataStore.data
                 .map(::read)
-                .onEach { loadedState.value = true }
                 // A corrupt or unreadable file would otherwise cancel this app-scope coroutine with an uncaught exception
                 // and crash the process; `read` already turns missing keys into defaults, so an empty store does the same.
                 // Before the first unlock the file is unreadable (an IOException), and it becomes readable later in the same
@@ -210,12 +213,17 @@ class DataStoreSettingsStore
                     (cause is IOException && cause !is CorruptionException).also { if (it) delay(READ_RETRY_MS) }
                 }.catch {
                     // A corrupt store (or any error that is not "not readable yet") runs on the defaults for good.
-                    loadedState.value = true
                     emit(read(emptyPreferences()))
                 }.conflate()
                 .distinctUntilChanged()
-                .onEach { snapshot -> enforceWindowInMemory(snapshot) }
-                .stateIn(scope, SharingStarted.Eagerly, Settings())
+                .onEach { snapshot ->
+                    enforceWindowInMemory(snapshot)
+                    // The snapshot goes into [settings] before [loaded] flips. A collector that waits for [loaded] and
+                    // then reads [settings] (the settings push, the app lock) must never see the defaults.
+                    settingsState.value = snapshot
+                    loadedState.value = true
+                }.launchIn(scope)
+        }
 
         // The first successful read flips it, a corrupt store still counts as loaded (the defaults then apply, as
         // `read` already does for a missing key). A store that is not readable yet (before the first unlock) stays

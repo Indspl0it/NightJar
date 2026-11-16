@@ -19,6 +19,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -99,7 +100,7 @@ class DataStoreSettingsStoreTest {
         scope.cancel()
     }
 
-    /** One store per test: it owns a `stateIn` collector on the DataStore. */
+    /** One store per test: it owns a collector on the DataStore. */
     private val store: SettingsStore by lazy { DataStoreSettingsStore(dataStore, audit, Clock { now }, scope) }
 
     @Test
@@ -306,6 +307,38 @@ class DataStoreSettingsStoreTest {
                 s.settings.first { it.maskNumbers }
             }
             assertTrue(s.loaded.value)
+        }
+
+    @Test
+    fun `settings hold the stored values by the time loaded flips`() =
+        runBlocking {
+            val prefs =
+                androidx.datastore.preferences.core
+                    .preferencesOf(
+                        androidx.datastore.preferences.core
+                            .booleanPreferencesKey("advanced.safeMode") to true,
+                    )
+            val gate = kotlinx.coroutines.CompletableDeferred<Unit>()
+            val held =
+                object : DataStore<Preferences> {
+                    override val data: Flow<Preferences> =
+                        kotlinx.coroutines.flow.flow {
+                            gate.await()
+                            emit(prefs)
+                        }
+
+                    override suspend fun updateData(transform: suspend (t: Preferences) -> Preferences): Preferences = prefs
+                }
+            val s = DataStoreSettingsStore(held, audit, Clock { now }, scope)
+            // An unconfined watcher runs inside the write that flips `loaded`. It sees what the app lock and the
+            // settings push see when they wait for `loaded` and then read `settings`: never the defaults.
+            val seen = kotlinx.coroutines.CompletableDeferred<Boolean>()
+            scope.launch(Dispatchers.Unconfined, start = kotlinx.coroutines.CoroutineStart.UNDISPATCHED) {
+                s.loaded.first { it }
+                seen.complete(s.settings.value.safeMode)
+            }
+            gate.complete(Unit)
+            assertTrue(kotlinx.coroutines.withTimeout(5_000) { seen.await() })
         }
 
     private fun preferencesKeyOf(name: String) =
