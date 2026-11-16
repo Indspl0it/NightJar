@@ -13,7 +13,9 @@
 	--sl-color-gray-5: #263045;
 	--sl-color-gray-6: #131925;
 	--sl-color-black: #0a0e15;
-	--nj-screen-radius: 1.75rem;
+	--nj-screen-radius: 0.875rem;
+	--nj-bezel: #1b2231;
+	--nj-bezel-edge: #2c3548;
 }
 
 :root[data-theme='light'] {
@@ -28,24 +30,30 @@
 	--sl-color-gray-5: #e3e6ee;
 	--sl-color-gray-6: #f5f6fa;
 	--sl-color-gray-7: #f9fafc;
+	--nj-bezel: #e4e8f0;
+	--nj-bezel-edge: #c9d0dc;
 	--sl-color-black: #ffffff;
 }
 
-/* A phone screenshot: rounded corners and a thin outline, as on a phone. */
+/* A phone screenshot in a bezel. The screen corners stay small, so they never cut into the app bar. */
 .nj-screen {
 	display: block;
-	width: 100%;
+	box-sizing: border-box;
+	width: calc(100% - 18px);
 	max-width: 300px;
 	height: auto;
-	margin-inline: auto;
+	margin: 9px auto;
 	border-radius: var(--nj-screen-radius);
-	border: 1px solid var(--sl-color-gray-5);
+	box-shadow:
+		0 0 0 8px var(--nj-bezel),
+		0 0 0 9px var(--nj-bezel-edge),
+		0 18px 40px -12px rgb(0 0 0 / 0.45);
 }
 
 .nj-screens {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-	gap: 1.25rem;
+	gap: 2rem 1.75rem;
 	margin-block: 1.5rem;
 }
 

@@ -26,11 +26,21 @@ export default defineConfig({
 			editLink: { baseUrl: `${repo}/edit/main/website/` },
 			lastUpdated: false,
 			customCss: ['./src/styles/custom.css'],
+			components: { Hero: './src/components/Hero.astro' },
 			plugins: [starlightLinksValidator()],
 			sidebar: [
 				{
 					label: 'Get started',
 					items: ['intro', 'requirements', 'install', 'first-run'],
+				},
+				{
+					label: 'Architecture',
+					items: [
+						'internals/architecture',
+						'internals/hooks',
+						'internals/rules-engine',
+						'internals/ipc',
+					],
 				},
 				{
 					label: 'Features',
@@ -65,15 +75,6 @@ export default defineConfig({
 				{
 					label: 'Help',
 					items: ['help/troubleshooting', 'help/faq', 'help/compatibility'],
-				},
-				{
-					label: 'How it works',
-					items: [
-						'internals/architecture',
-						'internals/hooks',
-						'internals/rules-engine',
-						'internals/ipc',
-					],
 				},
 				{
 					label: 'Developers',

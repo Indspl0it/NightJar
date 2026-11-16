@@ -1,0 +1,424 @@
+---
+// Splash hero with the radar: hidden messages show up as blips that light up when the sweep passes them.
+// Title, tagline and actions come from the page frontmatter, as in the Starlight hero.
+import { LinkButton } from '@astrojs/starlight/components';
+import logoDark from '../assets/logo-dark.svg';
+import logoLight from '../assets/logo-light.svg';
+
+const { data } = Astro.locals.starlightRoute.entry;
+const { title = data.title, tagline, actions = [] } = data.hero || {};
+
+// Scene coordinates: 770 x 640, radar centre at 500, 330. Delay = when the sweep reaches the blip (8 s turn).
+const blips = [
+	{ x: 250, y: 170, side: 'right', tone: 'notify', delay: -1.28, text: '3 silent SMS · 4 min' },
+	{ x: 690, y: 90, side: 'left', tone: 'block', delay: -7.16, text: 'SUPL location request' },
+	{ x: 670, y: 470, side: 'below', tone: 'block', delay: -5.12, text: 'SIM data download' },
+	{ x: 550, y: 420, side: 'right', tone: 'block', delay: -4.65, text: 'Malformed WAP push' },
+	{ x: 420, y: 400, side: 'below', tone: 'hold', delay: -2.92, text: 'Settings push · held' },
+];
+const pct = (v: number, of: number) => `${((v / of) * 100).toFixed(2)}%`;
+---
+
+<div class="nj-hero">
+	<div class="nj-copy">
+		<h1 id="_top" data-page-title set:html={title} />
+		{tagline && <div class="nj-tagline" set:html={tagline} />}
+		{
+			actions.length > 0 && (
+				<div class="nj-actions">
+					{actions.map(({ attrs: { class: className, ...attrs } = {}, icon, link: href, text, variant }) => (
+						<LinkButton {href} {variant} icon={icon?.name} class:list={[className]} {...attrs}>
+							{text}
+							{icon?.html && <Fragment set:html={icon.html} />}
+						</LinkButton>
+					))}
+				</div>
+			)
+		}
+		<ul class="nj-legend" aria-hidden="true">
+			<li><span class="nj-dot nj-block"></span>Blocked</li>
+			<li><span class="nj-dot nj-hold"></span>Held</li>
+			<li><span class="nj-dot nj-notify"></span>Notified</li>
+		</ul>
+	</div>
+
+	<div
+		class="nj-scene"
+		role="img"
+		aria-label="A radar around the NightJar logo. Three silent SMS raise a notification, a SUPL location request, a SIM data download and a malformed WAP push are blocked, and a settings push is held."
+	>
+		<svg class="nj-rings" viewBox="0 0 770 640" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+			<circle class="nj-r0" cx="500" cy="330" r="500"></circle>
+			<circle class="nj-r1" cx="500" cy="330" r="380"></circle>
+			<circle class="nj-r2" cx="500" cy="330" r="260"></circle>
+			<circle class="nj-r3" cx="500" cy="330" r="140"></circle>
+			<line class="nj-axis" x1="0" y1="330" x2="770" y2="330"></line>
+			<line class="nj-axis" x1="500" y1="0" x2="500" y2="640"></line>
+		</svg>
+		<div class="nj-sweep" aria-hidden="true"><span></span></div>
+
+		<span class="nj-ring-label" style={`left:${pct(130, 770)}`} aria-hidden="true">Network</span>
+		<span class="nj-ring-label" style={`left:${pct(250, 770)}`} aria-hidden="true">SIM</span>
+		<span class="nj-ring-label nj-ring-inner" style={`left:${pct(370, 770)}`} aria-hidden="true">Android</span>
+
+		<img class="nj-logo light:sl-hidden" src={logoDark.src} alt="" width="88" height="73" aria-hidden="true" />
+		<img class="nj-logo dark:sl-hidden" src={logoLight.src} alt="" width="88" height="73" aria-hidden="true" />
+
+		{
+			blips.map((b) => (
+				<>
+					<span
+						class:list={['nj-blip', `nj-${b.tone}`]}
+						style={`left:${pct(b.x, 770)};top:${pct(b.y, 640)};animation-delay:${b.delay}s`}
+						aria-hidden="true"
+					/>
+					<span
+						class:list={['nj-label', `nj-${b.tone}`, `nj-${b.side}`]}
+						style={
+							b.side === 'right'
+								? `left:${pct(b.x, 770)};top:${pct(b.y, 640)};animation-delay:${b.delay}s`
+								: `right:${pct(770 - b.x, 770)};top:${pct(b.y, 640)};animation-delay:${b.delay}s`
+						}
+						aria-hidden="true"
+					>
+						{b.text}
+					</span>
+				</>
+			))
+		}
+	</div>
+</div>
+
+<style>
+	.nj-hero {
+		--nj-ring-0: #161e2e;
+		--nj-ring-1: #1f2a40;
+		--nj-ring-2: #263452;
+		--nj-ring-3: #34466e;
+		--nj-disc: #0b101b;
+		--nj-core: #0e1526;
+		--nj-axis: #151d2c;
+		--nj-sweep: 91, 130, 230;
+		--nj-sweep-alpha: 0.3;
+		--nj-edge: #a9c3ff;
+		--nj-ring-label: #8a95ab;
+		--nj-block: #ff7b72;
+		--nj-block-text: #ffa39d;
+		--nj-block-bg: #261314;
+		--nj-block-line: #5a2a2b;
+		--nj-hold: #8db0ff;
+		--nj-hold-text: #c9d8ff;
+		--nj-hold-bg: #121c36;
+		--nj-hold-line: #2c4278;
+		--nj-notify: #f4b740;
+		--nj-notify-text: #f8cf78;
+		--nj-notify-bg: #231c0e;
+		--nj-notify-line: #574420;
+
+		position: relative;
+		display: grid;
+		grid-template-columns: 100%;
+		gap: 1.5rem;
+		padding-bottom: 1rem;
+		overflow: hidden;
+	}
+
+	:global(:root[data-theme='light']) .nj-hero {
+		--nj-ring-0: #dfe5f0;
+		--nj-ring-1: #cfd8e8;
+		--nj-ring-2: #bccadf;
+		--nj-ring-3: #9fb3d6;
+		--nj-disc: #f3f6fb;
+		--nj-core: #e8eef9;
+		--nj-axis: #e1e7f1;
+		--nj-sweep: 47, 91, 211;
+		--nj-sweep-alpha: 0.12;
+		--nj-edge: #2f5bd3;
+		--nj-ring-label: #566072;
+		--nj-block: #d1453b;
+		--nj-block-text: #9c2a22;
+		--nj-block-bg: #fdecea;
+		--nj-block-line: #f2b8b2;
+		--nj-hold: #2f5bd3;
+		--nj-hold-text: #1a3a8f;
+		--nj-hold-bg: #e6edff;
+		--nj-hold-line: #b6c7f5;
+		--nj-notify: #c98a0b;
+		--nj-notify-text: #7a5300;
+		--nj-notify-bg: #fdf3dc;
+		--nj-notify-line: #ecd29a;
+	}
+
+	.nj-copy {
+		position: relative;
+		z-index: 1;
+		display: flex;
+		flex-direction: column;
+		gap: clamp(1.25rem, calc(1rem + 1vw), 1.75rem);
+		text-align: center;
+		align-items: center;
+	}
+
+	.nj-copy h1 {
+		margin: 0;
+		font-size: clamp(var(--sl-text-3xl), calc(0.25rem + 5vw), var(--sl-text-6xl));
+		line-height: var(--sl-line-height-headings);
+		font-weight: 600;
+		color: var(--sl-color-white);
+	}
+
+	.nj-tagline {
+		max-width: 34rem;
+		font-size: clamp(var(--sl-text-base), calc(0.0625rem + 2vw), var(--sl-text-xl));
+		color: var(--sl-color-gray-2);
+	}
+
+	.nj-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem 2rem;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.nj-legend {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem 1.25rem;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		font-size: var(--sl-text-sm);
+		color: var(--sl-color-gray-3);
+	}
+
+	.nj-legend li {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		margin: 0;
+	}
+
+	.nj-dot {
+		width: 0.625rem;
+		height: 0.625rem;
+		border-radius: 999px;
+	}
+
+	.nj-dot.nj-block {
+		background: var(--nj-block);
+	}
+	.nj-dot.nj-hold {
+		background: var(--nj-hold);
+	}
+	.nj-dot.nj-notify {
+		background: var(--nj-notify);
+	}
+
+	.nj-scene {
+		position: relative;
+		width: 100%;
+		aspect-ratio: 770 / 640;
+		overflow: hidden;
+		container-type: inline-size;
+	}
+
+	.nj-rings {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+	}
+
+	.nj-rings circle {
+		fill: none;
+		stroke-width: 1;
+	}
+	.nj-r0 {
+		stroke: var(--nj-ring-0);
+		fill: var(--nj-disc) !important;
+	}
+	.nj-r1 {
+		stroke: var(--nj-ring-1);
+	}
+	.nj-r2 {
+		stroke: var(--nj-ring-2);
+	}
+	.nj-r3 {
+		stroke: var(--nj-ring-3);
+		fill: var(--nj-core) !important;
+	}
+	.nj-axis {
+		stroke: var(--nj-axis);
+		stroke-width: 1;
+	}
+
+	/* The sweep disc covers the r=500 circle: left 0, top (330-500)/640, size 1000/770 x 1000/640. */
+	.nj-sweep {
+		position: absolute;
+		left: 0;
+		top: -26.56%;
+		width: 129.87%;
+		height: 156.25%;
+		border-radius: 50%;
+		background: conic-gradient(
+			from 0deg,
+			rgba(var(--nj-sweep), 0) 0deg,
+			rgba(var(--nj-sweep), 0) 290deg,
+			rgba(var(--nj-sweep), var(--nj-sweep-alpha)) 360deg
+		);
+		animation: nj-sweep 8s linear infinite;
+	}
+
+	.nj-sweep span {
+		position: absolute;
+		left: calc(50% - 1px);
+		top: 0;
+		width: 2px;
+		height: 50%;
+		background: linear-gradient(rgba(var(--nj-sweep), 0.15), var(--nj-edge));
+	}
+
+	.nj-ring-label {
+		position: absolute;
+		top: 48.75%;
+		margin-left: 0.6rem;
+		font-size: clamp(0.6rem, 1.45cqw, 0.72rem);
+		font-weight: 700;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--nj-ring-label);
+	}
+
+	.nj-logo {
+		position: absolute;
+		left: 59.22%;
+		top: 45.78%;
+		width: 11.43%;
+		height: auto;
+	}
+
+	.nj-blip {
+		position: absolute;
+		width: 12px;
+		height: 12px;
+		margin: -6px 0 0 -6px;
+		border-radius: 999px;
+		animation: nj-ping 8s linear infinite;
+	}
+	.nj-blip.nj-block {
+		background: var(--nj-block);
+		box-shadow: 0 0 14px 4px color-mix(in srgb, var(--nj-block) 45%, transparent);
+	}
+	.nj-blip.nj-hold {
+		background: var(--nj-hold);
+		box-shadow: 0 0 14px 4px color-mix(in srgb, var(--nj-hold) 45%, transparent);
+	}
+	.nj-blip.nj-notify {
+		background: var(--nj-notify);
+		box-shadow: 0 0 14px 4px color-mix(in srgb, var(--nj-notify) 45%, transparent);
+	}
+
+	.nj-label {
+		position: absolute;
+		padding: 0.3em 0.65em;
+		border-radius: 0.5rem;
+		border: 1px solid;
+		font-size: clamp(0.68rem, 1.7cqw, 0.82rem);
+		line-height: 1.3;
+		white-space: nowrap;
+		animation: nj-label 8s linear infinite;
+	}
+	.nj-label.nj-right {
+		margin-left: 14px;
+		transform: translateY(-50%);
+	}
+	.nj-label.nj-left {
+		margin-right: 14px;
+		transform: translateY(-50%);
+	}
+	.nj-label.nj-below {
+		margin-top: 12px;
+		margin-right: -6px;
+	}
+	.nj-label.nj-block {
+		color: var(--nj-block-text);
+		background: var(--nj-block-bg);
+		border-color: var(--nj-block-line);
+	}
+	.nj-label.nj-hold {
+		color: var(--nj-hold-text);
+		background: var(--nj-hold-bg);
+		border-color: var(--nj-hold-line);
+	}
+	.nj-label.nj-notify {
+		color: var(--nj-notify-text);
+		background: var(--nj-notify-bg);
+		border-color: var(--nj-notify-line);
+	}
+
+	@keyframes nj-sweep {
+		to {
+			transform: rotate(360deg);
+		}
+	}
+	@keyframes nj-ping {
+		0% {
+			opacity: 1;
+			transform: scale(1.9);
+		}
+		12% {
+			opacity: 1;
+			transform: scale(1);
+		}
+		100% {
+			opacity: 0.3;
+			transform: scale(1);
+		}
+	}
+	@keyframes nj-label {
+		0%,
+		25% {
+			opacity: 1;
+		}
+		100% {
+			opacity: 0.45;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.nj-sweep,
+		.nj-blip,
+		.nj-label {
+			animation: none;
+		}
+	}
+
+	@media (min-width: 50rem) {
+		.nj-hero {
+			min-height: clamp(30rem, 44vw, 40rem);
+			align-items: center;
+			padding-block: clamp(2rem, calc(1rem + 6vmin), 5rem);
+		}
+
+		.nj-copy {
+			max-width: 46%;
+			text-align: start;
+			align-items: flex-start;
+		}
+
+		.nj-actions {
+			justify-content: flex-start;
+		}
+
+		/* The scene fills the hero's height, so the hero edges crop the radar. */
+		.nj-scene {
+			position: absolute;
+			top: 0;
+			right: 0;
+			height: 100%;
+			width: auto;
+			max-width: 64%;
+		}
+	}
+</style>
