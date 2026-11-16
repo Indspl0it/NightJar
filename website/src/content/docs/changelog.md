@@ -6,16 +6,10 @@ description: The changes in each NightJar release.
 The format follows [Keep a Changelog](https://keepachangelog.com/). The project uses
 [Semantic Versioning](https://semver.org/). The file `CHANGELOG.md` in the repository is the source.
 
-## Unreleased
+## 0.5.0 (2026-11-16)
 
-### Changed
-
-- NightJar is now licensed under the GNU General Public License, version 3 or later (GPL-3.0-or-later), not
-  Apache-2.0.
-
-## 0.5.0 (2026-11-15)
-
-First public release.
+First public release, licensed under the GNU General Public License, version 3 or later (GPL-3.0-or-later). The
+release APK is signed with the NightJar release key. To check it, see [Install](/NightJar/install/#check-the-download).
 
 ### Added
 
@@ -24,6 +18,8 @@ First public release.
   and messages that apps add. NightJar records the result of each message: shown, given to an app, blocked or held.
 - Firewall with one action for each message type, presets, custom rules, known senders and trusted apps. You can
   release held messages.
+- The module keeps a copy of your last rules and settings, so it holds and blocks from boot, before you first
+  unlock the phone.
 - Safe mode, which stops all blocking. Only you can turn it on or off.
 - Decoders for GSM 03.40 TPDUs, UDH, GSM 7-bit alphabets, UCS-2, WSP, WBXML (SI, SL, CO), OMA CP and DM, SUPL,
   SMS-PP and cell broadcast.
